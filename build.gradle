@@ -1,0 +1,92 @@
+buildscript {
+    ext {
+        springBootVersion = '2.7.4'
+        dependencyManagementVersion = '1.0.11.RELEASE'
+        flywayVersion = '7.15.0'
+        spotlessVersion = '6.8.0'
+        asciidoctorVersion = '3.3.2'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+    }
+}
+
+plugins {
+    id 'java'
+    id "org.flywaydb.flyway" version "${flywayVersion}"
+    id "com.diffplug.spotless" version "${spotlessVersion}"
+    id "io.spring.dependency-management" version "${dependencyManagementVersion}"
+    id 'org.asciidoctor.jvm.convert' version "${asciidoctorVersion}"
+}
+
+allprojects {
+    plugins.apply("com.diffplug.spotless")
+
+    spotless {
+        java {
+            importOrder()
+            removeUnusedImports()
+            trimTrailingWhitespace()
+            googleJavaFormat('1.12.0')
+            indentWithTabs(2)
+            endWithNewline()
+            target 'src/*/java/**/*.java'
+        }
+
+        format 'misc', {
+            target '**/*.gradle', '**/*.md', '**/.gitignore'
+            targetExclude '.release/*.*'
+            indentWithSpaces()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'jongjun'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    allprojects {}
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events "failed"
+            exceptionFormat "full"
+        }
+    }
+}
