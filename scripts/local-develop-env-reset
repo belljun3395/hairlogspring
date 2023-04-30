@@ -6,4 +6,4 @@ docker-compose up -d
 sleep 10
 
 cd ../../
-./gradlew :data:data-rds:flywayClean :data:data-rds:flywayMigrate
+./gradlew :data:flywayClean :data:flywayMigrate
