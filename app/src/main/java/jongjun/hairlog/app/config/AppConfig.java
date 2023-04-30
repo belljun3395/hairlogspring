@@ -1,4 +1,4 @@
-package jongjun.hairlog.app;
+package jongjun.hairlog.app.config;
 
 import jongjun.hairlog.data.DataRdsConfig;
 import jongjun.hairlog.data.JpaDataSourceConfig;
