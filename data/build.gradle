@@ -1,19 +1,26 @@
-plugins {
-    id 'java'
+bootJar {
+    enabled = false
 }
 
-group 'org.example'
-version 'unspecified'
-
-repositories {
-    mavenCentral()
+jar {
+    enabled = true
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'mysql:mysql-connector-java'
+    runtimeOnly 'com.h2database:h2'
 }
 
-test {
-    useJUnitPlatform()
+apply plugin: "org.flywaydb.flyway"
+
+flyway {
+    url = "jdbc:mysql://localhost:13306/demodb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"
+    user = "root"
+    password = "root"
+    locations = ["filesystem:${file('migration').absolutePath}"]
+    encoding = 'UTF-8'
+    outOfOrder = true
+    validateOnMigrate = true
 }
