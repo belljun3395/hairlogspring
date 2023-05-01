@@ -1,7 +1,6 @@
 package jongjun.hairlog.data.repository.query;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ public class DesignerCustomQueryImpl implements DesignerCustomQuery {
 	public List<DesignerEntity> findByMemberIdQuery(Long memberId) {
 		return em.createQuery(DESIGNER_FINDBY_MEMBERID, DesignerEntity.class)
 				.setParameter("memberId", memberId)
-				.getResultStream()
-				.collect(Collectors.toList());
+				.getResultList();
 	}
 }
