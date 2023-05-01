@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class RecordCustomQueryImpl implements RecordCustomQuery {
 
-	private final EntityManager em;
 	private static final String MEMBERID_PARAMETER = "memberId";
 
 	/** 해당 쿼리로 조회하는 경우 컨버터가 record_category로 분기를 나누어 변환해줄 필요가 있다. */
@@ -30,6 +29,8 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 			"select r, d from RecordEntity r left join DyeingEntity d where r.member.id = :memberId order by r.id desc";
 	private static final String RECORD_COUNTS =
 			"select count(r.id) from RecordEntity r where r.member.id = :memberId";
+
+	private final EntityManager em;
 
 	public Page<RecordEntity> findAllByMemberIdQuery(Pageable pageable, Long memberId) {
 		PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
