@@ -1,0 +1,1 @@
+alter table designer_entity add fulltext index idx_ft_name (designer_name);
