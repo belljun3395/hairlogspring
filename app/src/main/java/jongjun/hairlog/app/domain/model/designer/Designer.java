@@ -1,6 +1,5 @@
 package jongjun.hairlog.app.domain.model.designer;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -23,6 +22,4 @@ public class Designer {
 	private String designerSalon;
 
 	private Boolean designerFav;
-
-	private LocalDateTime createAt;
 }
