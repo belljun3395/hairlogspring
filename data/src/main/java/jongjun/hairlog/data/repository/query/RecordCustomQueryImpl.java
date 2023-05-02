@@ -1,5 +1,6 @@
 package jongjun.hairlog.data.repository.query;
 
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -39,7 +40,8 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 			"select r, d from RecordEntity r left join DyeingEntity d where r.member.id = :memberId order by r.id desc";
 	private static final String RECORD_COUNTS =
 			"select count(r.id) from RecordEntity r where r.member.id = :memberId";
-
+	private static final String RECORD_CATEGORY_COUNTS =
+			"select count(r.record_id) from record_entity r where r.member_fk = ?1 and r.record_category = ?2";
 	private final EntityManager em;
 
 	public Page<RecordIndexDTO> findAllByMemberIdQuery(Pageable pageable, Long memberId) {
@@ -68,11 +70,14 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 			Pageable pageable, RecordCategory category, Long memberId) {
 		PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
 
-		Long total =
-				/** fixme record count by category */
-				em.createQuery(RECORD_COUNTS, Long.class)
-						.setParameter(MEMBERID_PARAMETER, memberId)
-						.getSingleResult();
+		BigInteger bTotal =
+				(BigInteger)
+						em.createNativeQuery(RECORD_CATEGORY_COUNTS)
+								.setParameter(MEMBERID_NATIVE_PARAMETER, memberId)
+								.setParameter(CATEGORY_NATIVE_PARAMETER, category.toString())
+								.getSingleResult();
+
+		Long total = Long.parseLong(bTotal.toString());
 
 		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 		Query categoryMemberAllQuery =
