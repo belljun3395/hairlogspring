@@ -7,3 +7,5 @@ sleep 10
 
 cd ../../
 ./gradlew :data:flywayClean :data:flywayMigrate
+
+./gradlew :data:flywayMigrate -Dflyway.ignoreMissingMigrations=true -Pprofile=data

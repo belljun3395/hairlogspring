@@ -16,12 +16,27 @@ dependencies {
 
 apply plugin: "org.flywaydb.flyway"
 
-flyway {
-    url = "jdbc:mysql://localhost:13306/demodb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"
-    user = "root"
-    password = "root"
-    locations = ["filesystem:${file('migration').absolutePath}"]
-    encoding = 'UTF-8'
-    outOfOrder = true
-    validateOnMigrate = true
+
+ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
+if (profile == "data") {
+    print("data")
+    flyway {
+        url = "jdbc:mysql://localhost:13306/demodb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"
+        user = "root"
+        password = "root"
+        locations = ["filesystem:${file('migrationdata').absolutePath}"]
+        encoding = 'UTF-8'
+        outOfOrder = true
+        validateOnMigrate = true
+    }
+} else {
+    flyway {
+        url = "jdbc:mysql://localhost:13306/demodb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"
+        user = "root"
+        password = "root"
+        locations = ["filesystem:${file('migration').absolutePath}"]
+        encoding = 'UTF-8'
+        outOfOrder = true
+        validateOnMigrate = true
+    }
 }
