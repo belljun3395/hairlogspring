@@ -1,9 +1,11 @@
 package jongjun.hairlog.data.entity.record;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -23,10 +25,16 @@ import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.enums.SatisfactionRate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +45,9 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @SuperBuilder(toBuilder = true)
 @Table(name = "record_entity")
+@EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE record_entity SET deleted = true WHERE member_id=?")
+@Where(clause = "deleted=false")
 public abstract class RecordEntity {
 
 	@Id
@@ -65,4 +76,16 @@ public abstract class RecordEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "designer_fk")
 	private DesignerEntity designer;
+
+	@Column(nullable = false, updatable = false)
+	@CreatedDate
+	private LocalDateTime createAt;
+
+	@Column(nullable = false)
+	@LastModifiedDate
+	private LocalDateTime updateAt;
+
+	@Column(nullable = false)
+	@Builder.Default
+	private Boolean deleted = false;
 }
