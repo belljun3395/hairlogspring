@@ -2,8 +2,11 @@ package jongjun.hairlog.data.repository.query;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import jongjun.hairlog.data.dto.designer.DesignerDeletedDTO;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import lombok.RequiredArgsConstructor;
+import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -13,6 +16,8 @@ public class DesignerCustomQueryImpl implements DesignerCustomQuery {
 	private static final String MEMBERID_PARAMETER = "memberId";
 	private static final Integer MEMBERID_NATIVE_PARAMETER = 1;
 	private static final Integer DESIGNERNAME_NATIVE_PARAMETER = 2;
+	private static final String DELETED_DESIGNERS_FINDBYMEMBERID_NAMEDQUERY =
+			"DesignerEntity.findDeletedDesignersEntity";
 
 	/** 일반 fk로 조회하는 경우랑 성능 비교해보기 */
 	private static final String DESIGNER_FINDBY_MEMBERID =
@@ -35,5 +40,13 @@ public class DesignerCustomQueryImpl implements DesignerCustomQuery {
 				.setParameter(MEMBERID_NATIVE_PARAMETER, memberId)
 				.setParameter(DESIGNERNAME_NATIVE_PARAMETER, designerName)
 				.getResultList();
+	}
+
+	public List<DesignerDeletedDTO> findDeletedDesignersByMemberIdQuery(Long memberId) {
+		JpaResultMapper jpaResultMapper = new JpaResultMapper();
+		Query deletedMemberQuery =
+				em.createNamedQuery(DELETED_DESIGNERS_FINDBYMEMBERID_NAMEDQUERY)
+						.setParameter(MEMBERID_NATIVE_PARAMETER, memberId);
+		return jpaResultMapper.list(deletedMemberQuery, DesignerDeletedDTO.class);
 	}
 }
