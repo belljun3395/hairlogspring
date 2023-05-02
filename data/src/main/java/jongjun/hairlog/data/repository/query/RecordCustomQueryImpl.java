@@ -2,9 +2,12 @@ package jongjun.hairlog.data.repository.query;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import jongjun.hairlog.data.dto.record.RecordDeletedDTO;
 import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.enums.RecordCategory;
 import lombok.RequiredArgsConstructor;
+import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +19,9 @@ import org.springframework.stereotype.Repository;
 public class RecordCustomQueryImpl implements RecordCustomQuery {
 
 	private static final String MEMBERID_PARAMETER = "memberId";
+	private static final Integer MEMBERID_NATIVE_PARAMETER = 1;
+	private static final String DELETED_RECORDS_FINDBYMEMBERID_NAMEDQUERY =
+			"RecordEntity.findDeletedRecordsEntity";
 
 	/** 해당 쿼리로 조회하는 경우 컨버터가 record_category로 분기를 나누어 변환해줄 필요가 있다. */
 	private static final String RECORD_FINDALLBY_MEMBERID =
@@ -81,5 +87,13 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 			default:
 				throw new IllegalStateException("select right category");
 		}
+	}
+
+	public List<RecordDeletedDTO> findDeletedRecordsByMemberIdQuery(Long memberId) {
+		JpaResultMapper jpaResultMapper = new JpaResultMapper();
+		Query deletedMemberQuery =
+				em.createNamedQuery(DELETED_RECORDS_FINDBYMEMBERID_NAMEDQUERY)
+						.setParameter(MEMBERID_NATIVE_PARAMETER, memberId);
+		return jpaResultMapper.list(deletedMemberQuery, RecordDeletedDTO.class);
 	}
 }

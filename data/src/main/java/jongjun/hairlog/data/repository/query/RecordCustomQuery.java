@@ -1,5 +1,7 @@
 package jongjun.hairlog.data.repository.query;
 
+import java.util.List;
+import jongjun.hairlog.data.dto.record.RecordDeletedDTO;
 import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.enums.RecordCategory;
 import org.springframework.data.domain.Page;
@@ -11,4 +13,6 @@ public interface RecordCustomQuery {
 
 	Page<RecordEntity> findByCategoryAndMemberIdQuery(
 			Pageable pageable, RecordCategory category, Long memberId);
+
+	List<RecordDeletedDTO> findDeletedRecordsByMemberIdQuery(Long memberId);
 }
