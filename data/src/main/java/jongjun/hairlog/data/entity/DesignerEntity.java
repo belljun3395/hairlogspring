@@ -1,7 +1,9 @@
 package jongjun.hairlog.data.entity;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,6 +30,9 @@ import lombok.ToString;
 @ToString
 @Builder(toBuilder = true)
 @Table(name = "designer_entity")
+@EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE designer_entity SET deleted = true WHERE member_id=?")
+@Where(clause = "deleted=false")
 public class DesignerEntity {
 
 	@Id
@@ -42,4 +52,16 @@ public class DesignerEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_fk")
 	private MemberEntity member;
+
+	@Column(nullable = false, updatable = false)
+	@CreatedDate
+	private LocalDateTime createAt;
+
+	@Column(nullable = false)
+	@LastModifiedDate
+	private LocalDateTime updateAt;
+
+	@Column(nullable = false)
+	@Builder.Default
+	private Boolean deleted = false;
 }
