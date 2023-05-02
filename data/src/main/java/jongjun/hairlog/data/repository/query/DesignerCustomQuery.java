@@ -6,9 +6,9 @@ import jongjun.hairlog.data.entity.DesignerEntity;
 
 public interface DesignerCustomQuery {
 
-	List<DesignerEntity> findByMemberIdQuery(Long memberId);
+	List<DesignerEntity> findAllByMemberIdQuery(Long memberId);
 
 	List<DesignerEntity> searchByNameAndMemberIdQuery(String designerName, Long memberId);
 
-	List<DesignerDeletedDTO> findDeletedDesignersByMemberIdQuery(Long memberId);
+	List<DesignerDeletedDTO> findAllDeletedByMemberIdQuery(Long memberId);
 }

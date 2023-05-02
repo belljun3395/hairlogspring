@@ -29,7 +29,7 @@ public class DesignerCustomQueryImpl implements DesignerCustomQuery {
 
 	private final EntityManager em;
 
-	public List<DesignerEntity> findByMemberIdQuery(Long memberId) {
+	public List<DesignerEntity> findAllByMemberIdQuery(Long memberId) {
 		return em.createQuery(DESIGNER_FINDBY_MEMBERID, DesignerEntity.class)
 				.setParameter(MEMBERID_PARAMETER, memberId)
 				.getResultList();
@@ -42,7 +42,7 @@ public class DesignerCustomQueryImpl implements DesignerCustomQuery {
 				.getResultList();
 	}
 
-	public List<DesignerDeletedDTO> findDeletedDesignersByMemberIdQuery(Long memberId) {
+	public List<DesignerDeletedDTO> findAllDeletedByMemberIdQuery(Long memberId) {
 		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 		Query deletedMemberQuery =
 				em.createNamedQuery(DELETED_DESIGNERS_FINDBYMEMBERID_NAMEDQUERY)
