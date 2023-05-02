@@ -2,6 +2,7 @@ package jongjun.hairlog.app.domain.usecase.record;
 
 import jongjun.hairlog.app.domain.converter.record.RecordConverter;
 import jongjun.hairlog.app.support.Page;
+import jongjun.hairlog.data.dto.record.RecordIndexDTO;
 import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.repository.RecordRepository;
@@ -19,13 +20,13 @@ public class GetRecordUseCase {
 	private final RecordConverter converter;
 
 	public Page<RecordEntity> execute(Long memberId, Pageable pageable) {
-		org.springframework.data.domain.Page<RecordEntity> source =
+		org.springframework.data.domain.Page<RecordIndexDTO> source =
 				repository.findAllByMemberIdQuery(pageable, memberId);
 		return converter.from(source);
 	}
 
 	public Page<RecordEntity> execute(Long memberId, RecordCategory category, Pageable pageable) {
-		org.springframework.data.domain.Page<RecordEntity> source =
+		org.springframework.data.domain.Page<RecordIndexDTO> source =
 				repository.findAllByCategoryAndMemberIdQuery(pageable, category, memberId);
 		return converter.from(source);
 	}
