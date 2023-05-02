@@ -2,7 +2,7 @@ package jongjun.hairlog.app.domain.converter.member;
 
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
-import jongjun.hairlog.app.web.controller.request.MemberRequest;
+import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
 import jongjun.hairlog.data.dto.member.MemberInfoDTO;
 import jongjun.hairlog.data.entity.MemberEntity;
 import org.springframework.stereotype.Component;
@@ -24,5 +24,16 @@ public class MemberConverter {
 
 	public MemberInfo from(MemberInfoDTO source) {
 		return MemberInfo.builder().email(source.getEmail()).name(source.getName()).build();
+	}
+
+	/** fixme CommandConverter을 거처서 요청을 받을 수 있도록 수정 */
+	public MemberEntity to(MemberRequest request) {
+		return MemberEntity.builder()
+				.email(request.getEmail())
+				.password(request.getPassword())
+				.name(request.getName())
+				.sex(request.getSex())
+				.cycle(request.getCycle())
+				.build();
 	}
 }
