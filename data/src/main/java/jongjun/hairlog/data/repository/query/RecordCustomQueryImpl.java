@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import jongjun.hairlog.data.dto.record.RecordDeletedDTO;
+import jongjun.hairlog.data.dto.record.RecordIndexDTO;
 import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.enums.RecordCategory;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,10 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 	private static final String DELETED_RECORDS_FINDBYMEMBERID_NAMEDQUERY =
 			"RecordEntity.findDeletedRecordsEntity";
 
-	/** 해당 쿼리로 조회하는 경우 컨버터가 record_category로 분기를 나누어 변환해줄 필요가 있다. */
 	private static final String RECORD_FINDALLBY_MEMBERID =
-			"select r from RecordEntity r where r.member.id = :memberId order by r.id desc";
+			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 order by r.record_id desc";
 
+	/** fixme DTO 활용으로 수정 */
 	private static final String RECORD_CUT_FINDBY_MEMBERID =
 			"select r, c from RecordEntity r left join CutEntity c where r.member.id = :memberId order by r.id desc";
 	private static final String RECORD_PERM_FINDBY_MEMBERID =
@@ -38,7 +39,7 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 
 	private final EntityManager em;
 
-	public Page<RecordEntity> findAllByMemberIdQuery(Pageable pageable, Long memberId) {
+	public Page<RecordIndexDTO> findAllByMemberIdQuery(Pageable pageable, Long memberId) {
 		PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
 
 		Long total =
@@ -46,14 +47,18 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 						.setParameter(MEMBERID_PARAMETER, memberId)
 						.getSingleResult();
 
-		List<RecordEntity> recordEntityList =
-				em.createQuery(RECORD_FINDALLBY_MEMBERID, RecordEntity.class)
-						.setParameter(MEMBERID_PARAMETER, memberId)
-						.setFirstResult((int) pageable.getOffset())
-						.setMaxResults(pageable.getPageSize())
-						.getResultList();
+		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 
-		return new PageImpl<>(recordEntityList, pageRequest, total);
+		Query memberAllRecordQuery =
+				em.createNativeQuery(RECORD_FINDALLBY_MEMBERID)
+						.setParameter(MEMBERID_NATIVE_PARAMETER, memberId)
+						.setFirstResult((int) pageable.getOffset())
+						.setMaxResults(pageable.getPageSize());
+
+		List<RecordIndexDTO> recordIdxs =
+				jpaResultMapper.list(memberAllRecordQuery, RecordIndexDTO.class);
+
+		return new PageImpl<>(recordIdxs, pageRequest, total);
 	}
 
 	public Page<RecordEntity> findAllByCategoryAndMemberIdQuery(
