@@ -16,6 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -48,6 +49,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE record_entity SET deleted = true WHERE member_id=?")
 @Where(clause = "deleted=false")
+@NamedNativeQuery(
+		name = "RecordEntity.findDeletedRecordsEntity",
+		query = "select r.record_id, r.record_date from record_entity r where r.member_fk = ?1")
 public abstract class RecordEntity {
 
 	@Id
