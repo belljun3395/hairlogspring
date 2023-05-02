@@ -1,7 +1,9 @@
 package jongjun.hairlog.data.entity;
 
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
@@ -12,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
+import jongjun.hairlog.data.converter.IdConverter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +46,7 @@ public class DesignerEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "designer_id")
+	@Convert(converter = IdConverter.class)
 	private Long id;
 
 	@Column(name = "designer_name")
@@ -54,7 +58,7 @@ public class DesignerEntity {
 	@Column(name = "designer_fav")
 	private Boolean designerFav;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "member_fk")
 	private MemberEntity member;
 
