@@ -46,7 +46,7 @@ public class DesignerCustomQueryImpl implements DesignerCustomQuery {
 	public List<DesignerDTO> searchByNameAndMemberIdQuery(String designerName, Long memberId) {
 		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 		Query searchByNameAndMemberIdQuery =
-				em.createNativeQuery(DESIGNER_SEARCHBY_NAME_MEMBERID, DesignerDTO.class)
+				em.createNativeQuery(DESIGNER_SEARCHBY_NAME_MEMBERID)
 						.setParameter(MEMBERID_NATIVE_PARAMETER, memberId)
 						.setParameter(DESIGNERNAME_NATIVE_PARAMETER, designerName);
 		return jpaResultMapper.list(searchByNameAndMemberIdQuery, DesignerDTO.class);
