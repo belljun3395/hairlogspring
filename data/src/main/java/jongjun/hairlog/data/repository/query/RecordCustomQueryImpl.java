@@ -56,7 +56,7 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 		return new PageImpl<>(recordEntityList, pageRequest, total);
 	}
 
-	public Page<RecordEntity> findByCategoryAndMemberIdQuery(
+	public Page<RecordEntity> findAllByCategoryAndMemberIdQuery(
 			Pageable pageable, RecordCategory category, Long memberId) {
 		PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
 
@@ -89,7 +89,7 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 		}
 	}
 
-	public List<RecordDeletedDTO> findDeletedRecordsByMemberIdQuery(Long memberId) {
+	public List<RecordDeletedDTO> findAllDeletedByMemberIdQuery(Long memberId) {
 		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 		Query deletedMemberQuery =
 				em.createNamedQuery(DELETED_RECORDS_FINDBYMEMBERID_NAMEDQUERY)

@@ -11,8 +11,8 @@ public interface RecordCustomQuery {
 
 	Page<RecordEntity> findAllByMemberIdQuery(Pageable pageable, Long memberId);
 
-	Page<RecordEntity> findByCategoryAndMemberIdQuery(
+	Page<RecordEntity> findAllByCategoryAndMemberIdQuery(
 			Pageable pageable, RecordCategory category, Long memberId);
 
-	List<RecordDeletedDTO> findDeletedRecordsByMemberIdQuery(Long memberId);
+	List<RecordDeletedDTO> findAllDeletedByMemberIdQuery(Long memberId);
 }
