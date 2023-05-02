@@ -2,6 +2,7 @@ package jongjun.hairlog.data.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
+import jongjun.hairlog.data.converter.IdConverter;
 import jongjun.hairlog.data.enums.MemberSex;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,6 +44,7 @@ public class MemberEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
+	@Convert(converter = IdConverter.class)
 	private Long id;
 
 	@Column(name = "member_email")
