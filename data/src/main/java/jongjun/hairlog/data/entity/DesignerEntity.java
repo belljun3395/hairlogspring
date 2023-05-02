@@ -35,7 +35,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Builder(toBuilder = true)
 @Table(name = "designer_entity")
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE designer_entity SET deleted = true WHERE member_id=?")
+@SQLDelete(sql = "UPDATE designer_entity SET deleted = true WHERE member_fk=?")
 @Where(clause = "deleted=false")
 @NamedNativeQuery(
 		name = "DesignerEntity.findDeletedDesignersEntity",
