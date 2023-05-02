@@ -30,6 +30,7 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 	/** fixme DTO 활용으로 수정 */
 	private static final String RECORD_CUT_FINDBY_MEMBERID =
 			"select r, c from RecordEntity r left join CutEntity c where r.member.id = :memberId order by r.id desc";
+
 	private static final String RECORD_PERM_FINDBY_MEMBERID =
 			"select r, p from RecordEntity r left join PermEntity p where r.member.id = :memberId order by r.id desc";
 	private static final String RECORD_DYEING_FINDBY_MEMBERID =
@@ -83,11 +84,11 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 
 	private static String getQuery(RecordCategory category) {
 		switch (category) {
-			case C:
+			case CUT:
 				return RECORD_CUT_FINDBY_MEMBERID;
-			case P:
+			case PERM:
 				return RECORD_PERM_FINDBY_MEMBERID;
-			case D:
+			case DYEING:
 				return RECORD_DYEING_FINDBY_MEMBERID;
 			default:
 				throw new IllegalStateException("select right category");
