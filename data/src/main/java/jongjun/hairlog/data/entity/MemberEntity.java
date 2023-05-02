@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import jongjun.hairlog.data.enums.MemberSex;
 import lombok.AccessLevel;
@@ -33,6 +34,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE member_entity SET deleted = true WHERE member_id=?")
 @Where(clause = "deleted=false")
+@NamedNativeQuery(
+		name = "MemberEntity.findDeletedMemberEntity",
+		query = "select m.member_email, m.member_sex from member_entity m where m.member_email = ?1")
 public class MemberEntity {
 
 	@Id
