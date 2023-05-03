@@ -1,3 +1,4 @@
+apply from: '../integration-test.gradle'
 bootJar {
     enabled = false
 }
