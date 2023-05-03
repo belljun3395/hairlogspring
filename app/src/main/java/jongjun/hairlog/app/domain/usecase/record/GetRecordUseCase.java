@@ -1,6 +1,8 @@
 package jongjun.hairlog.app.domain.usecase.record;
 
+import java.util.NoSuchElementException;
 import jongjun.hairlog.app.domain.converter.record.RecordConverter;
+import jongjun.hairlog.app.domain.model.record.Record;
 import jongjun.hairlog.app.support.Page;
 import jongjun.hairlog.data.dto.record.RecordIndexDTO;
 import jongjun.hairlog.data.enums.RecordCategory;
@@ -28,5 +30,12 @@ public class GetRecordUseCase {
 		org.springframework.data.domain.Page<RecordIndexDTO> source =
 				repository.findAllByCategoryAndMemberIdQuery(pageable, category, memberId);
 		return converter.from(source);
+	}
+
+	public Record execute(Long memberId, Long recordId, RecordCategory category) {
+		return repository
+				.findByIdAndCategoryAndMemberId(recordId, category, memberId)
+				.map((source) -> converter.from(source, category))
+				.orElseThrow(() -> new NoSuchElementException("not found any record"));
 	}
 }

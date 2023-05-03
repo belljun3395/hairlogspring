@@ -1,14 +1,23 @@
 package jongjun.hairlog.app.domain.converter.record;
 
+import jongjun.hairlog.app.domain.model.record.CutRecord;
+import jongjun.hairlog.app.domain.model.record.DyeingRecord;
+import jongjun.hairlog.app.domain.model.record.PermRecord;
+import jongjun.hairlog.app.domain.model.record.Record;
 import jongjun.hairlog.app.support.Page;
 import jongjun.hairlog.app.web.controller.request.record.CutRecordRequest;
 import jongjun.hairlog.app.web.controller.request.record.DyeingRecordRequest;
 import jongjun.hairlog.app.web.controller.request.record.PermRecordRequest;
+import jongjun.hairlog.data.dto.record.CutDTO;
+import jongjun.hairlog.data.dto.record.DyeingDTO;
+import jongjun.hairlog.data.dto.record.PermDTO;
+import jongjun.hairlog.data.dto.record.RecordDTO;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.entity.record.CutEntity;
 import jongjun.hairlog.data.entity.record.DyeingEntity;
 import jongjun.hairlog.data.entity.record.PermEntity;
+import jongjun.hairlog.data.enums.RecordCategory;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +26,53 @@ public class RecordConverter {
 	/** fixme domain 객체를 통해 받도록 수정 */
 	public Page from(org.springframework.data.domain.Page source) {
 		return new Page(source);
+	}
+
+	public Record from(RecordDTO source, RecordCategory category) {
+		return convertRecord(source, category);
+	}
+
+	private Record convertRecord(RecordDTO source, RecordCategory category) {
+		switch (category) {
+			case CUT:
+				CutDTO cut = (CutDTO) source;
+				return CutRecord.builder()
+						.recordCost(cut.getRecordCost())
+						.recordCost(cut.getRecordCost())
+						.recordEtc(cut.getRecordEtc())
+						.recordGrade(cut.getRecordGrade())
+						.designer(cut.getDesigner())
+						.cutName(cut.getCutName())
+						.cutLength(cut.getCutLength())
+						.build();
+			case PERM:
+				PermDTO perm = (PermDTO) source;
+				return PermRecord.builder()
+						.recordCost(perm.getRecordCost())
+						.recordCost(perm.getRecordCost())
+						.recordEtc(perm.getRecordEtc())
+						.recordGrade(perm.getRecordGrade())
+						.designer(perm.getDesigner())
+						.permName(perm.getPermName())
+						.permTime(perm.getPermTime())
+						.permHurt(perm.getPermHurt())
+						.build();
+			case DYEING:
+				DyeingDTO dyeing = (DyeingDTO) source;
+				return DyeingRecord.builder()
+						.recordCost(dyeing.getRecordCost())
+						.recordCost(dyeing.getRecordCost())
+						.recordEtc(dyeing.getRecordEtc())
+						.recordGrade(dyeing.getRecordGrade())
+						.designer(dyeing.getDesigner())
+						.dyeingColor(dyeing.getDyeingColor())
+						.dyeingDecolorization(dyeing.getDyeingDecolorization())
+						.dyeingTime(dyeing.getDyeingTime())
+						.dyeingHurt(dyeing.getDyeingHurt())
+						.build();
+			default:
+				throw new IllegalStateException("select right category");
+		}
 	}
 
 	public CutEntity to(CutRecordRequest request) {
