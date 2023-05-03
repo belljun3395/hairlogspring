@@ -58,8 +58,6 @@ class RecordQueryImplTest {
 	@DisplayName("[RecordQuery] findByIdAndCategoryAndMemberId CUT")
 	void findByIdAndCategoryAndMemberIdCut() {
 		repository.findByIdAndCategoryAndMemberId(1L, RecordCategory.CUT, 1L);
-		repository.findByIdAndCategoryAndMemberId(2L, RecordCategory.PERM, 1L);
-		repository.findByIdAndCategoryAndMemberId(3L, RecordCategory.DYEING, 1L);
 	}
 
 	@Test
