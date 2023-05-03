@@ -1,0 +1,38 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Spring REST Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[Designer]]
+== Designer
+
+=== Designer Save REQUEST
+
+include::{snippets}/saveDesigner/curl-request.adoc[]
+include::{snippets}/saveDesigner/http-request.adoc[]
+
+=== Designer Save RESPONSE
+
+include::{snippets}/saveDesigner/http-response.adoc[]
+
+=== Designer Read REQUEST
+
+include::{snippets}/readDesigner/curl-request.adoc[]
+include::{snippets}/readDesigner/http-request.adoc[]
+
+=== Designer Read RESPONSE
+
+include::{snippets}/readDesigner/http-response.adoc[]
+
+=== Designer Search REQUEST
+
+include::{snippets}/searchDesigner/curl-request.adoc[]
+include::{snippets}/searchDesigner/http-request.adoc[]
+
+=== Designer Search RESPONSE
+
+include::{snippets}/searchDesigner/http-response.adoc[]
