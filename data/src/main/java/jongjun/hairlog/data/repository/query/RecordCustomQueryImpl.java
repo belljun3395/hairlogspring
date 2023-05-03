@@ -2,8 +2,13 @@ package jongjun.hairlog.data.repository.query;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import jongjun.hairlog.data.dto.record.CutDTO;
+import jongjun.hairlog.data.dto.record.DyeingDTO;
+import jongjun.hairlog.data.dto.record.PermDTO;
+import jongjun.hairlog.data.dto.record.RecordDTO;
 import jongjun.hairlog.data.dto.record.RecordDeletedDTO;
 import jongjun.hairlog.data.dto.record.RecordIndexDTO;
 import jongjun.hairlog.data.enums.RecordCategory;
@@ -20,8 +25,10 @@ import org.springframework.stereotype.Repository;
 public class RecordCustomQueryImpl implements RecordCustomQuery {
 
 	private static final String MEMBERID_PARAMETER = "memberId";
+	private static final String ID_PARAMETER = "id";
 	private static final Integer MEMBERID_NATIVE_PARAMETER = 1;
 	private static final Integer CATEGORY_NATIVE_PARAMETER = 2;
+	private static final Integer RECORDID_NATIVE_PARAMETER_FOR_CATEGORY_QUERY = 2;
 	private static final String DELETED_RECORDS_FINDBYMEMBERID_NAMEDQUERY =
 			"RecordEntity.findDeletedRecordsEntity";
 
@@ -33,11 +40,19 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 and r.record_category = ?2 order by r.record_id desc";
 
 	private static final String RECORD_CUT_FINDBY_MEMBERID =
-			"select r, c from RecordEntity r left join CutEntity c where r.member.id = :memberId order by r.id desc";
+			"select r.record_id, r.record_date, r.record_cost, r.record_etc, r.record_grade, r.member_fk, r.designer_fk, rc.cut_name, rc.cut_length "
+					+ "from record_entity r "
+					+ "join record_cut_entity rc on (r.record_id = ?2 and r.record_id = rc.record_id) "
+					+ "where r.member_fk = ?1";
 	private static final String RECORD_PERM_FINDBY_MEMBERID =
-			"select r, p from RecordEntity r left join PermEntity p where r.member.id = :memberId order by r.id desc";
+			"select r.record_id, r.record_date, r.record_cost, r.record_etc, r.record_grade, r.member_fk, r.designer_fk, rp.perm_name, rp.perm_time, rp.perm_hurt "
+					+ "from record_entity r "
+					+ "join record_perm_entity rp on (r.record_id = ?2 and r.record_id = rp.record_id) "
+					+ "where r.member_fk = ?1";
 	private static final String RECORD_DYEING_FINDBY_MEMBERID =
-			"select r, d from RecordEntity r left join DyeingEntity d where r.member.id = :memberId order by r.id desc";
+			"select r.record_id, r.record_date, r.record_cost, r.record_etc, r.record_grade, r.member_fk, r.designer_fk, rd.dyeing_color, rd.dyeing_decolorization, rd.dyeing_time, rd.dyeing_hurt "
+					+ "from record_entity r join record_dyeing_entity rd on (r.record_id = ?2 and r.record_id = rd.record_id) "
+					+ "where r.member_fk = ?1";
 	private static final String RECORD_COUNTS =
 			"select count(r.id) from RecordEntity r where r.member.id = :memberId";
 	private static final String RECORD_CATEGORY_COUNTS =
@@ -92,14 +107,42 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 		return new PageImpl<>(recordIdxsList, pageRequest, total);
 	}
 
-	private static String getQuery(RecordCategory category) {
+	public Optional<RecordDTO> findByIdAndCategoryAndMemberId(
+			Long id, RecordCategory category, Long memberId) {
+
+		Query query = createQuery(id, category, memberId);
+
+		return Optional.ofNullable(creatReturn(query, category));
+	}
+
+	private Query createQuery(Long id, RecordCategory category, Long memberId) {
 		switch (category) {
 			case CUT:
-				return RECORD_CUT_FINDBY_MEMBERID;
+				return em.createNativeQuery(RECORD_CUT_FINDBY_MEMBERID)
+						.setParameter(RECORDID_NATIVE_PARAMETER_FOR_CATEGORY_QUERY, id)
+						.setParameter(MEMBERID_NATIVE_PARAMETER, memberId);
 			case PERM:
-				return RECORD_PERM_FINDBY_MEMBERID;
+				return em.createNativeQuery(RECORD_PERM_FINDBY_MEMBERID)
+						.setParameter(RECORDID_NATIVE_PARAMETER_FOR_CATEGORY_QUERY, id)
+						.setParameter(MEMBERID_NATIVE_PARAMETER, memberId);
 			case DYEING:
-				return RECORD_DYEING_FINDBY_MEMBERID;
+				return em.createNativeQuery(RECORD_DYEING_FINDBY_MEMBERID)
+						.setParameter(RECORDID_NATIVE_PARAMETER_FOR_CATEGORY_QUERY, id)
+						.setParameter(MEMBERID_NATIVE_PARAMETER, memberId);
+			default:
+				throw new IllegalStateException("select right category");
+		}
+	}
+
+	private RecordDTO creatReturn(Query query, RecordCategory category) {
+		JpaResultMapper jpaResultMapper = new JpaResultMapper();
+		switch (category) {
+			case CUT:
+				return jpaResultMapper.uniqueResult(query, CutDTO.class);
+			case PERM:
+				return jpaResultMapper.uniqueResult(query, PermDTO.class);
+			case DYEING:
+				return jpaResultMapper.uniqueResult(query, DyeingDTO.class);
 			default:
 				throw new IllegalStateException("select right category");
 		}
