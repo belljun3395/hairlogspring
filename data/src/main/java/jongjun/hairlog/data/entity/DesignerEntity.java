@@ -58,7 +58,7 @@ public class DesignerEntity {
 	@Column(name = "designer_fav")
 	private Boolean designerFav;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "member_fk")
 	private MemberEntity member;
 

@@ -74,11 +74,11 @@ public abstract class RecordEntity {
 	@Column(name = "record_grade")
 	private SatisfactionRate recordGrade;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "member_fk")
 	private MemberEntity member;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "designer_fk")
 	private DesignerEntity designer;
 
