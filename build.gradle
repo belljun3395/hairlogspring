@@ -23,6 +23,7 @@ plugins {
     id "com.diffplug.spotless" version "${spotlessVersion}"
     id "io.spring.dependency-management" version "${dependencyManagementVersion}"
     id 'org.asciidoctor.jvm.convert' version "${asciidoctorVersion}"
+    id 'com.epages.restdocs-api-spec' version '0.16.0'
 }
 
 allprojects {
@@ -77,6 +78,7 @@ subprojects {
     allprojects {}
 
     dependencies {
+        implementation 'com.googlecode.json-simple:json-simple:1.1.1'
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
