@@ -1,0 +1,1 @@
+alter table record_cut_entity modify cut_length bigint;
