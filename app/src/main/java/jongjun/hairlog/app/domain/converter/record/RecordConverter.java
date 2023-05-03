@@ -1,9 +1,12 @@
 package jongjun.hairlog.app.domain.converter.record;
 
+import java.util.ArrayList;
+import java.util.List;
 import jongjun.hairlog.app.domain.model.record.CutRecord;
 import jongjun.hairlog.app.domain.model.record.DyeingRecord;
 import jongjun.hairlog.app.domain.model.record.PermRecord;
 import jongjun.hairlog.app.domain.model.record.Record;
+import jongjun.hairlog.app.domain.model.record.RecordIndex;
 import jongjun.hairlog.app.support.Page;
 import jongjun.hairlog.app.web.controller.request.record.CutRecordRequest;
 import jongjun.hairlog.app.web.controller.request.record.DyeingRecordRequest;
@@ -12,20 +15,49 @@ import jongjun.hairlog.data.dto.record.CutDTO;
 import jongjun.hairlog.data.dto.record.DyeingDTO;
 import jongjun.hairlog.data.dto.record.PermDTO;
 import jongjun.hairlog.data.dto.record.RecordDTO;
+import jongjun.hairlog.data.dto.record.RecordIndexDTO;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.entity.record.CutEntity;
 import jongjun.hairlog.data.entity.record.DyeingEntity;
 import jongjun.hairlog.data.entity.record.PermEntity;
 import jongjun.hairlog.data.enums.RecordCategory;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RecordConverter {
 
-	/** fixme domain 객체를 통해 받도록 수정 */
-	public Page from(org.springframework.data.domain.Page source) {
-		return new Page(source);
+	public Page<RecordIndex> from(org.springframework.data.domain.Page<RecordIndexDTO> source) {
+		List<RecordIndex> domain = convertToDomain(source);
+		return new Page(convertToPageSource(source, domain));
+	}
+
+	private PageImpl<RecordIndex> convertToPageSource(
+			org.springframework.data.domain.Page<RecordIndexDTO> source, List<RecordIndex> domain) {
+		PageImpl<RecordIndex> convertedPage =
+				new PageImpl<>(domain, source.getPageable(), source.getTotalElements());
+		return convertedPage;
+	}
+
+	private List<RecordIndex> convertToDomain(
+			org.springframework.data.domain.Page<RecordIndexDTO> source) {
+		List<RecordIndexDTO> contents = source.getContent();
+		List<RecordIndex> list = new ArrayList<>();
+		for (RecordIndexDTO rid : contents) {
+			list.add(convertToSource(rid));
+		}
+		return list;
+	}
+
+	private RecordIndex convertToSource(RecordIndexDTO rid) {
+		RecordIndex ri =
+				RecordIndex.builder()
+						.recordId(Long.valueOf(rid.getRecordId().toString()))
+						.recordDate(rid.getRecordDate())
+						.recordCategory(rid.getRecordCategory())
+						.build();
+		return ri;
 	}
 
 	public Record from(RecordDTO source, RecordCategory category) {
