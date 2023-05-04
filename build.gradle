@@ -5,6 +5,7 @@ buildscript {
         flywayVersion = '7.15.0'
         spotlessVersion = '6.8.0'
         asciidoctorVersion = '3.3.2'
+        jsonwebtokenVersion = '0.11.5'
     }
 
     repositories {
