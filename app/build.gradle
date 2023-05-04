@@ -13,3 +13,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 }
+
+/*convert snippet to swagger*/
+openapi3 {
+    servers = [{ url = "http://localhost:8080" }]
+    title = 'Hairlog'
+    version = '1.0.1'
+    format = 'yaml'
+    tagDescriptionsPropertiesFile = 'src/docs/tag/tag-descriptions.yaml'
+    snippetsDirectory = "build/generated-snippets/"
+    outputDirectory = "src/main/resources/static/"
+    outputFileNamePrefix = 'openapi3'
+}
