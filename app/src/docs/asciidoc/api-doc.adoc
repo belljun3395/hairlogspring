@@ -36,3 +36,33 @@ include::{snippets}/searchDesigner/http-request.adoc[]
 === Designer Search RESPONSE
 
 include::{snippets}/searchDesigner/http-response.adoc[]
+
+[[Member]]
+== Member
+
+=== Member Save REQUEST
+
+include::{snippets}/saveMember/curl-request.adoc[]
+include::{snippets}/saveMember/http-request.adoc[]
+
+=== Member Save RESPONSE
+
+include::{snippets}/saveMember/http-response.adoc[]
+
+=== Member Read REQUEST
+
+include::{snippets}/readMember/curl-request.adoc[]
+include::{snippets}/readMember/http-request.adoc[]
+
+=== Member Read RESPONSE
+
+include::{snippets}/readMember/http-response.adoc[]
+
+=== MemberInfo Read REQUEST
+
+include::{snippets}/readMemberInfo/curl-request.adoc[]
+include::{snippets}/readMemberInfo/http-request.adoc[]
+
+=== MemberInfo Read RESPONSE
+
+include::{snippets}/readMemberInfo/http-response.adoc[]
