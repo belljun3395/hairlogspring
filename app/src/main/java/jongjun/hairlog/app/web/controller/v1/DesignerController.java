@@ -31,7 +31,7 @@ public class DesignerController {
 	}
 
 	@GetMapping()
-	public ApiResponse<ApiResponse.SuccessBody<List<Designer>>> readDesigner(
+	public ApiResponse<ApiResponse.SuccessBody<List<Designer>>> readDesigners(
 			@RequestParam("id") Long memberId,
 			@RequestParam(value = "dn", required = false) String designerName) {
 		if (designerName == null) {
