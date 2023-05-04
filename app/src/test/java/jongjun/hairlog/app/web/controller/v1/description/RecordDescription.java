@@ -30,22 +30,17 @@ public class RecordDescription {
 	public static FieldDescriptor[] recordRecord(RecordCategory category) {
 		FieldDescriptor[] defaultDescript = {
 			fieldWithPath("data").type(JsonFieldType.OBJECT).description("기록"),
-				fieldWithPath("data.recordDate").type(JsonFieldType.STRING).description(
-					"기록 날짜"),
-				fieldWithPath("data.recordCost").type(JsonFieldType.NUMBER).description(
-					"기록 가격"),
-				fieldWithPath("data.recordEtc").type(JsonFieldType.STRING).description("기록 기타"),
-				fieldWithPath("data.recordGrade").type(JsonFieldType.STRING).description(
-					"기록 만족도"),
-				fieldWithPath("data.designer").type(JsonFieldType.NUMBER).description(
-					"기록 디자이너 id")
+			fieldWithPath("data.recordDate").type(JsonFieldType.STRING).description("기록 날짜"),
+			fieldWithPath("data.recordCost").type(JsonFieldType.NUMBER).description("기록 가격"),
+			fieldWithPath("data.recordEtc").type(JsonFieldType.STRING).description("기록 기타"),
+			fieldWithPath("data.recordGrade").type(JsonFieldType.STRING).description("기록 만족도"),
+			fieldWithPath("data.designer").type(JsonFieldType.NUMBER).description("기록 디자이너 id")
 		};
 		switch (category) {
 			case CUT:
 				FieldDescriptor[] cut = {
 					fieldWithPath("data.cutName").type(JsonFieldType.STRING).description("기록 컷 이름"),
-					fieldWithPath("data.cutLength").type(JsonFieldType.NUMBER).description(
-						"기록 컷 길이"),
+					fieldWithPath("data.cutLength").type(JsonFieldType.NUMBER).description("기록 컷 길이"),
 				};
 				return ArrayUtils.addAll(defaultDescript, cut);
 			case PERM:
