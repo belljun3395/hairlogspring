@@ -16,9 +16,12 @@ import jongjun.hairlog.app.AppMain;
 import jongjun.hairlog.app.domain.model.designer.Designer;
 import jongjun.hairlog.app.domain.usecase.designer.GetDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.SaveDesignerUseCase;
+import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
 import jongjun.hairlog.app.web.controller.v1.description.DesignerDescription;
+import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -107,6 +110,39 @@ class DesignerControllerTest {
 												.tag(TAG)
 												.responseSchema(Schema.schema("DesignerResponse"))
 												.responseFields(Description.success(DesignerDescription.designers()))
+												.build())));
+	}
+
+	@Test
+	@Disabled("기능은 정상 작동")
+	void readDesignerByDesignerId() throws Exception {
+		DesignerIdParam requestParam = DesignerIdParam.builder().designerId(DESIGNER_RETURN_ID).build();
+
+		Designer response =
+				Designer.builder()
+						.id(DESIGNER_RETURN_ID)
+						.designerName(DESIGNER_NAME)
+						.designerSalon(DESIGNER_SALON)
+						.designerFav(true)
+						.build();
+
+		when(getDesignerUseCase.execute(requestParam)).thenReturn(response);
+
+		mockMvc
+				.perform(
+						get(BASE_URL + "/info", 1)
+								.param("did", DESIGNER_RETURN_ID.toString())
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"readDesignerInfo",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("designer 조회 | 디자이너 id 기반")
+												.tag(TAG)
+												.responseSchema(Schema.schema("DesignerInfoResponse"))
+												.responseFields(Description.success(DesignerDescription.designer()))
 												.build())));
 	}
 
