@@ -20,6 +20,15 @@ public class DesignerConverter {
 				.build();
 	}
 
+	public Designer from(DesignerEntity source) {
+		return Designer.builder()
+				.id(source.getId())
+				.designerName(source.getDesignerName())
+				.designerSalon(source.getDesignerSalon())
+				.designerFav(source.getDesignerFav())
+				.build();
+	}
+
 	public DesignerEntity to(DesignerRequest request) {
 		return DesignerEntity.builder()
 				.designerName(request.getDesignerName())
