@@ -1,5 +1,6 @@
 package jongjun.hairlog.data.dto.member;
 
+import java.math.BigInteger;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -8,4 +9,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberIdDTO {
 
 	private final Long id;
+
+	public MemberIdDTO(BigInteger id) {
+		this.id = Long.valueOf(id.toString());
+	}
 }
