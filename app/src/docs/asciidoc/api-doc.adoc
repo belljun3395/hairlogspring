@@ -37,6 +37,15 @@ include::{snippets}/searchDesigner/http-request.adoc[]
 
 include::{snippets}/searchDesigner/http-response.adoc[]
 
+=== DesignerInfo Read REQUEST
+
+include::{snippets}/readDesignerInfo/curl-request.adoc[]
+include::{snippets}/readDesignerInfo/http-request.adoc[]
+
+=== DesignerInfo Read RESPONSE
+
+include::{snippets}/readDesignerInfo/http-response.adoc[]
+
 [[Member]]
 == Member
 
