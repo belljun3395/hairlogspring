@@ -7,6 +7,7 @@ import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import org.springframework.stereotype.Component;
 
+/** todoo response converter */
 @Component
 public class DesignerConverter {
 

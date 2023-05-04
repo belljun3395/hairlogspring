@@ -4,8 +4,10 @@ import java.math.BigInteger;
 import java.util.Date;
 import jongjun.hairlog.data.enums.RecordCategory;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public class RecordIndexDTO {
 
 	private final BigInteger recordId;
