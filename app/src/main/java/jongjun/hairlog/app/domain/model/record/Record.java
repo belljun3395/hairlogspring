@@ -1,7 +1,6 @@
 package jongjun.hairlog.app.domain.model.record;
 
 import java.util.Date;
-import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.enums.SatisfactionRate;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -26,5 +25,5 @@ public abstract class Record {
 
 	private SatisfactionRate recordGrade;
 
-	private DesignerEntity designer;
+	private Long designer;
 }
