@@ -10,7 +10,6 @@ import jongjun.hairlog.app.support.Page;
 import jongjun.hairlog.app.web.controller.request.record.CutRecordRequest;
 import jongjun.hairlog.app.web.controller.request.record.DyeingRecordRequest;
 import jongjun.hairlog.app.web.controller.request.record.PermRecordRequest;
-import jongjun.hairlog.app.web.controller.request.record.RecordRequest;
 import jongjun.hairlog.data.enums.RecordCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -30,20 +29,22 @@ public class RecordController {
 	private final SaveRecordUseCase saveRecordUseCase;
 	private final GetRecordUseCase getRecordUseCase;
 
-	@PostMapping()
+	@PostMapping("/cut")
 	public ApiResponse<ApiResponse.SuccessBody<Long>> addRecord(
-			@RequestBody RecordRequest request, @RequestParam("c") String category) {
-		RecordCategory recordCategory = RecordCategory.valueOf(category.toUpperCase());
-		if ((RecordCategory.CUT.equals(recordCategory))) {
-			return ApiResponseGenerator.success(
-					saveRecordUseCase.execute((CutRecordRequest) request), HttpStatus.OK);
-		} else if (RecordCategory.PERM.equals(recordCategory)) {
-			return ApiResponseGenerator.success(
-					saveRecordUseCase.execute((PermRecordRequest) request), HttpStatus.OK);
-		} else {
-			return ApiResponseGenerator.success(
-					saveRecordUseCase.execute((DyeingRecordRequest) request), HttpStatus.OK);
-		}
+			@RequestBody CutRecordRequest request) {
+		return ApiResponseGenerator.success(saveRecordUseCase.execute(request), HttpStatus.OK);
+	}
+
+	@PostMapping("/perm")
+	public ApiResponse<ApiResponse.SuccessBody<Long>> addRecord(
+			@RequestBody PermRecordRequest request) {
+		return ApiResponseGenerator.success(saveRecordUseCase.execute(request), HttpStatus.OK);
+	}
+
+	@PostMapping("/dyeing")
+	public ApiResponse<ApiResponse.SuccessBody<Long>> addRecord(
+			@RequestBody DyeingRecordRequest request) {
+		return ApiResponseGenerator.success(saveRecordUseCase.execute(request), HttpStatus.OK);
 	}
 
 	@GetMapping("/pages")
