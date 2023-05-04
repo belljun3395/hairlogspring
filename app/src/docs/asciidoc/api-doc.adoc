@@ -66,3 +66,69 @@ include::{snippets}/readMemberInfo/http-request.adoc[]
 === MemberInfo Read RESPONSE
 
 include::{snippets}/readMemberInfo/http-response.adoc[]
+
+[[Record]]
+== Record
+
+=== CutRecord Save REQUEST
+
+include::{snippets}/saveCutRecord/curl-request.adoc[]
+include::{snippets}/saveCutRecord/http-request.adoc[]
+
+=== CutRecord Save RESPONSE
+
+include::{snippets}/saveCutRecord/http-response.adoc[]
+
+=== CutRecord Read REQUEST
+
+include::{snippets}/readCutRecord/curl-request.adoc[]
+include::{snippets}/readCutRecord/http-request.adoc[]
+
+=== CutRecord Read RESPONSE
+
+include::{snippets}/readCutRecord/http-response.adoc[]
+
+=== PermRecord Save REQUEST
+
+include::{snippets}/savePermRecord/curl-request.adoc[]
+include::{snippets}/savePermRecord/http-request.adoc[]
+
+=== PermRecord Save RESPONSE
+
+include::{snippets}/savePermRecord/http-response.adoc[]
+
+=== PermRecord Read REQUEST
+
+include::{snippets}/readPermRecord/curl-request.adoc[]
+include::{snippets}/readPermRecord/http-request.adoc[]
+
+=== PermRecord Read RESPONSE
+
+include::{snippets}/readPermRecord/http-response.adoc[]
+
+=== DyeingRecord Save REQUEST
+
+include::{snippets}/saveDyeingRecord/curl-request.adoc[]
+include::{snippets}/saveDyeingRecord/http-request.adoc[]
+
+=== DyeingRecord Save RESPONSE
+
+include::{snippets}/saveDyeingRecord/http-response.adoc[]
+
+=== DyeingRecord Read REQUEST
+
+include::{snippets}/readDyeingRecord/curl-request.adoc[]
+include::{snippets}/readDyeingRecord/http-request.adoc[]
+
+=== DyeingRecord Read RESPONSE
+
+include::{snippets}/readDyeingRecord/http-response.adoc[]
+
+=== PageRecords Read REQUEST
+
+include::{snippets}/readPageRecords/curl-request.adoc[]
+include::{snippets}/readPageRecords/http-request.adoc[]
+
+=== PageRecords Read RESPONSE
+
+include::{snippets}/readPageRecords/http-response.adoc[]
