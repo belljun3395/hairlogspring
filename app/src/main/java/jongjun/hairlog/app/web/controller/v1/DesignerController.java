@@ -6,6 +6,7 @@ import jongjun.hairlog.app.domain.usecase.designer.GetDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.SaveDesignerUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
+import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,13 @@ public class DesignerController {
 		}
 		return ApiResponseGenerator.success(
 				getDesignerUseCase.execute(memberId, designerName), HttpStatus.OK);
+	}
+
+	@GetMapping("/info")
+	public ApiResponse<ApiResponse.SuccessBody<Designer>> readDesigner(
+			@RequestParam("did") Long designerId) {
+		DesignerIdParam requestParam = DesignerIdParam.builder().designerId(designerId).build();
+
+		return ApiResponseGenerator.success(getDesignerUseCase.execute(requestParam), HttpStatus.OK);
 	}
 }
