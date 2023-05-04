@@ -20,8 +20,6 @@ import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
 import jongjun.hairlog.app.web.controller.v1.description.DesignerDescription;
-import org.junit.Ignore;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -114,7 +112,6 @@ class DesignerControllerTest {
 	}
 
 	@Test
-	@Disabled("기능은 정상 작동")
 	void readDesignerByDesignerId() throws Exception {
 		DesignerIdParam requestParam = DesignerIdParam.builder().designerId(DESIGNER_RETURN_ID).build();
 
