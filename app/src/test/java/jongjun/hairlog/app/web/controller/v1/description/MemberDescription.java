@@ -44,4 +44,11 @@ public class MemberDescription {
 			fieldWithPath("data.token.refreshToken").type(JsonFieldType.STRING).description("멤버 리프레시 토큰"),
 		};
 	}
+
+	public static FieldDescriptor[] refreshToken() {
+		return new FieldDescriptor[] {
+			fieldWithPath("data.accessToken").type(JsonFieldType.STRING).description("멤버 엑세스 토큰"),
+			fieldWithPath("data.refreshToken").type(JsonFieldType.STRING).description("멤버 리프레시 토큰"),
+		};
+	}
 }
