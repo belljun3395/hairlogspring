@@ -1,6 +1,7 @@
 package jongjun.hairlog.app.web.controller.v1;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -14,7 +15,9 @@ import java.time.LocalDateTime;
 import jongjun.hairlog.app.AppMain;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
+import jongjun.hairlog.app.domain.model.member.Token;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
+import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
 import jongjun.hairlog.app.support.token.TokenGenerator;
@@ -56,6 +59,7 @@ class MemberControllerTest {
 	@MockBean private SaveMemberUseCase saveMemberUseCase;
 	@MockBean private GetMemberUseCase getMemberUseCase;
 	@MockBean SignMemberUseCase signMemberUseCase;
+	@MockBean GetTokenUseCase getTokenUseCase;
 
 	@Test
 	void addMember() throws Exception {
@@ -174,6 +178,33 @@ class MemberControllerTest {
 												.tag(TAG)
 												.responseSchema(Schema.schema("MemberResponse"))
 												.responseFields(Description.success(MemberDescription.memberInfo()))
+												.build())));
+	}
+
+	@Test
+	void refreshToken() throws Exception {
+		String request = tokenGenerator.generateToken(MEMBER_RETURN_ID).getRefreshToken();
+		Token response = tokenGenerator.generateToken(MEMBER_RETURN_ID);
+
+		when(getTokenUseCase.execute(request)).thenReturn(response);
+
+		mockMvc
+				.perform(
+						post(BASE_URL + "/tokens", 0)
+								.header("X-REFRESH-TOKEN", request)
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"refreshTokenMember",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("Member 리프레시 토큰 갱신")
+												.tag(TAG)
+												.requestHeaders(
+														headerWithName("X-REFRESH-TOKEN").description("put refreshToken here"))
+												.responseSchema(Schema.schema("MemberResponseTokenResponse"))
+												.responseFields(Description.success(MemberDescription.refreshToken()))
 												.build())));
 	}
 }
