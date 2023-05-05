@@ -16,7 +16,12 @@ import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
+import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
+import jongjun.hairlog.app.support.token.TokenGenerator;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
+import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
+import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
+import jongjun.hairlog.app.web.controller.response.TokenResponse;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
 import jongjun.hairlog.app.web.controller.v1.description.MemberDescription;
 import jongjun.hairlog.data.enums.MemberSex;
@@ -47,8 +52,10 @@ class MemberControllerTest {
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private ObjectMapper objectMapper;
+	@Autowired private TokenGenerator tokenGenerator;
 	@MockBean private SaveMemberUseCase saveMemberUseCase;
 	@MockBean private GetMemberUseCase getMemberUseCase;
+	@MockBean SignMemberUseCase signMemberUseCase;
 
 	@Test
 	void addMember() throws Exception {
@@ -78,6 +85,38 @@ class MemberControllerTest {
 												.requestSchema(Schema.schema("MemberRequest"))
 												.responseSchema(Schema.schema("MemberResponse"))
 												.responseFields(Description.success(MemberDescription.saveMember()))
+												.build())));
+	}
+
+	@Test
+	void login() throws Exception {
+		SignMemberRequest request = SignMemberRequest.builder().email(EMAIL).password(PASSWORD).build();
+
+		SaveMemberResponse response =
+				SaveMemberResponse.builder()
+						.id(MEMBER_RETURN_ID)
+						.name(NAME)
+						.tokenResponse(TokenResponse.from(tokenGenerator.generateToken(MEMBER_RETURN_ID)))
+						.build();
+
+		when(signMemberUseCase.execute(request)).thenReturn(response);
+
+		String content = objectMapper.writeValueAsString(request);
+
+		mockMvc
+				.perform(
+						post(BASE_URL + "/login", 0).content(content).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"loginMember",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("member 로그인")
+												.tag(TAG)
+												.requestSchema(Schema.schema("MemberLoginRequest"))
+												.responseSchema(Schema.schema("MemberLoginResponse"))
+												.responseFields(Description.success(MemberDescription.loginMember()))
 												.build())));
 	}
 
