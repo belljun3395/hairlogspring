@@ -6,9 +6,12 @@ import jongjun.hairlog.app.domain.model.member.Token;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
+import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
+import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
+import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +30,18 @@ public class MemberController {
 	private final SaveMemberUseCase saveMemberUseCase;
 	private final GetMemberUseCase getMemberUseCase;
 	private final GetTokenUseCase getTokenUseCase;
+	private final SignMemberUseCase signMemberUseCase;
 
 	@PostMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Long>> addMember(@RequestBody MemberRequest request) {
 		return ApiResponseGenerator.success(saveMemberUseCase.execute(request), HttpStatus.OK);
+	}
+
+	@PostMapping("/login")
+	public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> login(
+			@RequestBody SignMemberRequest signMemberRequest) {
+		return ApiResponseGenerator.success(
+				signMemberUseCase.execute(signMemberRequest), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/tokens")
