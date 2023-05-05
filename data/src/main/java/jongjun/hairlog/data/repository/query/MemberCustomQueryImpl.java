@@ -3,6 +3,7 @@ package jongjun.hairlog.data.repository.query;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import jongjun.hairlog.data.dto.member.MemberAuthInfoDTO;
 import jongjun.hairlog.data.dto.member.MemberDeletedDTO;
 import jongjun.hairlog.data.dto.member.MemberIdDTO;
 import jongjun.hairlog.data.dto.member.MemberInfoDTO;
@@ -28,7 +29,10 @@ public class MemberCustomQueryImpl implements MemberCustomQuery {
 			"select new "
 					+ MEMBER_DTO_PACKAGE
 					+ ".MemberInfoDTO(m.email, m.name) from MemberEntity m where m.email = :email";
-
+	private static final String MEMBER_FINDBYEMAIL_AUTH_QUERY =
+			"select new "
+					+ MEMBER_DTO_PACKAGE
+					+ ".MemberAuthInfoDTO(m.id, m.name, m.email, m.password) from MemberEntity m where m.email = :email";
 	private final EntityManager em;
 
 	public Optional<MemberIdDTO> findByIdQuery(Long id) {
@@ -52,5 +56,12 @@ public class MemberCustomQueryImpl implements MemberCustomQuery {
 						.setParameter(EMAIL_NATIVE_PARAMETER, email);
 		return Optional.ofNullable(
 				jpaResultMapper.uniqueResult(deletedMemberQuery, MemberDeletedDTO.class));
+	}
+
+	public Optional<MemberAuthInfoDTO> findByEmailAuthQuery(String email) {
+		return em.createQuery(MEMBER_FINDBYEMAIL_AUTH_QUERY, MemberAuthInfoDTO.class)
+				.setParameter(EMAIL_PARAMETER, email)
+				.getResultStream()
+				.findFirst();
 	}
 }
