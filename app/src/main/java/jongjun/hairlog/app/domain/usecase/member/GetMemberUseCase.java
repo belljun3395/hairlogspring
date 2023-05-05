@@ -2,7 +2,9 @@ package jongjun.hairlog.app.domain.usecase.member;
 
 import jongjun.hairlog.app.domain.converter.member.MemberConverter;
 import jongjun.hairlog.app.domain.model.member.Member;
+import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
+import jongjun.hairlog.app.domain.query.MemberAuthQuery;
 import jongjun.hairlog.app.exception.MemberNotFoundException;
 import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +31,12 @@ public class GetMemberUseCase {
 				.findByEmailQuery(email)
 				.map(converter::from)
 				.orElseThrow(() -> new MemberNotFoundException(email));
+	}
+
+	public MemberAuthInfo execute(MemberAuthQuery query) {
+		return repository
+				.findByEmailAuthQuery(query.getEmail())
+				.map(converter::from)
+				.orElseThrow(() -> new MemberNotFoundException(query.getEmail()));
 	}
 }
