@@ -42,4 +42,10 @@ class MemberQueryImplTest {
 		repository.delete(member);
 		repository.findDeletedMemberByEmailQuery("delete@delete.com");
 	}
+
+	@Test
+	@DisplayName("[MemberQuery] findByEmailAuthQuery")
+	void findByEmailAuthQuery() {
+		repository.findByEmailAuthQuery("test@test.com");
+	}
 }
