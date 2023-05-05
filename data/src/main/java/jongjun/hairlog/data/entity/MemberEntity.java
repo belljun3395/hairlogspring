@@ -47,7 +47,7 @@ public class MemberEntity {
 	@Convert(converter = IdConverter.class)
 	private Long id;
 
-	@Column(name = "member_email")
+	@Column(name = "member_email", unique = true)
 	private String email;
 
 	@Column(name = "member_password")
