@@ -33,4 +33,15 @@ public class MemberDescription {
 			fieldWithPath("data").type(JsonFieldType.NUMBER).description("멤버 id")
 		};
 	}
+
+	public static FieldDescriptor[] loginMember() {
+		return new FieldDescriptor[] {
+			fieldWithPath("data").type(JsonFieldType.OBJECT).description("멤버"),
+			fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("멤버 id"),
+			fieldWithPath("data.name").type(JsonFieldType.STRING).description("멤버 이름"),
+			fieldWithPath("data.token").type(JsonFieldType.OBJECT).description("멤버 토큰"),
+			fieldWithPath("data.token.accessToken").type(JsonFieldType.STRING).description("멤버 엑세스 토큰"),
+			fieldWithPath("data.token.refreshToken").type(JsonFieldType.STRING).description("멤버 리프레시 토큰"),
+		};
+	}
 }
