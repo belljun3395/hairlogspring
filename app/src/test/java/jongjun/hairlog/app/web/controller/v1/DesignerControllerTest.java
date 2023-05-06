@@ -1,6 +1,7 @@
 package jongjun.hairlog.app.web.controller.v1;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -77,7 +78,7 @@ class DesignerControllerTest {
 												.description("designer 추가")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerRequest"))
-												.responseSchema(Schema.schema("Designer"))
+												.responseSchema(Schema.schema("DesignerResponse"))
 												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
 	}
@@ -104,6 +105,10 @@ class DesignerControllerTest {
 												.description("designer 선호 수정")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerFavEditRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("did").description("디자이너 id"),
+														parameterWithName("fav").description("디자이너 선호"))
 												.responseSchema(Schema.schema("DesignerFavEditResponse"))
 												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
@@ -117,7 +122,7 @@ class DesignerControllerTest {
 
 		mockMvc
 				.perform(
-						delete(BASE_URL, 1)
+						delete(BASE_URL, 2)
 								.param("id", MEMBER_ID.toString())
 								.param("did", DESIGNER_RETURN_ID.toString())
 								.contentType(MediaType.APPLICATION_JSON))
@@ -130,6 +135,9 @@ class DesignerControllerTest {
 												.description("designer 삭제")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerDeleteRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("did").description("디자이너 id"))
 												.responseSchema(Schema.schema("DesignerDeleteResponse"))
 												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
@@ -193,6 +201,8 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 조회 | 디자이너 id 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("DesignerInfoRequest"))
+												.requestParameters(parameterWithName("did").description("디자이너 id"))
 												.responseSchema(Schema.schema("DesignerInfoResponse"))
 												.responseFields(Description.success(DesignerDescription.designer()))
 												.build())));
@@ -225,6 +235,10 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 조회 | 이름 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("DesignerRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("dn").description("디자이너 이름"))
 												.responseSchema(Schema.schema("DesignerResponse"))
 												.responseFields(Description.success(DesignerDescription.designers()))
 												.build())));
