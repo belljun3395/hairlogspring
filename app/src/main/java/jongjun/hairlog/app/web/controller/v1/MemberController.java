@@ -9,12 +9,14 @@ import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
+import jongjun.hairlog.app.web.controller.request.member.MemberEditRequest;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
 import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
 import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -35,6 +37,13 @@ public class MemberController {
 	@PostMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Long>> addMember(@RequestBody MemberRequest request) {
 		return ApiResponseGenerator.success(saveMemberUseCase.execute(request), HttpStatus.OK);
+	}
+
+	@PatchMapping()
+	public ApiResponse<ApiResponse.SuccessBody<Long>> editMember(
+			@RequestBody MemberEditRequest request) {
+		return ApiResponseGenerator.success(
+				saveMemberUseCase.execute(request.getId(), request), HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
