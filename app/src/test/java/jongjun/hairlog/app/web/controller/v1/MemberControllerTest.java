@@ -90,8 +90,8 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("member 추가")
 												.tag(TAG)
-												.requestSchema(Schema.schema("MemberRequest"))
-												.responseSchema(Schema.schema("MemberResponse"))
+												.requestSchema(Schema.schema("MemberSaveRequest"))
+												.responseSchema(Schema.schema("MemberSaveResponse"))
 												.responseFields(Description.success(MemberDescription.memberId()))
 												.build())));
 	}
@@ -176,7 +176,6 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("member 로그인")
 												.tag(TAG)
-												.requestSchema(Schema.schema("MemberLoginRequest"))
 												.responseSchema(Schema.schema("MemberLoginResponse"))
 												.responseFields(Description.success(MemberDescription.loginMember()))
 												.build())));
@@ -210,9 +209,9 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Member 조회 | 멤버 id 기반")
 												.tag(TAG)
-												.requestSchema(Schema.schema("MemberRequest"))
+												.requestSchema(Schema.schema("MemberReadRequest"))
 												.requestParameters(parameterWithName("id").description("멤버 id"))
-												.responseSchema(Schema.schema("MemberResponse"))
+												.responseSchema(Schema.schema("MemberReadResponse"))
 												.responseFields(Description.success(MemberDescription.member()))
 												.build())));
 	}
@@ -236,9 +235,9 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Member 조회 | 멤버 email 기반")
 												.tag(TAG)
-												.requestSchema(Schema.schema("MemberRequest"))
+												.requestSchema(Schema.schema("MemberInfoReadRequest"))
 												.requestParameters(parameterWithName("email").description("멤버 email"))
-												.responseSchema(Schema.schema("MemberResponse"))
+												.responseSchema(Schema.schema("MemberInfoReadResponse"))
 												.responseFields(Description.success(MemberDescription.memberInfo()))
 												.build())));
 	}
@@ -265,7 +264,7 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestHeaders(
 														headerWithName("X-REFRESH-TOKEN").description("put refreshToken here"))
-												.responseSchema(Schema.schema("MemberResponseTokenResponse"))
+												.responseSchema(Schema.schema("MemberRefreshTokenResponse"))
 												.responseFields(Description.success(MemberDescription.refreshToken()))
 												.build())));
 	}
