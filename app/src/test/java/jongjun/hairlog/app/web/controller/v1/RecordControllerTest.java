@@ -103,8 +103,8 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("cut 기록 추가")
 												.tag(TAG)
-												.requestSchema(Schema.schema("CutRequest"))
-												.responseSchema(Schema.schema("CutResponse"))
+												.requestSchema(Schema.schema("CutSaveRequest"))
+												.responseSchema(Schema.schema("CutSaveResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
@@ -177,8 +177,8 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("perm 기록 추가")
 												.tag(TAG)
-												.requestSchema(Schema.schema("PermRequest"))
-												.responseSchema(Schema.schema("PermResponse"))
+												.requestSchema(Schema.schema("PermSaveRequest"))
+												.responseSchema(Schema.schema("PermSaveResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
@@ -253,8 +253,8 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("dyeing 기록 추가")
 												.tag(TAG)
-												.requestSchema(Schema.schema("DyeingRequest"))
-												.responseSchema(Schema.schema("DyeingResponse"))
+												.requestSchema(Schema.schema("DyeingSaveRequest"))
+												.responseSchema(Schema.schema("DyeingSaveResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
