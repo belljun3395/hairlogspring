@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,6 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
+@DynamicUpdate
 @ToString
 @Builder(toBuilder = true)
 @Table(name = "member_entity")
@@ -74,4 +76,12 @@ public class MemberEntity {
 	@Column(nullable = false)
 	@Builder.Default
 	private Boolean deleted = false;
+
+	public void changeName(String name) {
+		this.name = name;
+	}
+
+	public void changeCycle(Long cycle) {
+		this.cycle = cycle;
+	}
 }
