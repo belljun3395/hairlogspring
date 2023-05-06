@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidateRequestMemberIdAspect {
 
-	@Before("@annotation(jongjun.hairlog.app.support.aop.ValidateRequestMemberId)")
-	public void validateAccount(JoinPoint joinPoint) {
+	@Pointcut("@annotation(jongjun.hairlog.app.support.aop.ValidateRequestMemberId)")
+	public void validateRequestMemberIdAnnotationPointCut() {}
+
+	@Before("validateRequestMemberIdAnnotationPointCut()")
+	public void validateAccountAdvice(JoinPoint joinPoint) {
 		MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 		ValidateRequestMemberId validateRequestMemberId =
 				methodSignature.getMethod().getAnnotation(ValidateRequestMemberId.class);
@@ -29,6 +33,5 @@ public class ValidateRequestMemberIdAspect {
 			log.warn("not match request id : {}, audit id : {}", requestMemberId, auditId);
 			throw new RuntimeException("request id and token id is not match");
 		}
-		log.info("match request id : {}, audit id : {}", requestMemberId, auditId);
 	}
 }
