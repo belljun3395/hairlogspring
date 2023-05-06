@@ -83,6 +83,33 @@ class DesignerControllerTest {
 	}
 
 	@Test
+	void editDesignerFav() throws Exception {
+
+		when(saveDesignerUseCase.execute(MEMBER_ID, DESIGNER_RETURN_ID, true))
+				.thenReturn(DESIGNER_RETURN_ID);
+
+		mockMvc
+				.perform(
+						patch(BASE_URL, 3)
+								.param("id", MEMBER_ID.toString())
+								.param("did", DESIGNER_RETURN_ID.toString())
+								.param("fav", "true")
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"editDesignerFav",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("designer 선호 수정")
+												.tag(TAG)
+												.requestSchema(Schema.schema("DesignerFavEditRequest"))
+												.responseSchema(Schema.schema("DesignerFavEditResponse"))
+												.responseFields(Description.success(DesignerDescription.saveDesigner()))
+												.build())));
+	}
+
+	@Test
 	void deleteDesigner() throws Exception {
 
 		when(deleteDesignerUseCase.execute(MEMBER_ID, DESIGNER_RETURN_ID))
