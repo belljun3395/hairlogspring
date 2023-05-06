@@ -16,6 +16,7 @@ import jongjun.hairlog.app.AppMain;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.model.member.Token;
+import jongjun.hairlog.app.domain.usecase.member.DeleteMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
@@ -61,6 +62,7 @@ class MemberControllerTest {
 	@MockBean private GetMemberUseCase getMemberUseCase;
 	@MockBean SignMemberUseCase signMemberUseCase;
 	@MockBean GetTokenUseCase getTokenUseCase;
+	@MockBean private DeleteMemberUseCase deleteMemberUseCase;
 
 	@Test
 	void addMember() throws Exception {
@@ -118,6 +120,30 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberEditRequest"))
 												.responseSchema(Schema.schema("MemberEditResponse"))
+												.responseFields(Description.success(MemberDescription.saveMember()))
+												.build())));
+	}
+
+	@Test
+	void deleteMember() throws Exception {
+
+		when(deleteMemberUseCase.execute(MEMBER_RETURN_ID)).thenReturn(MEMBER_RETURN_ID);
+
+		mockMvc
+				.perform(
+						delete(BASE_URL, 1)
+								.param("id", MEMBER_RETURN_ID.toString())
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"deleteMember",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("member 삭제")
+												.tag(TAG)
+												.requestSchema(Schema.schema("MemberDeleteRequest"))
+												.responseSchema(Schema.schema("MemberDeleteResponse"))
 												.responseFields(Description.success(MemberDescription.saveMember()))
 												.build())));
 	}
