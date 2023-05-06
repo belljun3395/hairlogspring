@@ -27,7 +27,7 @@ public class DesignerDescription {
 		};
 	}
 
-	public static FieldDescriptor[] saveDesigner() {
+	public static FieldDescriptor[] designerId() {
 		return new FieldDescriptor[] {
 			fieldWithPath("data").type(JsonFieldType.NUMBER).description("디자이너 id"),
 		};

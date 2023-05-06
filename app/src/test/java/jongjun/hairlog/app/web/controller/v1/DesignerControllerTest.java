@@ -78,7 +78,7 @@ class DesignerControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerRequest"))
 												.responseSchema(Schema.schema("Designer"))
-												.responseFields(Description.success(DesignerDescription.saveDesigner()))
+												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
 	}
 
@@ -105,7 +105,7 @@ class DesignerControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerFavEditRequest"))
 												.responseSchema(Schema.schema("DesignerFavEditResponse"))
-												.responseFields(Description.success(DesignerDescription.saveDesigner()))
+												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
 	}
 
@@ -131,7 +131,7 @@ class DesignerControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerDeleteRequest"))
 												.responseSchema(Schema.schema("DesignerDeleteResponse"))
-												.responseFields(Description.success(DesignerDescription.saveDesigner()))
+												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
 	}
 
