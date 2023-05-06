@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,15 @@ public class DesignerController {
 			@RequestParam("id") Long memberId, @RequestParam("did") Long designerId) {
 		return ApiResponseGenerator.success(
 				deleteDesignerUseCase.execute(memberId, designerId), HttpStatus.OK);
+	}
+
+	@PatchMapping()
+	public ApiResponse<ApiResponse.SuccessBody<Long>> editDesignerFav(
+			@RequestParam("id") Long memberId,
+			@RequestParam("did") Long designerId,
+			@RequestParam("fav") Boolean fav) {
+		return ApiResponseGenerator.success(
+				saveDesignerUseCase.execute(memberId, designerId, fav), HttpStatus.OK);
 	}
 
 	@GetMapping()
