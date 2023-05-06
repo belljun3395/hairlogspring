@@ -4,6 +4,7 @@ import jongjun.hairlog.app.domain.converter.designer.DesignerConverter;
 import jongjun.hairlog.app.domain.converter.designer.DesignerUpdateConverter;
 import jongjun.hairlog.app.exception.MemberNotFoundException;
 import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
+import jongjun.hairlog.app.support.validate.SourceValidator;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.repository.DesignerRepository;
@@ -30,6 +31,7 @@ public class SaveDesignerUseCase {
 	public Long execute(Long memberId, Long designerId, Boolean fav) {
 		DesignerEntity source =
 				repository.findById(designerId).orElseThrow(() -> new MemberNotFoundException(memberId));
+		SourceValidator.validate(memberId, source);
 		updateConverter.to(source, fav);
 		return source.getId();
 	}
