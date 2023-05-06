@@ -2,6 +2,7 @@ package jongjun.hairlog.app.web.controller.v1;
 
 import jongjun.hairlog.app.domain.model.record.Record;
 import jongjun.hairlog.app.domain.model.record.RecordIndex;
+import jongjun.hairlog.app.domain.usecase.record.DeleteRecordUseCase;
 import jongjun.hairlog.app.domain.usecase.record.GetRecordUseCase;
 import jongjun.hairlog.app.domain.usecase.record.SaveRecordUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
@@ -14,6 +15,7 @@ import jongjun.hairlog.data.enums.RecordCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +30,7 @@ public class RecordController {
 
 	private final SaveRecordUseCase saveRecordUseCase;
 	private final GetRecordUseCase getRecordUseCase;
+	private final DeleteRecordUseCase deleteRecordUseCase;
 
 	@PostMapping("/cut")
 	public ApiResponse<ApiResponse.SuccessBody<Long>> addRecord(
@@ -45,6 +48,13 @@ public class RecordController {
 	public ApiResponse<ApiResponse.SuccessBody<Long>> addRecord(
 			@RequestBody DyeingRecordRequest request) {
 		return ApiResponseGenerator.success(saveRecordUseCase.execute(request), HttpStatus.OK);
+	}
+
+	@DeleteMapping()
+	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteRecord(
+		@RequestParam("id") Long memberId, @RequestParam("rid") Long recordId) {
+		return ApiResponseGenerator.success(
+			deleteRecordUseCase.execute(memberId, recordId), HttpStatus.OK);
 	}
 
 	@GetMapping("/pages")
