@@ -9,11 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
+@DynamicUpdate
 @DiscriminatorValue("cut")
 @SuperBuilder
 @Table(name = "record_cut_entity")
@@ -24,4 +26,12 @@ public class CutEntity extends RecordEntity {
 
 	@Column(name = "cut_length")
 	private Long cutLength;
+
+	public void changeCutName(String cutName) {
+		this.cutName = cutName;
+	}
+
+	public void changeCutLength(Long cutLength) {
+		this.cutLength = cutLength;
+	}
 }

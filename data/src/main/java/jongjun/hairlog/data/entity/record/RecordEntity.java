@@ -32,6 +32,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
@@ -42,6 +43,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
+@DynamicUpdate
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "record_category")
 @ToString
@@ -93,4 +95,24 @@ public abstract class RecordEntity {
 	@Column(nullable = false)
 	@Builder.Default
 	private Boolean deleted = false;
+
+	public void changeRecordDate(Date recordDate) {
+		this.recordDate = recordDate;
+	}
+
+	public void changeRecordCost(Long recordCost) {
+		this.recordCost = recordCost;
+	}
+
+	public void changeRecordEtc(String recordEtc) {
+		this.recordEtc = recordEtc;
+	}
+
+	public void changeRecordGrade(SatisfactionRate recordGrade) {
+		this.recordGrade = recordGrade;
+	}
+
+	public void changeDesigner(DesignerEntity designer) {
+		this.designer = designer;
+	}
 }

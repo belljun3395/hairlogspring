@@ -12,11 +12,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
+@DynamicUpdate
 @DiscriminatorValue("perm")
 @SuperBuilder
 @Table(name = "record_perm_entity")
@@ -31,4 +33,16 @@ public class PermEntity extends RecordEntity {
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "perm_hurt")
 	private HurtRate permHurt;
+
+	public void changePermName(String permName) {
+		this.permName = permName;
+	}
+
+	public void changePermTime(Long permTime) {
+		this.permTime = permTime;
+	}
+
+	public void changePermHurt(HurtRate permHurt) {
+		this.permHurt = permHurt;
+	}
 }

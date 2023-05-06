@@ -12,11 +12,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
+@DynamicUpdate
 @DiscriminatorValue("dyeing")
 @SuperBuilder
 @Table(name = "record_dyeing_entity")
@@ -34,4 +36,20 @@ public class DyeingEntity extends RecordEntity {
 	@Enumerated(value = EnumType.STRING)
 	@Column(name = "dyeing_hurt")
 	private HurtRate dyeingHurt;
+
+	public void changeDyeingColor(String dyeingColor) {
+		this.dyeingColor = dyeingColor;
+	}
+
+	public void changeDyeingDecolorization(String dyeingDecolorization) {
+		this.dyeingDecolorization = dyeingDecolorization;
+	}
+
+	public void changeDyeingTime(Long dyeingTime) {
+		this.dyeingTime = dyeingTime;
+	}
+
+	public void changeDyeingHurt(HurtRate dyeingHurt) {
+		this.dyeingHurt = dyeingHurt;
+	}
 }
