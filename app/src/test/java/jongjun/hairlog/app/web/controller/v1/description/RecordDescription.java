@@ -65,7 +65,7 @@ public class RecordDescription {
 		}
 	}
 
-	public static FieldDescriptor[] saveRecord() {
+	public static FieldDescriptor[] recordId() {
 		return new FieldDescriptor[] {
 			fieldWithPath("data").type(JsonFieldType.NUMBER).description("기록 id")
 		};

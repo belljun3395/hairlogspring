@@ -104,7 +104,7 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("CutRequest"))
 												.responseSchema(Schema.schema("CutResponse"))
-												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
 
@@ -141,7 +141,7 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("CutEditRequest"))
 												.responseSchema(Schema.schema("CutEditResponse"))
-												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
 
@@ -177,7 +177,7 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("PermRequest"))
 												.responseSchema(Schema.schema("PermResponse"))
-												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
 
@@ -215,7 +215,7 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("PermEditRequest"))
 												.responseSchema(Schema.schema("PermEditResponse"))
-												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
 
@@ -252,7 +252,7 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DyeingRequest"))
 												.responseSchema(Schema.schema("DyeingResponse"))
-												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
 
@@ -291,7 +291,7 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DyeingEditRequest"))
 												.responseSchema(Schema.schema("DyeingEditResponse"))
-												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
 
@@ -357,7 +357,7 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("RecordDeleteRequest"))
 												.responseSchema(Schema.schema("RecordDeleteResponse"))
-												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
 	}
 
