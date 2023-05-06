@@ -5,6 +5,7 @@ import jongjun.hairlog.app.domain.converter.record.RecordConverter;
 import jongjun.hairlog.app.domain.model.record.Record;
 import jongjun.hairlog.app.domain.model.record.RecordIndex;
 import jongjun.hairlog.app.support.Page;
+import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
 import jongjun.hairlog.data.dto.record.RecordIndexDTO;
 import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.repository.RecordRepository;
@@ -22,18 +23,21 @@ public class GetRecordUseCase {
 	private final RecordConverter converter;
 
 	// todo Page<T> 확인해보기
+	@ValidateRequestMemberId
 	public Page<RecordIndex> execute(Long memberId, Pageable pageable) {
 		org.springframework.data.domain.Page<RecordIndexDTO> source =
 				repository.findAllByMemberIdQuery(pageable, memberId);
 		return converter.from(source);
 	}
 
+	@ValidateRequestMemberId
 	public Page<RecordIndex> execute(Long memberId, RecordCategory category, Pageable pageable) {
 		org.springframework.data.domain.Page<RecordIndexDTO> source =
 				repository.findAllByCategoryAndMemberIdQuery(pageable, category, memberId);
 		return converter.from(source);
 	}
 
+	@ValidateRequestMemberId
 	public Record execute(Long memberId, Long recordId, RecordCategory category) {
 		return repository
 				.findByIdAndCategoryAndMemberId(recordId, category, memberId)
