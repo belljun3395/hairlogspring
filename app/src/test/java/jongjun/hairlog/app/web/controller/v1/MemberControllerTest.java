@@ -2,6 +2,7 @@ package jongjun.hairlog.app.web.controller.v1;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -143,6 +144,7 @@ class MemberControllerTest {
 												.description("member 삭제")
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberDeleteRequest"))
+												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("MemberDeleteResponse"))
 												.responseFields(Description.success(MemberDescription.memberId()))
 												.build())));
@@ -208,6 +210,8 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Member 조회 | 멤버 id 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("MemberRequest"))
+												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("MemberResponse"))
 												.responseFields(Description.success(MemberDescription.member()))
 												.build())));
@@ -232,6 +236,8 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Member 조회 | 멤버 email 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("MemberRequest"))
+												.requestParameters(parameterWithName("email").description("멤버 email"))
 												.responseSchema(Schema.schema("MemberResponse"))
 												.responseFields(Description.success(MemberDescription.memberInfo()))
 												.build())));
