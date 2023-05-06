@@ -6,7 +6,6 @@ import jongjun.hairlog.app.domain.converter.designer.DesignerConverter;
 import jongjun.hairlog.app.domain.model.designer.Designer;
 import jongjun.hairlog.app.exception.ResourceNotFoundException;
 import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
-import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.data.repository.DesignerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,9 +26,10 @@ public class GetDesignerUseCase {
 				.collect(Collectors.toList());
 	}
 
-	public Designer execute(DesignerIdParam requestParam) {
+	@ValidateRequestMemberId
+	public Designer execute(Long memberId, Long designerId) {
 		return repository
-				.findById(requestParam.getDesignerId())
+				.findById(designerId)
 				.map(converter::from)
 				.orElseThrow(() -> new ResourceNotFoundException("not found designer"));
 	}

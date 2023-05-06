@@ -18,7 +18,6 @@ import jongjun.hairlog.app.domain.model.designer.Designer;
 import jongjun.hairlog.app.domain.usecase.designer.DeleteDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.GetDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.SaveDesignerUseCase;
-import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
 import jongjun.hairlog.app.web.controller.v1.description.DesignerDescription;
@@ -175,8 +174,6 @@ class DesignerControllerTest {
 
 	@Test
 	void readDesignerByDesignerId() throws Exception {
-		DesignerIdParam requestParam = DesignerIdParam.builder().designerId(DESIGNER_RETURN_ID).build();
-
 		Designer response =
 				Designer.builder()
 						.id(DESIGNER_RETURN_ID)
@@ -185,11 +182,12 @@ class DesignerControllerTest {
 						.designerFav(true)
 						.build();
 
-		when(getDesignerUseCase.execute(requestParam)).thenReturn(response);
+		when(getDesignerUseCase.execute(MEMBER_ID, DESIGNER_RETURN_ID)).thenReturn(response);
 
 		mockMvc
 				.perform(
 						get(BASE_URL + "/info", 1)
+								.param("id", MEMBER_ID.toString())
 								.param("did", DESIGNER_RETURN_ID.toString())
 								.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
@@ -201,6 +199,7 @@ class DesignerControllerTest {
 												.description("designer 조회 | 디자이너 id 기반")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerReadByDesignerIdRequest"))
+												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.requestParameters(parameterWithName("did").description("디자이너 id"))
 												.responseSchema(Schema.schema("DesignerReadByDesignerIdResponse"))
 												.responseFields(Description.success(DesignerDescription.designer()))
