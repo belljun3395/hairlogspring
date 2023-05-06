@@ -21,6 +21,7 @@ import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
 import jongjun.hairlog.app.support.token.TokenGenerator;
+import jongjun.hairlog.app.web.controller.request.member.MemberEditRequest;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
 import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
 import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
@@ -88,6 +89,35 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberRequest"))
 												.responseSchema(Schema.schema("MemberResponse"))
+												.responseFields(Description.success(MemberDescription.saveMember()))
+												.build())));
+	}
+
+	@Test
+	void editMember() throws Exception {
+		MemberEditRequest request =
+				MemberEditRequest.builder()
+						.id(MEMBER_RETURN_ID)
+						.name(NAME + "edit")
+						.cycle(CYCLE + 1L)
+						.build();
+
+		when(saveMemberUseCase.execute(request.getId(), request)).thenReturn(MEMBER_RETURN_ID);
+
+		String content = objectMapper.writeValueAsString(request);
+
+		mockMvc
+				.perform(patch(BASE_URL, 0).content(content).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"editMember",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("member 수정")
+												.tag(TAG)
+												.requestSchema(Schema.schema("MemberEditRequest"))
+												.responseSchema(Schema.schema("MemberEditResponse"))
 												.responseFields(Description.success(MemberDescription.saveMember()))
 												.build())));
 	}
