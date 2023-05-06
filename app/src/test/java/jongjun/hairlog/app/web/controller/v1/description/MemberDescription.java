@@ -28,7 +28,7 @@ public class MemberDescription {
 		};
 	}
 
-	public static FieldDescriptor[] saveMember() {
+	public static FieldDescriptor[] memberId() {
 		return new FieldDescriptor[] {
 			fieldWithPath("data").type(JsonFieldType.NUMBER).description("멤버 id")
 		};

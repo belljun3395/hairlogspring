@@ -91,7 +91,7 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberRequest"))
 												.responseSchema(Schema.schema("MemberResponse"))
-												.responseFields(Description.success(MemberDescription.saveMember()))
+												.responseFields(Description.success(MemberDescription.memberId()))
 												.build())));
 	}
 
@@ -120,7 +120,7 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberEditRequest"))
 												.responseSchema(Schema.schema("MemberEditResponse"))
-												.responseFields(Description.success(MemberDescription.saveMember()))
+												.responseFields(Description.success(MemberDescription.memberId()))
 												.build())));
 	}
 
@@ -144,7 +144,7 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberDeleteRequest"))
 												.responseSchema(Schema.schema("MemberDeleteResponse"))
-												.responseFields(Description.success(MemberDescription.saveMember()))
+												.responseFields(Description.success(MemberDescription.memberId()))
 												.build())));
 	}
 
