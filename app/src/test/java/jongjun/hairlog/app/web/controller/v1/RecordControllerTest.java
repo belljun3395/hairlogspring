@@ -401,13 +401,13 @@ class RecordControllerTest {
 								"readCutRecord",
 								resource(
 										ResourceSnippetParameters.builder()
-												.description("Cut Record 조회 | 기록 id 기반")
+												.description("Record 조회 | 레코드 id, category 기반")
 												.tag(TAG)
 												.requestSchema(Schema.schema("CutRecordRequest"))
 												.requestParameters(
 														parameterWithName("id").description("멤버 id"),
 														parameterWithName("rid").description("레코드 id"),
-														parameterWithName("c").description("레코드 category"))
+														parameterWithName("c").description("레코드 category").optional())
 												.responseSchema(Schema.schema("CutRecordResponse"))
 												.responseFields(
 														Description.success(RecordDescription.recordRecord(RecordCategory.CUT)))
@@ -443,13 +443,13 @@ class RecordControllerTest {
 								"readPermRecord",
 								resource(
 										ResourceSnippetParameters.builder()
-												.description("Perm Record 조회 | 기록 id 기반")
+												.description("Record 조회 | 레코드 id, category 기반")
 												.tag(TAG)
 												.requestSchema(Schema.schema("PermRecordRequest"))
 												.requestParameters(
 														parameterWithName("id").description("멤버 id"),
 														parameterWithName("rid").description("레코드 id"),
-														parameterWithName("c").description("레코드 category"))
+														parameterWithName("c").description("레코드 category").optional())
 												.responseSchema(Schema.schema("PermRecordResponse"))
 												.responseFields(
 														Description.success(
@@ -488,13 +488,13 @@ class RecordControllerTest {
 								"readDyeingRecord",
 								resource(
 										ResourceSnippetParameters.builder()
-												.description("Dyeing Record 조회 | 기록 id 기반")
+												.description("Record 조회 | 레코드 id, category 기반")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DyeingRecordRequest"))
 												.requestParameters(
 														parameterWithName("id").description("멤버 id"),
 														parameterWithName("rid").description("레코드 id"),
-														parameterWithName("c").description("레코드 category"))
+														parameterWithName("c").description("레코드 category").optional())
 												.responseSchema(Schema.schema("DyeingRecordResponse"))
 												.responseFields(
 														Description.success(
