@@ -22,8 +22,11 @@ import jongjun.hairlog.app.domain.usecase.record.DeleteRecordUseCase;
 import jongjun.hairlog.app.domain.usecase.record.GetRecordUseCase;
 import jongjun.hairlog.app.domain.usecase.record.SaveRecordUseCase;
 import jongjun.hairlog.app.support.Page;
+import jongjun.hairlog.app.web.controller.request.record.CutRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.CutRecordRequest;
+import jongjun.hairlog.app.web.controller.request.record.DyeingRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.DyeingRecordRequest;
+import jongjun.hairlog.app.web.controller.request.record.PermRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.PermRecordRequest;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
 import jongjun.hairlog.app.web.controller.v1.description.RecordDescription;
@@ -106,6 +109,43 @@ class RecordControllerTest {
 	}
 
 	@Test
+	void editCutRecord() throws Exception {
+		CutRecordEditRequest request =
+				CutRecordEditRequest.builder()
+						.recordDate(new Date())
+						.recordCost(RECORD_COST)
+						.recordEtc(RECORD_ETC)
+						.recordGrade(SatisfactionRate.H)
+						.designerId(DESIGNER_ID)
+						.cutName(CUT_NAME)
+						.cutLength(CUT_LENGTH)
+						.build();
+
+		when(saveRecordUseCase.execute(MEMBER_ID, request)).thenReturn(RECORD_ID);
+
+		String content = objectMapper.writeValueAsString(request);
+
+		mockMvc
+				.perform(
+						patch(BASE_URL + "/cut", 1)
+								.param("id", MEMBER_ID.toString())
+								.content(content)
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"editCutRecord",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("cut 기록 수정")
+												.tag(TAG)
+												.requestSchema(Schema.schema("CutEditRequest"))
+												.responseSchema(Schema.schema("CutEditResponse"))
+												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.build())));
+	}
+
+	@Test
 	void addPermRecord() throws Exception {
 		PermRecordRequest request =
 				PermRecordRequest.builder()
@@ -137,6 +177,44 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("PermRequest"))
 												.responseSchema(Schema.schema("PermResponse"))
+												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.build())));
+	}
+
+	@Test
+	void editPermRecord() throws Exception {
+		PermRecordEditRequest request =
+				PermRecordEditRequest.builder()
+						.recordDate(new Date())
+						.recordCost(RECORD_COST)
+						.recordEtc(RECORD_ETC)
+						.recordGrade(SatisfactionRate.H)
+						.designerId(DESIGNER_ID)
+						.permName(PERM_NAME)
+						.permTime(PERM_TIME)
+						.permHurt(HurtRate.H)
+						.build();
+
+		when(saveRecordUseCase.execute(MEMBER_ID, request)).thenReturn(RECORD_ID);
+
+		String content = objectMapper.writeValueAsString(request);
+
+		mockMvc
+				.perform(
+						patch(BASE_URL + "/perm", 1)
+								.param("id", MEMBER_ID.toString())
+								.content(content)
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"editPermRecord",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("perm 기록 수정")
+												.tag(TAG)
+												.requestSchema(Schema.schema("PermEditRequest"))
+												.responseSchema(Schema.schema("PermEditResponse"))
 												.responseFields(Description.success(RecordDescription.saveRecord()))
 												.build())));
 	}
@@ -174,6 +252,45 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DyeingRequest"))
 												.responseSchema(Schema.schema("DyeingResponse"))
+												.responseFields(Description.success(RecordDescription.saveRecord()))
+												.build())));
+	}
+
+	@Test
+	void editDyeingRecord() throws Exception {
+		DyeingRecordEditRequest request =
+				DyeingRecordEditRequest.builder()
+						.recordDate(new Date())
+						.recordCost(RECORD_COST)
+						.recordEtc(RECORD_ETC)
+						.recordGrade(SatisfactionRate.H)
+						.designerId(DESIGNER_ID)
+						.dyeingDecolorization(DYEING_DECOLORIZATION)
+						.dyeingTime(DYEING_TIME)
+						.dyeingColor(DYEING_COLOR)
+						.dyeingHurt(HurtRate.H)
+						.build();
+
+		when(saveRecordUseCase.execute(MEMBER_ID, request)).thenReturn(RECORD_ID);
+
+		String content = objectMapper.writeValueAsString(request);
+
+		mockMvc
+				.perform(
+						patch(BASE_URL + "/dyeing", 1)
+								.param("id", MEMBER_ID.toString())
+								.content(content)
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"editDyeingRecord",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("dyeing 기록 수정")
+												.tag(TAG)
+												.requestSchema(Schema.schema("DyeingEditRequest"))
+												.responseSchema(Schema.schema("DyeingEditResponse"))
 												.responseFields(Description.success(RecordDescription.saveRecord()))
 												.build())));
 	}
