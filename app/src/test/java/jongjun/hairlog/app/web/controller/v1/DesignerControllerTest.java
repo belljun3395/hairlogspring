@@ -77,8 +77,7 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 추가")
 												.tag(TAG)
-												.requestSchema(Schema.schema("DesignerRequest"))
-												.responseSchema(Schema.schema("DesignerResponse"))
+												.responseSchema(Schema.schema("DesignerSaveResponse"))
 												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
 	}
@@ -169,7 +168,7 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 조회 | 멤버 id 기반")
 												.tag(TAG)
-												.responseSchema(Schema.schema("DesignerResponse"))
+												.responseSchema(Schema.schema("DesignerReadByIdResponse"))
 												.responseFields(Description.success(DesignerDescription.designers()))
 												.build())));
 	}
@@ -201,9 +200,9 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 조회 | 디자이너 id 기반")
 												.tag(TAG)
-												.requestSchema(Schema.schema("DesignerInfoRequest"))
+												.requestSchema(Schema.schema("DesignerReadByDesignerIdRequest"))
 												.requestParameters(parameterWithName("did").description("디자이너 id"))
-												.responseSchema(Schema.schema("DesignerInfoResponse"))
+												.responseSchema(Schema.schema("DesignerReadByDesignerIdResponse"))
 												.responseFields(Description.success(DesignerDescription.designer()))
 												.build())));
 	}
@@ -235,11 +234,11 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 조회 | 이름 기반")
 												.tag(TAG)
-												.requestSchema(Schema.schema("DesignerRequest"))
+												.requestSchema(Schema.schema("DesignerReadByIdAndEmailRequest"))
 												.requestParameters(
 														parameterWithName("id").description("멤버 id"),
 														parameterWithName("dn").description("디자이너 이름"))
-												.responseSchema(Schema.schema("DesignerResponse"))
+												.responseSchema(Schema.schema("DesignerReadByIdAndEmailResponse"))
 												.responseFields(Description.success(DesignerDescription.designers()))
 												.build())));
 	}
