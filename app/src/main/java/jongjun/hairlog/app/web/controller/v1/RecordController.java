@@ -8,8 +8,11 @@ import jongjun.hairlog.app.domain.usecase.record.SaveRecordUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
 import jongjun.hairlog.app.support.Page;
+import jongjun.hairlog.app.web.controller.request.record.CutRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.CutRecordRequest;
+import jongjun.hairlog.app.web.controller.request.record.DyeingRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.DyeingRecordRequest;
+import jongjun.hairlog.app.web.controller.request.record.PermRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.PermRecordRequest;
 import jongjun.hairlog.data.enums.RecordCategory;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,11 +54,32 @@ public class RecordController {
 		return ApiResponseGenerator.success(saveRecordUseCase.execute(request), HttpStatus.OK);
 	}
 
+	@PatchMapping("/cut")
+	public ApiResponse<ApiResponse.SuccessBody<Long>> editRecord(
+			@RequestParam("id") Long memberId, @RequestBody CutRecordEditRequest request) {
+		return ApiResponseGenerator.success(
+				saveRecordUseCase.execute(memberId, request), HttpStatus.OK);
+	}
+
+	@PatchMapping("/perm")
+	public ApiResponse<ApiResponse.SuccessBody<Long>> editRecord(
+			@RequestParam("id") Long memberId, @RequestBody PermRecordEditRequest request) {
+		return ApiResponseGenerator.success(
+				saveRecordUseCase.execute(memberId, request), HttpStatus.OK);
+	}
+
+	@PatchMapping("/dyeing")
+	public ApiResponse<ApiResponse.SuccessBody<Long>> editRecord(
+			@RequestParam("id") Long memberId, @RequestBody DyeingRecordEditRequest request) {
+		return ApiResponseGenerator.success(
+				saveRecordUseCase.execute(memberId, request), HttpStatus.OK);
+	}
+
 	@DeleteMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteRecord(
-		@RequestParam("id") Long memberId, @RequestParam("rid") Long recordId) {
+			@RequestParam("id") Long memberId, @RequestParam("rid") Long recordId) {
 		return ApiResponseGenerator.success(
-			deleteRecordUseCase.execute(memberId, recordId), HttpStatus.OK);
+				deleteRecordUseCase.execute(memberId, recordId), HttpStatus.OK);
 	}
 
 	@GetMapping("/pages")
