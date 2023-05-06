@@ -3,6 +3,7 @@ package jongjun.hairlog.app.web.controller.v1;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.model.member.Token;
+import jongjun.hairlog.app.domain.usecase.member.DeleteMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
@@ -15,6 +16,7 @@ import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
 import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,7 @@ public class MemberController {
 	private final GetMemberUseCase getMemberUseCase;
 	private final GetTokenUseCase getTokenUseCase;
 	private final SignMemberUseCase signMemberUseCase;
+	private final DeleteMemberUseCase deleteMemberUseCase;
 
 	@PostMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Long>> addMember(@RequestBody MemberRequest request) {
@@ -44,6 +47,12 @@ public class MemberController {
 			@RequestBody MemberEditRequest request) {
 		return ApiResponseGenerator.success(
 				saveMemberUseCase.execute(request.getId(), request), HttpStatus.OK);
+	}
+
+	@DeleteMapping()
+	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteMember(
+			@RequestParam("id") Long memberId) {
+		return ApiResponseGenerator.success(deleteMemberUseCase.execute(memberId), HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
