@@ -60,8 +60,8 @@ class MemberControllerTest {
 	@Autowired private TokenGenerator tokenGenerator;
 	@MockBean private SaveMemberUseCase saveMemberUseCase;
 	@MockBean private GetMemberUseCase getMemberUseCase;
-	@MockBean SignMemberUseCase signMemberUseCase;
-	@MockBean GetTokenUseCase getTokenUseCase;
+	@MockBean private SignMemberUseCase signMemberUseCase;
+	@MockBean private GetTokenUseCase getTokenUseCase;
 	@MockBean private DeleteMemberUseCase deleteMemberUseCase;
 
 	@Test
