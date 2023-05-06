@@ -18,6 +18,7 @@ import jongjun.hairlog.app.domain.model.record.CutRecord;
 import jongjun.hairlog.app.domain.model.record.DyeingRecord;
 import jongjun.hairlog.app.domain.model.record.PermRecord;
 import jongjun.hairlog.app.domain.model.record.RecordIndex;
+import jongjun.hairlog.app.domain.usecase.record.DeleteRecordUseCase;
 import jongjun.hairlog.app.domain.usecase.record.GetRecordUseCase;
 import jongjun.hairlog.app.domain.usecase.record.SaveRecordUseCase;
 import jongjun.hairlog.app.support.Page;
@@ -67,6 +68,7 @@ class RecordControllerTest {
 	@Autowired private ObjectMapper objectMapper;
 	@MockBean private SaveRecordUseCase saveRecordUseCase;
 	@MockBean private GetRecordUseCase getRecordUseCase;
+	@MockBean private DeleteRecordUseCase deleteRecordUseCase;
 
 	@Test
 	void addCutRecord() throws Exception {
@@ -214,6 +216,31 @@ class RecordControllerTest {
 												.tag(TAG)
 												.responseSchema(Schema.schema("RecordIndexResponse"))
 												.responseFields(Description.success(RecordDescription.recordIndex()))
+												.build())));
+	}
+
+	@Test
+	void deleteRecord() throws Exception {
+
+		when(deleteRecordUseCase.execute(MEMBER_ID, RECORD_ID)).thenReturn(RECORD_ID);
+
+		mockMvc
+				.perform(
+						delete(BASE_URL, 2)
+								.param("id", MEMBER_ID.toString())
+								.param("rid", RECORD_ID.toString())
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"deleteRecord",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("reocrd 삭제")
+												.tag(TAG)
+												.requestSchema(Schema.schema("RecordDeleteRequest"))
+												.responseSchema(Schema.schema("RecordDeleteResponse"))
+												.responseFields(Description.success(RecordDescription.saveRecord()))
 												.build())));
 	}
 
