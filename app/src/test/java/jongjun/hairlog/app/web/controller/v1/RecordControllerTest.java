@@ -1,6 +1,7 @@
 package jongjun.hairlog.app.web.controller.v1;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -140,6 +141,7 @@ class RecordControllerTest {
 												.description("cut 기록 수정")
 												.tag(TAG)
 												.requestSchema(Schema.schema("CutEditRequest"))
+												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("CutEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -214,6 +216,7 @@ class RecordControllerTest {
 												.description("perm 기록 수정")
 												.tag(TAG)
 												.requestSchema(Schema.schema("PermEditRequest"))
+												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("PermEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -290,6 +293,7 @@ class RecordControllerTest {
 												.description("dyeing 기록 수정")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DyeingEditRequest"))
+												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("DyeingEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -331,6 +335,11 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("record 인덱스 조회")
 												.tag(TAG)
+												.requestSchema(Schema.schema("RecordIndexRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("page").description("페이지 순서"),
+														parameterWithName("size").description("페이지 크기"))
 												.responseSchema(Schema.schema("RecordIndexResponse"))
 												.responseFields(Description.success(RecordDescription.recordIndex()))
 												.build())));
@@ -353,9 +362,12 @@ class RecordControllerTest {
 								"deleteRecord",
 								resource(
 										ResourceSnippetParameters.builder()
-												.description("reocrd 삭제")
+												.description("record 삭제")
 												.tag(TAG)
 												.requestSchema(Schema.schema("RecordDeleteRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("rid").description("레코드 id"))
 												.responseSchema(Schema.schema("RecordDeleteResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -391,6 +403,11 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Cut Record 조회 | 기록 id 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("CutRecordRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("rid").description("레코드 id"),
+														parameterWithName("c").description("레코드 category"))
 												.responseSchema(Schema.schema("CutRecordResponse"))
 												.responseFields(
 														Description.success(RecordDescription.recordRecord(RecordCategory.CUT)))
@@ -428,6 +445,11 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Perm Record 조회 | 기록 id 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("PermRecordRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("rid").description("레코드 id"),
+														parameterWithName("c").description("레코드 category"))
 												.responseSchema(Schema.schema("PermRecordResponse"))
 												.responseFields(
 														Description.success(
@@ -468,6 +490,11 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Dyeing Record 조회 | 기록 id 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("DyeingRecordRequest"))
+												.requestParameters(
+														parameterWithName("id").description("멤버 id"),
+														parameterWithName("rid").description("레코드 id"),
+														parameterWithName("c").description("레코드 category"))
 												.responseSchema(Schema.schema("DyeingRecordResponse"))
 												.responseFields(
 														Description.success(
