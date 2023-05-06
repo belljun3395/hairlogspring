@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jongjun.hairlog.app.AppMain;
 import jongjun.hairlog.app.domain.model.designer.Designer;
+import jongjun.hairlog.app.domain.usecase.designer.DeleteDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.GetDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.SaveDesignerUseCase;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
@@ -49,6 +50,7 @@ class DesignerControllerTest {
 
 	@MockBean private SaveDesignerUseCase saveDesignerUseCase;
 	@MockBean private GetDesignerUseCase getDesignerUseCase;
+	@MockBean private DeleteDesignerUseCase deleteDesignerUseCase;
 
 	@Test
 	void addDesigner() throws Exception {
@@ -76,6 +78,32 @@ class DesignerControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerRequest"))
 												.responseSchema(Schema.schema("Designer"))
+												.responseFields(Description.success(DesignerDescription.saveDesigner()))
+												.build())));
+	}
+
+	@Test
+	void deleteDesigner() throws Exception {
+
+		when(deleteDesignerUseCase.execute(MEMBER_ID, DESIGNER_RETURN_ID))
+				.thenReturn(DESIGNER_RETURN_ID);
+
+		mockMvc
+				.perform(
+						delete(BASE_URL, 1)
+								.param("id", MEMBER_ID.toString())
+								.param("did", DESIGNER_RETURN_ID.toString())
+								.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().is2xxSuccessful())
+				.andDo(
+						document(
+								"deleteDesigner",
+								resource(
+										ResourceSnippetParameters.builder()
+												.description("designer 삭제")
+												.tag(TAG)
+												.requestSchema(Schema.schema("DesignerDeleteRequest"))
+												.responseSchema(Schema.schema("DesignerDeleteResponse"))
 												.responseFields(Description.success(DesignerDescription.saveDesigner()))
 												.build())));
 	}
