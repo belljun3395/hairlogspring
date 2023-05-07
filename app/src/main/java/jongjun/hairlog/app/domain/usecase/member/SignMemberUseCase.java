@@ -28,7 +28,7 @@ public class SignMemberUseCase {
 				getMemberUseCase.execute(MemberAuthQuery.builder().email(request.getEmail()).build());
 
 		if (!member.getPassword().equals(request.getPassword())) {
-			throw new RuntimeException("not match password");
+			throw new AssertionError("not match password");
 		}
 
 		return SaveMemberResponse.builder()
