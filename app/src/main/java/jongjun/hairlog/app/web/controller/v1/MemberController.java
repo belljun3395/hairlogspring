@@ -45,14 +45,12 @@ public class MemberController {
 	@PatchMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Long>> editMember(
 			@RequestBody MemberEditRequest request) {
-		return ApiResponseGenerator.success(
-				saveMemberUseCase.execute(request.getId(), request), HttpStatus.OK);
+		return ApiResponseGenerator.success(saveMemberUseCase.execute(request), HttpStatus.OK);
 	}
 
 	@DeleteMapping()
-	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteMember(
-			@RequestParam("id") Long memberId) {
-		return ApiResponseGenerator.success(deleteMemberUseCase.execute(memberId), HttpStatus.OK);
+	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteMember() {
+		return ApiResponseGenerator.success(deleteMemberUseCase.execute(), HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
@@ -69,8 +67,8 @@ public class MemberController {
 	}
 
 	@GetMapping()
-	public ApiResponse<ApiResponse.SuccessBody<Member>> readMember(@RequestParam("id") Long id) {
-		return ApiResponseGenerator.success(getMemberUseCase.execute(id), HttpStatus.OK);
+	public ApiResponse<ApiResponse.SuccessBody<Member>> readMember() {
+		return ApiResponseGenerator.success(getMemberUseCase.execute(), HttpStatus.OK);
 	}
 
 	@GetMapping("/info")

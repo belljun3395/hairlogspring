@@ -1,5 +1,6 @@
 package jongjun.hairlog.app.domain.usecase.member;
 
+import jongjun.hairlog.app.config.security.AuditorHolder;
 import jongjun.hairlog.app.domain.converter.member.MemberConverter;
 import jongjun.hairlog.app.domain.converter.member.MemberUpdateConverter;
 import jongjun.hairlog.app.exception.MemberNotFoundException;
@@ -26,7 +27,8 @@ public class SaveMemberUseCase {
 		return data.getId();
 	}
 
-	public Long execute(Long memberId, MemberEditRequest request) {
+	public Long execute(MemberEditRequest request) {
+		Long memberId = AuditorHolder.get();
 		MemberEntity memberEntity =
 				repository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
 		updateConverter.to(memberEntity, request);

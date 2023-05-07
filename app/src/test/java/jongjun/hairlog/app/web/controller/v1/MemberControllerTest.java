@@ -99,13 +99,9 @@ class MemberControllerTest {
 	@Test
 	void editMember() throws Exception {
 		MemberEditRequest request =
-				MemberEditRequest.builder()
-						.id(MEMBER_RETURN_ID)
-						.name(NAME + "edit")
-						.cycle(CYCLE + 1L)
-						.build();
+				MemberEditRequest.builder().name(NAME + "edit").cycle(CYCLE + 1L).build();
 
-		when(saveMemberUseCase.execute(request.getId(), request)).thenReturn(MEMBER_RETURN_ID);
+		when(saveMemberUseCase.execute(request)).thenReturn(MEMBER_RETURN_ID);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -128,13 +124,10 @@ class MemberControllerTest {
 	@Test
 	void deleteMember() throws Exception {
 
-		when(deleteMemberUseCase.execute(MEMBER_RETURN_ID)).thenReturn(MEMBER_RETURN_ID);
+		when(deleteMemberUseCase.execute()).thenReturn(MEMBER_RETURN_ID);
 
 		mockMvc
-				.perform(
-						delete(BASE_URL, 1)
-								.param("id", MEMBER_RETURN_ID.toString())
-								.contentType(MediaType.APPLICATION_JSON))
+				.perform(delete(BASE_URL, 0).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(
 						document(
@@ -144,7 +137,6 @@ class MemberControllerTest {
 												.description("member 삭제")
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberDeleteRequest"))
-												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("MemberDeleteResponse"))
 												.responseFields(Description.success(MemberDescription.memberId()))
 												.build())));
@@ -176,6 +168,7 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("member 로그인")
 												.tag(TAG)
+												.requestSchema(Schema.schema("MemberLoginRequest"))
 												.responseSchema(Schema.schema("MemberLoginResponse"))
 												.responseFields(Description.success(MemberDescription.loginMember()))
 												.build())));
@@ -194,13 +187,10 @@ class MemberControllerTest {
 						.createAt(LocalDateTime.now())
 						.build();
 
-		when(getMemberUseCase.execute(MEMBER_RETURN_ID)).thenReturn(returnMember);
+		when(getMemberUseCase.execute()).thenReturn(returnMember);
 
 		mockMvc
-				.perform(
-						get(BASE_URL, 1)
-								.param("id", MEMBER_RETURN_ID.toString())
-								.contentType(MediaType.APPLICATION_JSON))
+				.perform(get(BASE_URL, 0).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(
 						document(
@@ -210,7 +200,6 @@ class MemberControllerTest {
 												.description("Member 조회 | 멤버 id 기반")
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberReadRequest"))
-												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("MemberReadResponse"))
 												.responseFields(Description.success(MemberDescription.member()))
 												.build())));
@@ -262,6 +251,7 @@ class MemberControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("Member 리프레시 토큰 갱신")
 												.tag(TAG)
+												.requestSchema(Schema.schema("MemberRefreshTokenRequest"))
 												.requestHeaders(
 														headerWithName("X-REFRESH-TOKEN").description("put refreshToken here"))
 												.responseSchema(Schema.schema("MemberRefreshTokenResponse"))

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MemberEditRequest {
 
-	private Long id;
 	private String name;
 	private Long cycle;
 }

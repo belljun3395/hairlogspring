@@ -1,5 +1,6 @@
 package jongjun.hairlog.app.domain.usecase.member;
 
+import jongjun.hairlog.app.config.security.AuditorHolder;
 import jongjun.hairlog.app.domain.converter.member.MemberConverter;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
@@ -19,11 +20,12 @@ public class GetMemberUseCase {
 	private final MemberRepository repository;
 	private final MemberConverter converter;
 
-	public Member execute(Long id) {
+	public Member execute() {
+		Long memberId = AuditorHolder.get();
 		return repository
-				.findById(id)
+				.findById(memberId)
 				.map(converter::from)
-				.orElseThrow(() -> new MemberNotFoundException(id));
+				.orElseThrow(() -> new MemberNotFoundException(memberId));
 	}
 
 	public MemberInfo execute(String email) {
