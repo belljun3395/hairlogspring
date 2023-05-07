@@ -2,6 +2,7 @@ package jongjun.hairlog.app.domain.usecase.record;
 
 import jongjun.hairlog.app.exception.ResourceNotFoundException;
 import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
+import jongjun.hairlog.app.support.validate.SourceValidator;
 import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.repository.RecordRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,7 @@ public class DeleteRecordUseCase {
 						.findById(recordId)
 						.orElseThrow(() -> new ResourceNotFoundException("not found resource"));
 
-		if (!source.getId().equals(memberId)) {
-			throw new RuntimeException("not member's designer");
-		}
+		SourceValidator.validate(memberId, source);
 
 		repository.delete(source);
 		return source.getId();
