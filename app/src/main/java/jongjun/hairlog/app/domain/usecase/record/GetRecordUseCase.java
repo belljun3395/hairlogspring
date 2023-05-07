@@ -37,7 +37,7 @@ public class GetRecordUseCase {
 	public Record execute(Long memberId, Long recordId, RecordCategory category) {
 		return repository
 				.findByIdAndCategoryAndMemberId(recordId, category, memberId)
-				.map((source) -> converter.from(source, category))
+				.map(source -> converter.from(source, category))
 				.orElseThrow(() -> new NoSuchElementException("not found any record"));
 	}
 }
