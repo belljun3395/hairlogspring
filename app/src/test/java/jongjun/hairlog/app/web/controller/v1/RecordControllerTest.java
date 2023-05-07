@@ -127,10 +127,7 @@ class RecordControllerTest {
 
 		mockMvc
 				.perform(
-						patch(BASE_URL + "/cut", 1)
-								.param("id", MEMBER_ID.toString())
-								.content(content)
-								.contentType(MediaType.APPLICATION_JSON))
+						patch(BASE_URL + "/cut", 0).content(content).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(
 						document(
@@ -139,6 +136,7 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("cut 기록 수정")
 												.tag(TAG)
+												.requestSchema(Schema.schema("CutEditRequest"))
 												.responseSchema(Schema.schema("CutEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -199,10 +197,7 @@ class RecordControllerTest {
 
 		mockMvc
 				.perform(
-						patch(BASE_URL + "/perm", 1)
-								.param("id", MEMBER_ID.toString())
-								.content(content)
-								.contentType(MediaType.APPLICATION_JSON))
+						patch(BASE_URL + "/perm", 0).content(content).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(
 						document(
@@ -211,6 +206,7 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("perm 기록 수정")
 												.tag(TAG)
+												.requestSchema(Schema.schema("PermEditRequest"))
 												.responseSchema(Schema.schema("PermEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -273,10 +269,7 @@ class RecordControllerTest {
 
 		mockMvc
 				.perform(
-						patch(BASE_URL + "/dyeing", 1)
-								.param("id", MEMBER_ID.toString())
-								.content(content)
-								.contentType(MediaType.APPLICATION_JSON))
+						patch(BASE_URL + "/dyeing", 0).content(content).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(
 						document(
@@ -285,6 +278,7 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("dyeing 기록 수정")
 												.tag(TAG)
+												.requestSchema(Schema.schema("DyeingEditRequest"))
 												.responseSchema(Schema.schema("DyeingEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -309,12 +303,11 @@ class RecordControllerTest {
 
 		Page<RecordIndex> response = new Page<>(source);
 
-		when(getRecordUseCase.execute(MEMBER_ID, pageRequest)).thenReturn(response);
+		when(getRecordUseCase.execute(pageRequest)).thenReturn(response);
 
 		mockMvc
 				.perform(
-						get(BASE_URL + "/pages", 3)
-								.param("id", MEMBER_ID.toString())
+						get(BASE_URL + "/pages", 2)
 								.param("page", page.toString())
 								.param("size", size.toString())
 								.contentType(MediaType.APPLICATION_JSON))
@@ -328,7 +321,6 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("RecordIndexRequest"))
 												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
 														parameterWithName("page").description("페이지 순서"),
 														parameterWithName("size").description("페이지 크기"))
 												.responseSchema(Schema.schema("RecordIndexResponse"))
@@ -374,12 +366,11 @@ class RecordControllerTest {
 						.cutLength(CUT_LENGTH)
 						.build();
 
-		when(getRecordUseCase.execute(MEMBER_ID, RECORD_ID, RecordCategory.CUT)).thenReturn(response);
+		when(getRecordUseCase.execute(RECORD_ID, RecordCategory.CUT)).thenReturn(response);
 
 		mockMvc
 				.perform(
-						get(BASE_URL, 1)
-								.param("id", MEMBER_ID.toString())
+						get(BASE_URL, 2)
 								.param("rid", RECORD_ID.toString())
 								.param("c", RecordCategory.CUT.toString())
 								.contentType(MediaType.APPLICATION_JSON))
@@ -393,7 +384,6 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("CutRecordRequest"))
 												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
 														parameterWithName("rid").description("레코드 id"),
 														parameterWithName("c").description("레코드 category").optional())
 												.responseSchema(Schema.schema("CutRecordResponse"))
@@ -416,12 +406,11 @@ class RecordControllerTest {
 						.permHurt(HurtRate.H)
 						.build();
 
-		when(getRecordUseCase.execute(MEMBER_ID, RECORD_ID, RecordCategory.PERM)).thenReturn(response);
+		when(getRecordUseCase.execute(RECORD_ID, RecordCategory.PERM)).thenReturn(response);
 
 		mockMvc
 				.perform(
-						get(BASE_URL, 1)
-								.param("id", MEMBER_ID.toString())
+						get(BASE_URL, 2)
 								.param("rid", RECORD_ID.toString())
 								.param("c", RecordCategory.PERM.toString())
 								.contentType(MediaType.APPLICATION_JSON))
@@ -435,7 +424,6 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("PermRecordRequest"))
 												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
 														parameterWithName("rid").description("레코드 id"),
 														parameterWithName("c").description("레코드 category").optional())
 												.responseSchema(Schema.schema("PermRecordResponse"))
@@ -460,13 +448,11 @@ class RecordControllerTest {
 						.dyeingHurt(HurtRate.H)
 						.build();
 
-		when(getRecordUseCase.execute(MEMBER_ID, RECORD_ID, RecordCategory.DYEING))
-				.thenReturn(response);
+		when(getRecordUseCase.execute(RECORD_ID, RecordCategory.DYEING)).thenReturn(response);
 
 		mockMvc
 				.perform(
-						get(BASE_URL, 1)
-								.param("id", MEMBER_ID.toString())
+						get(BASE_URL, 2)
 								.param("rid", RECORD_ID.toString())
 								.param("c", RecordCategory.DYEING.toString())
 								.contentType(MediaType.APPLICATION_JSON))
@@ -480,7 +466,6 @@ class RecordControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DyeingRecordRequest"))
 												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
 														parameterWithName("rid").description("레코드 id"),
 														parameterWithName("c").description("레코드 category").optional())
 												.responseSchema(Schema.schema("DyeingRecordResponse"))

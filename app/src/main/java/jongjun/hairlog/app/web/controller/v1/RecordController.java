@@ -80,27 +80,20 @@ public class RecordController {
 
 	@GetMapping("/pages")
 	public ApiResponse<ApiResponse.SuccessBody<Page<RecordIndex>>> readRecordPage(
-			@RequestParam("id") Long memberId,
-			Pageable pageable,
-			@RequestParam(value = "c", required = false) String category) {
+			Pageable pageable, @RequestParam(value = "c", required = false) String category) {
 		if (category == null) {
-			return ApiResponseGenerator.success(
-					getRecordUseCase.execute(memberId, pageable), HttpStatus.OK);
+			return ApiResponseGenerator.success(getRecordUseCase.execute(pageable), HttpStatus.OK);
 		}
 		return ApiResponseGenerator.success(
-				getRecordUseCase.execute(
-						memberId, RecordCategory.valueOf(category.toUpperCase()), pageable),
+				getRecordUseCase.execute(RecordCategory.valueOf(category.toUpperCase()), pageable),
 				HttpStatus.OK);
 	}
 
 	@GetMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Record>> readRecord(
-			@RequestParam("id") Long memberId,
-			@RequestParam("rid") Long recordId,
-			@RequestParam("c") String category) {
+			@RequestParam("rid") Long recordId, @RequestParam("c") String category) {
 		return ApiResponseGenerator.success(
-				getRecordUseCase.execute(
-						memberId, recordId, RecordCategory.valueOf(category.toUpperCase())),
+				getRecordUseCase.execute(recordId, RecordCategory.valueOf(category.toUpperCase())),
 				HttpStatus.OK);
 	}
 }

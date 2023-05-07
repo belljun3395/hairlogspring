@@ -1,6 +1,7 @@
 package jongjun.hairlog.app.domain.usecase.record;
 
 import java.util.NoSuchElementException;
+import jongjun.hairlog.app.config.security.AuditorHolder;
 import jongjun.hairlog.app.domain.converter.record.RecordConverter;
 import jongjun.hairlog.app.domain.model.record.Record;
 import jongjun.hairlog.app.domain.model.record.RecordIndex;
@@ -22,19 +23,22 @@ public class GetRecordUseCase {
 	private final RecordConverter converter;
 
 	// todo Page<T> 확인해보기
-	public Page<RecordIndex> execute(Long memberId, Pageable pageable) {
+	public Page<RecordIndex> execute(Pageable pageable) {
+		Long memberId = AuditorHolder.get();
 		org.springframework.data.domain.Page<RecordIndexDTO> source =
 				repository.findAllByMemberIdQuery(pageable, memberId);
 		return converter.from(source);
 	}
 
-	public Page<RecordIndex> execute(Long memberId, RecordCategory category, Pageable pageable) {
+	public Page<RecordIndex> execute(RecordCategory category, Pageable pageable) {
+		Long memberId = AuditorHolder.get();
 		org.springframework.data.domain.Page<RecordIndexDTO> source =
 				repository.findAllByCategoryAndMemberIdQuery(pageable, category, memberId);
 		return converter.from(source);
 	}
 
-	public Record execute(Long memberId, Long recordId, RecordCategory category) {
+	public Record execute(Long recordId, RecordCategory category) {
+		Long memberId = AuditorHolder.get();
 		return repository
 				.findByIdAndCategoryAndMemberId(recordId, category, memberId)
 				.map(source -> converter.from(source, category))
