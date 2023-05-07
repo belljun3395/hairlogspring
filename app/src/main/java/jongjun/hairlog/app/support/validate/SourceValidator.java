@@ -8,14 +8,14 @@ import lombok.experimental.UtilityClass;
 public class SourceValidator {
 
 	public static void validate(Long memberId, RecordEntity source) {
-		if (!memberId.equals(source.getId())) {
-			throw new RuntimeException("not member's record");
+		if (!memberId.equals(source.getMember().getId())) {
+			throw new AssertionError("not member's record");
 		}
 	}
 
 	public static void validate(Long memberId, DesignerEntity source) {
-		if (!memberId.equals(source.getId())) {
-			throw new RuntimeException("not member's record");
+		if (!memberId.equals(source.getMember().getId())) {
+			throw new AssertionError("not member's record");
 		}
 	}
 }
