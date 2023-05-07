@@ -7,6 +7,8 @@ import jongjun.hairlog.app.domain.usecase.designer.GetDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.SaveDesignerUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
+import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
+import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,7 @@ public class DesignerController {
 	}
 
 	@DeleteMapping()
+	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteDesigner(
 			@RequestParam("id") Long memberId, @RequestParam("did") Long designerId) {
 		return ApiResponseGenerator.success(
@@ -42,6 +45,7 @@ public class DesignerController {
 	}
 
 	@PatchMapping()
+	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<Long>> editDesignerFav(
 			@RequestParam("id") Long memberId,
 			@RequestParam("did") Long designerId,
@@ -51,6 +55,7 @@ public class DesignerController {
 	}
 
 	@GetMapping()
+	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<List<Designer>>> readDesigners(
 			@RequestParam("id") Long memberId,
 			@RequestParam(value = "dn", required = false) String designerName) {
@@ -62,9 +67,11 @@ public class DesignerController {
 	}
 
 	@GetMapping("/info")
+	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<Designer>> readDesigner(
 			@RequestParam("id") Long memberId, @RequestParam("did") Long designerId) {
 		return ApiResponseGenerator.success(
-				getDesignerUseCase.execute(memberId, designerId), HttpStatus.OK);
+				getDesignerUseCase.execute(DesignerIdParam.builder().designerId(designerId).build()),
+				HttpStatus.OK);
 	}
 }
