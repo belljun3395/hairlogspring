@@ -6,7 +6,6 @@ import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.query.MemberAuthQuery;
 import jongjun.hairlog.app.exception.MemberNotFoundException;
-import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
 import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ public class GetMemberUseCase {
 	private final MemberRepository repository;
 	private final MemberConverter converter;
 
-	@ValidateRequestMemberId
 	public Member execute(Long id) {
 		return repository
 				.findById(id)
