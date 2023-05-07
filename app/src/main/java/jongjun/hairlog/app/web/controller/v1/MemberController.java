@@ -10,7 +10,6 @@ import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
-import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
 import jongjun.hairlog.app.web.controller.request.member.MemberEditRequest;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
 import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
@@ -70,7 +69,6 @@ public class MemberController {
 	}
 
 	@GetMapping()
-	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<Member>> readMember(@RequestParam("id") Long id) {
 		return ApiResponseGenerator.success(getMemberUseCase.execute(id), HttpStatus.OK);
 	}

@@ -1,7 +1,6 @@
 package jongjun.hairlog.app.domain.usecase.member;
 
 import jongjun.hairlog.app.exception.MemberNotFoundException;
-import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ public class DeleteMemberUseCase {
 
 	private final MemberRepository repository;
 
-	@ValidateRequestMemberId
 	public Long execute(Long memberId) {
 		MemberEntity memberEntity =
 				repository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));

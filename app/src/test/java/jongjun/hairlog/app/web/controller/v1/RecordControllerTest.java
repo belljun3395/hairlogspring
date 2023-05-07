@@ -122,7 +122,7 @@ class RecordControllerTest {
 						.cutLength(CUT_LENGTH)
 						.build();
 
-		when(saveRecordUseCase.execute(MEMBER_ID, request)).thenReturn(RECORD_ID);
+		when(saveRecordUseCase.execute(request)).thenReturn(RECORD_ID);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -140,8 +140,6 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("cut 기록 수정")
 												.tag(TAG)
-												.requestSchema(Schema.schema("CutEditRequest"))
-												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("CutEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -197,7 +195,7 @@ class RecordControllerTest {
 						.permHurt(HurtRate.H)
 						.build();
 
-		when(saveRecordUseCase.execute(MEMBER_ID, request)).thenReturn(RECORD_ID);
+		when(saveRecordUseCase.execute(request)).thenReturn(RECORD_ID);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -215,8 +213,6 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("perm 기록 수정")
 												.tag(TAG)
-												.requestSchema(Schema.schema("PermEditRequest"))
-												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("PermEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -274,7 +270,7 @@ class RecordControllerTest {
 						.dyeingHurt(HurtRate.H)
 						.build();
 
-		when(saveRecordUseCase.execute(MEMBER_ID, request)).thenReturn(RECORD_ID);
+		when(saveRecordUseCase.execute(request)).thenReturn(RECORD_ID);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -292,8 +288,6 @@ class RecordControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("dyeing 기록 수정")
 												.tag(TAG)
-												.requestSchema(Schema.schema("DyeingEditRequest"))
-												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.responseSchema(Schema.schema("DyeingEditResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));
@@ -348,12 +342,11 @@ class RecordControllerTest {
 	@Test
 	void deleteRecord() throws Exception {
 
-		when(deleteRecordUseCase.execute(MEMBER_ID, RECORD_ID)).thenReturn(RECORD_ID);
+		when(deleteRecordUseCase.execute(RECORD_ID)).thenReturn(RECORD_ID);
 
 		mockMvc
 				.perform(
-						delete(BASE_URL, 2)
-								.param("id", MEMBER_ID.toString())
+						delete(BASE_URL, 1)
 								.param("rid", RECORD_ID.toString())
 								.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
@@ -365,9 +358,7 @@ class RecordControllerTest {
 												.description("record 삭제")
 												.tag(TAG)
 												.requestSchema(Schema.schema("RecordDeleteRequest"))
-												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
-														parameterWithName("rid").description("레코드 id"))
+												.requestParameters(parameterWithName("rid").description("레코드 id"))
 												.responseSchema(Schema.schema("RecordDeleteResponse"))
 												.responseFields(Description.success(RecordDescription.recordId()))
 												.build())));

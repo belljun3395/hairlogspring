@@ -3,8 +3,6 @@ package jongjun.hairlog.app.domain.usecase.record;
 import jongjun.hairlog.app.domain.converter.record.RecordConverter;
 import jongjun.hairlog.app.domain.converter.record.RecordUpdateConverter;
 import jongjun.hairlog.app.exception.ResourceNotFoundException;
-import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
-import jongjun.hairlog.app.support.validate.SourceValidator;
 import jongjun.hairlog.app.web.controller.request.record.CutRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.CutRecordRequest;
 import jongjun.hairlog.app.web.controller.request.record.DyeingRecordEditRequest;
@@ -46,45 +44,36 @@ public class SaveRecordUseCase {
 		return data.getId();
 	}
 
-	@ValidateRequestMemberId
-	public Long execute(Long memberId, CutRecordEditRequest request) {
+	public Long execute(CutRecordEditRequest request) {
 		CutEntity source =
 				(CutEntity)
 						repository
 								.findById(request.getId())
 								.orElseThrow(() -> new ResourceNotFoundException("not found record"));
 
-		SourceValidator.validate(memberId, source);
-
 		updateConverter.to(source, request);
 
 		return source.getId();
 	}
 
-	@ValidateRequestMemberId
-	public Long execute(Long memberId, PermRecordEditRequest request) {
+	public Long execute(PermRecordEditRequest request) {
 		PermEntity source =
 				(PermEntity)
 						repository
 								.findById(request.getId())
 								.orElseThrow(() -> new ResourceNotFoundException("not found record"));
 
-		SourceValidator.validate(memberId, source);
-
 		updateConverter.to(source, request);
 
 		return source.getId();
 	}
 
-	@ValidateRequestMemberId
-	public Long execute(Long memberId, DyeingRecordEditRequest request) {
+	public Long execute(DyeingRecordEditRequest request) {
 		DyeingEntity source =
 				(DyeingEntity)
 						repository
 								.findById(request.getId())
 								.orElseThrow(() -> new ResourceNotFoundException("not found record"));
-
-		SourceValidator.validate(memberId, source);
 
 		updateConverter.to(source, request);
 

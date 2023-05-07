@@ -7,7 +7,6 @@ import jongjun.hairlog.app.domain.usecase.designer.GetDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.SaveDesignerUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
-import jongjun.hairlog.app.support.aop.ValidateRequestMemberId;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import lombok.RequiredArgsConstructor;
@@ -37,25 +36,19 @@ public class DesignerController {
 	}
 
 	@DeleteMapping()
-	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteDesigner(
-			@RequestParam("id") Long memberId, @RequestParam("did") Long designerId) {
-		return ApiResponseGenerator.success(
-				deleteDesignerUseCase.execute(memberId, designerId), HttpStatus.OK);
+			@RequestParam("did") Long designerId) {
+		return ApiResponseGenerator.success(deleteDesignerUseCase.execute(designerId), HttpStatus.OK);
 	}
 
 	@PatchMapping()
-	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<Long>> editDesignerFav(
-			@RequestParam("id") Long memberId,
-			@RequestParam("did") Long designerId,
-			@RequestParam("fav") Boolean fav) {
+			@RequestParam("did") Long designerId, @RequestParam("fav") Boolean fav) {
 		return ApiResponseGenerator.success(
-				saveDesignerUseCase.execute(memberId, designerId, fav), HttpStatus.OK);
+				saveDesignerUseCase.execute(designerId, fav), HttpStatus.OK);
 	}
 
 	@GetMapping()
-	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<List<Designer>>> readDesigners(
 			@RequestParam("id") Long memberId,
 			@RequestParam(value = "dn", required = false) String designerName) {
@@ -67,9 +60,8 @@ public class DesignerController {
 	}
 
 	@GetMapping("/info")
-	@ValidateRequestMemberId
 	public ApiResponse<ApiResponse.SuccessBody<Designer>> readDesigner(
-			@RequestParam("id") Long memberId, @RequestParam("did") Long designerId) {
+			@RequestParam("did") Long designerId) {
 		return ApiResponseGenerator.success(
 				getDesignerUseCase.execute(DesignerIdParam.builder().designerId(designerId).build()),
 				HttpStatus.OK);

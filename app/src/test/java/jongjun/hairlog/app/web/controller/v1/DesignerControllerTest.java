@@ -18,6 +18,7 @@ import jongjun.hairlog.app.domain.model.designer.Designer;
 import jongjun.hairlog.app.domain.usecase.designer.DeleteDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.GetDesignerUseCase;
 import jongjun.hairlog.app.domain.usecase.designer.SaveDesignerUseCase;
+import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
 import jongjun.hairlog.app.web.controller.v1.description.DesignerDescription;
@@ -84,13 +85,11 @@ class DesignerControllerTest {
 	@Test
 	void editDesignerFav() throws Exception {
 
-		when(saveDesignerUseCase.execute(MEMBER_ID, DESIGNER_RETURN_ID, true))
-				.thenReturn(DESIGNER_RETURN_ID);
+		when(saveDesignerUseCase.execute(DESIGNER_RETURN_ID, true)).thenReturn(DESIGNER_RETURN_ID);
 
 		mockMvc
 				.perform(
-						patch(BASE_URL, 3)
-								.param("id", MEMBER_ID.toString())
+						patch(BASE_URL, 2)
 								.param("did", DESIGNER_RETURN_ID.toString())
 								.param("fav", "true")
 								.contentType(MediaType.APPLICATION_JSON))
@@ -104,7 +103,6 @@ class DesignerControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerFavEditRequest"))
 												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
 														parameterWithName("did").description("디자이너 id"),
 														parameterWithName("fav").description("디자이너 선호"))
 												.responseSchema(Schema.schema("DesignerFavEditResponse"))
@@ -115,13 +113,11 @@ class DesignerControllerTest {
 	@Test
 	void deleteDesigner() throws Exception {
 
-		when(deleteDesignerUseCase.execute(MEMBER_ID, DESIGNER_RETURN_ID))
-				.thenReturn(DESIGNER_RETURN_ID);
+		when(deleteDesignerUseCase.execute(DESIGNER_RETURN_ID)).thenReturn(DESIGNER_RETURN_ID);
 
 		mockMvc
 				.perform(
-						delete(BASE_URL, 2)
-								.param("id", MEMBER_ID.toString())
+						delete(BASE_URL, 1)
 								.param("did", DESIGNER_RETURN_ID.toString())
 								.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
@@ -133,9 +129,7 @@ class DesignerControllerTest {
 												.description("designer 삭제")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerDeleteRequest"))
-												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
-														parameterWithName("did").description("디자이너 id"))
+												.requestParameters(parameterWithName("did").description("디자이너 id"))
 												.responseSchema(Schema.schema("DesignerDeleteResponse"))
 												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
@@ -182,12 +176,13 @@ class DesignerControllerTest {
 						.designerFav(true)
 						.build();
 
-		when(getDesignerUseCase.execute(MEMBER_ID, DESIGNER_RETURN_ID)).thenReturn(response);
+		when(getDesignerUseCase.execute(
+						DesignerIdParam.builder().designerId(DESIGNER_RETURN_ID).build()))
+				.thenReturn(response);
 
 		mockMvc
 				.perform(
 						get(BASE_URL + "/info", 1)
-								.param("id", MEMBER_ID.toString())
 								.param("did", DESIGNER_RETURN_ID.toString())
 								.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())

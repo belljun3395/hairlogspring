@@ -4,6 +4,7 @@ import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.record.RecordEntity;
 import lombok.experimental.UtilityClass;
 
+@Deprecated
 @UtilityClass
 public class SourceValidator {
 
