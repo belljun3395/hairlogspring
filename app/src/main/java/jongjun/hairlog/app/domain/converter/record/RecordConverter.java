@@ -2,6 +2,7 @@ package jongjun.hairlog.app.domain.converter.record;
 
 import java.util.ArrayList;
 import java.util.List;
+import jongjun.hairlog.app.config.security.AuditorHolder;
 import jongjun.hairlog.app.domain.model.record.CutRecord;
 import jongjun.hairlog.app.domain.model.record.DyeingRecord;
 import jongjun.hairlog.app.domain.model.record.PermRecord;
@@ -108,12 +109,13 @@ public class RecordConverter {
 	}
 
 	public CutEntity to(CutRecordRequest request) {
+		Long memberId = AuditorHolder.get();
 		return CutEntity.builder()
 				.recordDate(request.getRecordDate())
 				.recordCost(request.getRecordCost())
 				.recordGrade(request.getRecordGrade())
 				.recordEtc(request.getRecordEtc())
-				.member(MemberEntity.builder().id(request.getMemberId()).build())
+				.member(MemberEntity.builder().id(memberId).build())
 				.designer(DesignerEntity.builder().id(request.getDesignerId()).build())
 				.cutName(request.getCutName())
 				.cutLength(request.getCutLength())
@@ -121,12 +123,13 @@ public class RecordConverter {
 	}
 
 	public PermEntity to(PermRecordRequest request) {
+		Long memberId = AuditorHolder.get();
 		return PermEntity.builder()
 				.recordDate(request.getRecordDate())
 				.recordCost(request.getRecordCost())
 				.recordGrade(request.getRecordGrade())
 				.recordEtc(request.getRecordEtc())
-				.member(MemberEntity.builder().id(request.getMemberId()).build())
+				.member(MemberEntity.builder().id(memberId).build())
 				.designer(DesignerEntity.builder().id(request.getDesignerId()).build())
 				.permName(request.getPermName())
 				.permTime(request.getPermTime())
@@ -135,12 +138,13 @@ public class RecordConverter {
 	}
 
 	public DyeingEntity to(DyeingRecordRequest request) {
+		Long memberId = AuditorHolder.get();
 		return DyeingEntity.builder()
 				.recordDate(request.getRecordDate())
 				.recordCost(request.getRecordCost())
 				.recordGrade(request.getRecordGrade())
 				.recordEtc(request.getRecordEtc())
-				.member(MemberEntity.builder().id(request.getMemberId()).build())
+				.member(MemberEntity.builder().id(memberId).build())
 				.designer(DesignerEntity.builder().id(request.getDesignerId()).build())
 				.dyeingColor(request.getDyeingColor())
 				.dyeingDecolorization(request.getDyeingDecolorization())

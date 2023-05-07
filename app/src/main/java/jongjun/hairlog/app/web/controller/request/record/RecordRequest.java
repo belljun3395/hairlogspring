@@ -21,7 +21,5 @@ public class RecordRequest {
 
 	private SatisfactionRate recordGrade;
 
-	private Long memberId;
-
 	private Long designerId;
 }
