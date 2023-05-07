@@ -31,7 +31,7 @@ public class ValidateRequestMemberIdAspect {
 
 		if (!requestMemberId.equals(auditId)) {
 			log.warn("not match request id : {}, audit id : {}", requestMemberId, auditId);
-			throw new RuntimeException("request id and token id is not match");
+			throw new AssertionError("request id and token id is not match");
 		}
 	}
 }
