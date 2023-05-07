@@ -1,5 +1,6 @@
 package jongjun.hairlog.app.domain.converter.designer;
 
+import jongjun.hairlog.app.config.security.AuditorHolder;
 import jongjun.hairlog.app.domain.model.designer.Designer;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import jongjun.hairlog.data.dto.designer.DesignerDTO;
@@ -30,11 +31,12 @@ public class DesignerConverter {
 	}
 
 	public DesignerEntity to(DesignerRequest request) {
+		Long memberId = AuditorHolder.get();
 		return DesignerEntity.builder()
 				.designerName(request.getDesignerName())
 				.designerSalon(request.getDesignerSalon())
 				.designerFav(request.getDesignerFav())
-				.member(MemberEntity.builder().id(request.getMemberId()).build())
+				.member(MemberEntity.builder().id(memberId).build())
 				.build();
 	}
 }

@@ -60,7 +60,6 @@ class DesignerControllerTest {
 						.designerName(DESIGNER_NAME)
 						.designerSalon(DESIGNER_SALON)
 						.designerFav(true)
-						.memberId(MEMBER_ID)
 						.build();
 
 		when(saveDesignerUseCase.execute(request)).thenReturn(DESIGNER_RETURN_ID);

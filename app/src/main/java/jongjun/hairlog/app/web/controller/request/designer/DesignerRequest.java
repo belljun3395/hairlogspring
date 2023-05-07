@@ -16,6 +16,4 @@ public class DesignerRequest {
 	private String designerSalon;
 
 	private Boolean designerFav;
-
-	private Long memberId;
 }
