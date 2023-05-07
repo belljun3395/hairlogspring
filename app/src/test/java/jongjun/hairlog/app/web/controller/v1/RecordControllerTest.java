@@ -112,6 +112,7 @@ class RecordControllerTest {
 	void editCutRecord() throws Exception {
 		CutRecordEditRequest request =
 				CutRecordEditRequest.builder()
+						.id(RECORD_ID)
 						.recordDate(new Date())
 						.recordCost(RECORD_COST)
 						.recordEtc(RECORD_ETC)
@@ -181,6 +182,7 @@ class RecordControllerTest {
 	void editPermRecord() throws Exception {
 		PermRecordEditRequest request =
 				PermRecordEditRequest.builder()
+						.id(RECORD_ID)
 						.recordDate(new Date())
 						.recordCost(RECORD_COST)
 						.recordEtc(RECORD_ETC)
@@ -252,6 +254,7 @@ class RecordControllerTest {
 	void editDyeingRecord() throws Exception {
 		DyeingRecordEditRequest request =
 				DyeingRecordEditRequest.builder()
+						.id(RECORD_ID)
 						.recordDate(new Date())
 						.recordCost(RECORD_COST)
 						.recordEtc(RECORD_ETC)
