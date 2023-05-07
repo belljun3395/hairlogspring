@@ -50,13 +50,11 @@ public class DesignerController {
 
 	@GetMapping()
 	public ApiResponse<ApiResponse.SuccessBody<List<Designer>>> readDesigners(
-			@RequestParam("id") Long memberId,
 			@RequestParam(value = "dn", required = false) String designerName) {
 		if (designerName == null) {
-			return ApiResponseGenerator.success(getDesignerUseCase.execute(memberId), HttpStatus.OK);
+			return ApiResponseGenerator.success(getDesignerUseCase.execute(), HttpStatus.OK);
 		}
-		return ApiResponseGenerator.success(
-				getDesignerUseCase.execute(memberId, designerName), HttpStatus.OK);
+		return ApiResponseGenerator.success(getDesignerUseCase.execute(designerName), HttpStatus.OK);
 	}
 
 	@GetMapping("/info")

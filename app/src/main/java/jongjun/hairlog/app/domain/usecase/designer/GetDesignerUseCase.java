@@ -2,6 +2,7 @@ package jongjun.hairlog.app.domain.usecase.designer;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import jongjun.hairlog.app.config.security.AuditorHolder;
 import jongjun.hairlog.app.domain.converter.designer.DesignerConverter;
 import jongjun.hairlog.app.domain.model.designer.Designer;
 import jongjun.hairlog.app.exception.ResourceNotFoundException;
@@ -19,7 +20,8 @@ public class GetDesignerUseCase {
 	private final DesignerRepository repository;
 	private final DesignerConverter converter;
 
-	public List<Designer> execute(Long memberId) {
+	public List<Designer> execute() {
+		Long memberId = AuditorHolder.get();
 		return repository.findAllByMemberIdQuery(memberId).stream()
 				.map(converter::from)
 				.collect(Collectors.toList());
@@ -32,7 +34,8 @@ public class GetDesignerUseCase {
 				.orElseThrow(() -> new ResourceNotFoundException("not found designer"));
 	}
 
-	public List<Designer> execute(Long memberId, String designerName) {
+	public List<Designer> execute(String designerName) {
+		Long memberId = AuditorHolder.get();
 		return repository.searchByNameAndMemberIdQuery(designerName, memberId).stream()
 				.map(converter::from)
 				.collect(Collectors.toList());

@@ -76,6 +76,7 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 추가")
 												.tag(TAG)
+												.requestSchema(Schema.schema("DesignerSaveRequest"))
 												.responseSchema(Schema.schema("DesignerSaveResponse"))
 												.responseFields(Description.success(DesignerDescription.designerId()))
 												.build())));
@@ -145,13 +146,10 @@ class DesignerControllerTest {
 						.designerFav(true)
 						.build());
 
-		when(getDesignerUseCase.execute(MEMBER_ID)).thenReturn(response);
+		when(getDesignerUseCase.execute()).thenReturn(response);
 
 		mockMvc
-				.perform(
-						get(BASE_URL, 1)
-								.param("id", DESIGNER_RETURN_ID.toString())
-								.contentType(MediaType.APPLICATION_JSON))
+				.perform(get(BASE_URL, 0).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(
 						document(
@@ -160,6 +158,7 @@ class DesignerControllerTest {
 										ResourceSnippetParameters.builder()
 												.description("designer 조회 | 멤버 id 기반")
 												.tag(TAG)
+												.requestSchema(Schema.schema("DesignerReadByIdRequest"))
 												.responseSchema(Schema.schema("DesignerReadByIdResponse"))
 												.responseFields(Description.success(DesignerDescription.designers()))
 												.build())));
@@ -193,7 +192,6 @@ class DesignerControllerTest {
 												.description("designer 조회 | 디자이너 id 기반")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerReadByDesignerIdRequest"))
-												.requestParameters(parameterWithName("id").description("멤버 id"))
 												.requestParameters(parameterWithName("did").description("디자이너 id"))
 												.responseSchema(Schema.schema("DesignerReadByDesignerIdResponse"))
 												.responseFields(Description.success(DesignerDescription.designer()))
@@ -211,14 +209,11 @@ class DesignerControllerTest {
 						.designerFav(true)
 						.build());
 
-		when(getDesignerUseCase.execute(MEMBER_ID, DESIGNER_NAME)).thenReturn(response);
+		when(getDesignerUseCase.execute(DESIGNER_NAME)).thenReturn(response);
 
 		mockMvc
 				.perform(
-						get(BASE_URL, 2)
-								.param("id", DESIGNER_RETURN_ID.toString())
-								.param("dn", DESIGNER_NAME)
-								.contentType(MediaType.APPLICATION_JSON))
+						get(BASE_URL, 1).param("dn", DESIGNER_NAME).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().is2xxSuccessful())
 				.andDo(
 						document(
@@ -228,9 +223,7 @@ class DesignerControllerTest {
 												.description("designer 조회 | 이름 기반")
 												.tag(TAG)
 												.requestSchema(Schema.schema("DesignerReadByIdAndEmailRequest"))
-												.requestParameters(
-														parameterWithName("id").description("멤버 id"),
-														parameterWithName("dn").description("디자이너 이름"))
+												.requestParameters(parameterWithName("dn").description("디자이너 이름"))
 												.responseSchema(Schema.schema("DesignerReadByIdAndEmailResponse"))
 												.responseFields(Description.success(DesignerDescription.designers()))
 												.build())));
