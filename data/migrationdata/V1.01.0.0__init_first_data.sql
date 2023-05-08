@@ -2,7 +2,7 @@ insert
 into member_entity
 (create_at, member_cycle, deleted, member_email, member_name, member_password, member_sex,
  update_at)
-values (now(), 1, false, 'test@test.com', 'testmname', '12345', 'M', now());
+values (now(), 1, false, 'test@test.com', 'testmname', 'testPassword@', 'M', now());
 
 
 insert
