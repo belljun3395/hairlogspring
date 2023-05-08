@@ -29,3 +29,11 @@ openapi3 {
     outputDirectory = "src/main/resources/static/"
     outputFileNamePrefix = 'openapi3'
 }
+
+postman {
+    title = projectName
+    version = projectVersion
+    baseUrl = 'http://localhost:8080'
+    outputDirectory = "src/main/resources/static/"
+    outputFileNamePrefix = 'postman'
+}
