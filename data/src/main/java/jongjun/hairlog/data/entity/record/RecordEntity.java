@@ -39,6 +39,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+/** @implSpec {@link jongjun.hairlog.data.entity.record.RecordEntity} 관련 Entity 경우 상속하여 사용한다. */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

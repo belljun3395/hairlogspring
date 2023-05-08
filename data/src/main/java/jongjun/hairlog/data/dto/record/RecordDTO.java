@@ -7,6 +7,7 @@ import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.enums.SatisfactionRate;
 import lombok.Getter;
 
+/** @implSpec {@link jongjun.hairlog.data.entity.record.RecordEntity} 관련 DTO 경우 상속하여 사용한다. */
 @Getter
 public abstract class RecordDTO {
 
