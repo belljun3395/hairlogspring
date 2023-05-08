@@ -70,6 +70,7 @@ public class RecordConverter {
 			case CUT:
 				CutDTO cut = (CutDTO) source;
 				return CutRecord.builder()
+						.recordDate(source.getRecordDate())
 						.recordCost(cut.getRecordCost())
 						.recordGrade(cut.getRecordGrade())
 						.recordEtc(cut.getRecordEtc())
@@ -81,6 +82,7 @@ public class RecordConverter {
 			case PERM:
 				PermDTO perm = (PermDTO) source;
 				return PermRecord.builder()
+						.recordDate(source.getRecordDate())
 						.recordCost(perm.getRecordCost())
 						.recordGrade(perm.getRecordGrade())
 						.recordEtc(perm.getRecordEtc())
@@ -93,6 +95,7 @@ public class RecordConverter {
 			case DYEING:
 				DyeingDTO dyeing = (DyeingDTO) source;
 				return DyeingRecord.builder()
+						.recordDate(source.getRecordDate())
 						.recordCost(dyeing.getRecordCost())
 						.recordGrade(dyeing.getRecordGrade())
 						.recordEtc(dyeing.getRecordEtc())
