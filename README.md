@@ -1,6 +1,6 @@
 # Hairlog-Spring 
 
-Hairlog-Spring은 [Econovation](https://econovation.kr/about)에서 2022년 1학기에 진행한 [기존 프로젝트](https://github.com/belljun3395/Hairlog)를 React 기반으로 전환한 프로젝트 입니다.
+Hairlog-Spring은 [Econovation](https://econovation.kr/about)에서 2022년 1학기에 진행한 [기존 프로젝트](https://github.com/belljun3395/Hairlog)를 Spring 기반으로 전환한 프로젝트 입니다.
 
 <br/>
 
