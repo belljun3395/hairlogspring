@@ -29,3 +29,10 @@ postman {
     outputDirectory = "src/main/resources/static/"
     outputFileNamePrefix = 'postman'
 }
+
+task copyReport {
+    copy {
+        from "build/reports/tests/test"
+        into 'src/main/resources/static/reports'
+    }
+}
