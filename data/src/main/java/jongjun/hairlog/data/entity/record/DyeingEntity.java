@@ -24,17 +24,17 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "record_dyeing_entity")
 public class DyeingEntity extends RecordEntity {
 
-	@Column(name = "dyeing_color")
+	@Column(name = "dyeing_color", nullable = false)
 	private String dyeingColor;
 
-	@Column(name = "dyeing_decolorization")
+	@Column(name = "dyeing_decolorization", nullable = false)
 	private String dyeingDecolorization;
 
-	@Column(name = "dyeing_time")
+	@Column(name = "dyeing_time", nullable = false)
 	private Long dyeingTime;
 
 	@Enumerated(value = EnumType.STRING)
-	@Column(name = "dyeing_hurt")
+	@Column(name = "dyeing_hurt", nullable = false)
 	private HurtRate dyeingHurt;
 
 	public void changeDyeingColor(String dyeingColor) {

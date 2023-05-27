@@ -24,14 +24,14 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "record_perm_entity")
 public class PermEntity extends RecordEntity {
 
-	@Column(name = "perm_name")
+	@Column(name = "perm_name", nullable = false)
 	private String permName;
 
-	@Column(name = "perm_time")
+	@Column(name = "perm_time", nullable = false)
 	private Long permTime;
 
 	@Enumerated(value = EnumType.STRING)
-	@Column(name = "perm_hurt")
+	@Column(name = "perm_hurt", nullable = false)
 	private HurtRate permHurt;
 
 	public void changePermName(String permName) {

@@ -21,10 +21,10 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "record_cut_entity")
 public class CutEntity extends RecordEntity {
 
-	@Column(name = "cut_name")
+	@Column(name = "cut_name", nullable = false)
 	private String cutName;
 
-	@Column(name = "cut_length")
+	@Column(name = "cut_length", nullable = false)
 	private Long cutLength;
 
 	public void changeCutName(String cutName) {

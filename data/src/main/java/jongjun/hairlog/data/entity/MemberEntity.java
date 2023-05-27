@@ -52,14 +52,14 @@ public class MemberEntity {
 	@Column(name = "member_email", unique = true)
 	private String email;
 
-	@Column(name = "member_password")
+	@Column(name = "member_password", nullable = false)
 	private String password;
 
-	@Column(name = "member_name")
+	@Column(name = "member_name", nullable = false)
 	private String name;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "member_sex")
+	@Column(name = "member_sex", nullable = false)
 	private MemberSex sex;
 
 	@Column(name = "member_cycle")

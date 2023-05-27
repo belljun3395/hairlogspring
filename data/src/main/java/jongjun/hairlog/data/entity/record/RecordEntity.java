@@ -64,17 +64,17 @@ public abstract class RecordEntity {
 	private Long id;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "record_date")
+	@Column(name = "record_date", nullable = false)
 	private Date recordDate;
 
-	@Column(name = "record_cost")
+	@Column(name = "record_cost", nullable = false)
 	private Long recordCost;
 
 	@Column(name = "record_etc")
 	private String recordEtc;
 
 	@Enumerated(value = EnumType.STRING)
-	@Column(name = "record_grade")
+	@Column(name = "record_grade", nullable = false)
 	private SatisfactionRate recordGrade;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

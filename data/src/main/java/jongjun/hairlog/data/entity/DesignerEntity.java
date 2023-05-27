@@ -51,14 +51,15 @@ public class DesignerEntity {
 	@Convert(converter = IdConverter.class)
 	private Long id;
 
-	@Column(name = "designer_name")
+	@Column(name = "designer_name", nullable = false)
 	private String designerName;
 
 	@Column(name = "designer_salon")
 	private String designerSalon;
 
-	@Column(name = "designer_fav")
-	private Boolean designerFav;
+	@Column(name = "designer_fav", nullable = false)
+	@Builder.Default
+	private Boolean designerFav = true;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "member_fk")
