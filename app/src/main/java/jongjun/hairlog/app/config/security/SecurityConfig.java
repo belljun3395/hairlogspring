@@ -64,6 +64,34 @@ public class SecurityConfig {
 		return http.build();
 	}
 
+	@Bean
+	@Profile(value = "prod")
+	public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) throws Exception {
+		http.csrf().disable();
+		http.formLogin().disable();
+		http.httpBasic().disable();
+
+		http.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/actuator/health", "/error")
+				.permitAll()
+				.antMatchers(HttpMethod.POST, "/api/v1/members/login", "/api/v1/members/tokens")
+				.permitAll()
+				.antMatchers("/api/v1/**")
+				.authenticated()
+				.anyRequest()
+				.denyAll();
+
+		http.addFilterAt(
+				generateAuthenticationFilter(), AbstractPreAuthenticatedProcessingFilter.class);
+
+		http.exceptionHandling()
+				.authenticationEntryPoint(authenticationEntryPoint)
+				.accessDeniedHandler(accessDeniedHandler);
+
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		return http.build();
+	}
+
 	public AuthenticationFilter generateAuthenticationFilter() {
 		AuthenticationFilter authenticationFilter = new AuthenticationFilter();
 		authenticationFilter.setAuthenticationManager(new ProviderManager(authProvider));
@@ -76,7 +104,7 @@ public class SecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 
 		configuration.setAllowedOriginPatterns(List.of("*"));
-		configuration.setAllowedMethods(Arrays.asList("HEAD","POST","GET","DELETE","PUT"));
+		configuration.setAllowedMethods(Arrays.asList("HEAD", "POST", "GET", "DELETE", "PUT"));
 		configuration.setAllowedHeaders(List.of("*"));
 		configuration.setAllowCredentials(true);
 
