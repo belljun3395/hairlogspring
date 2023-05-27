@@ -44,6 +44,7 @@ public class SecurityConfig {
 						"/api-docs/*",
 						"/openapi3.yaml",
 						"/actuator/health",
+						"/reports/**",
 						"/error")
 				.permitAll()
 				.antMatchers(HttpMethod.POST, "/api/v1/members/login", "/api/v1/members/tokens")
@@ -72,7 +73,7 @@ public class SecurityConfig {
 		http.httpBasic().disable();
 
 		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/actuator/health", "/error")
+				.antMatchers(HttpMethod.GET, "/openapi3.yaml", "/actuator/health", "/reports/**", "/error")
 				.permitAll()
 				.antMatchers(HttpMethod.POST, "/api/v1/members/login", "/api/v1/members/tokens")
 				.permitAll()
