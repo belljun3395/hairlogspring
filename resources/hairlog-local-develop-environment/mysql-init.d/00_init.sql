@@ -1,12 +1,12 @@
 CREATE
-    USER 'demo-local'@'localhost' IDENTIFIED BY 'demo-local';
+    USER 'hairlog-local'@'localhost' IDENTIFIED BY 'hairlog-local';
 CREATE
-    USER 'demo-local'@'%' IDENTIFIED BY 'demo-local';
+    USER 'hairlog-local'@'%' IDENTIFIED BY 'hairlog-local';
 
 GRANT ALL PRIVILEGES ON *.* TO
-    'demo-local'@'localhost';
+    'hairlog-local'@'localhost';
 GRANT ALL PRIVILEGES ON *.* TO
-    'demo-local'@'%';
+    'hairlog-local'@'%';
 
 CREATE
-    DATABASE demodb DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    DATABASE hairlog DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
