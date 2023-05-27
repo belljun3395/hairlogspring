@@ -48,3 +48,10 @@ if (profile == "data") {
         validateOnMigrate = true
     }
 }
+
+task copyDataReport {
+    copy {
+        from "build/reports/tests/test"
+        into "../app/src/main/resources/static/reports/${project.name}"
+    }
+}
