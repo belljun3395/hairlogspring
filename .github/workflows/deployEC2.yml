@@ -49,9 +49,11 @@ jobs:
           ./gradlew :data:flywayClean :data:flywayMigrate
           ./gradlew :data:flywayMigrate -Dflyway.ignoreMissingMigrations=true -Pprofile=data
           ./gradlew test -Pprofile=test
-      - name: Create Swagger API Spec
+      - name: Create Swagger API Spec and Reports
         run: |
           ./gradlew :app:openapi3
+          ./gradlew :app:copyAppReport
+          ./gradlew :data:copyDataReport
       - name: Build with Gradle bootBuildImage, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
