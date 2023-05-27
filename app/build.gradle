@@ -46,9 +46,9 @@ postman {
     outputFileNamePrefix = 'postman'
 }
 
-task copyReport {
+task copyAppReport {
     copy {
         from "build/reports/tests/test"
-        into 'src/main/resources/static/reports'
+        into "src/main/resources/static/reports/${project.name}"
     }
 }
