@@ -1,4 +1,4 @@
-# Hairlog-Spring 
+# Hairlog-Spring
 
 Hairlog-Spring은 [Econovation](https://econovation.kr/about)에서 2022년 1학기에 진행한 [기존 프로젝트](https://github.com/belljun3395/Hairlog)를 Spring 기반으로 전환한 프로젝트 입니다.
 
@@ -17,7 +17,7 @@ git clone https://github.com/belljun3395/hairlogspring.git
 
 cd scripts/
 
-./local-develop-env-reset 
+./local-develop-env-reset
 ```
 
 <br/>
@@ -48,7 +48,7 @@ hairlog
 
 추가로 App에서 필요한 의존성과 Data에서 필요한 의존성이 다른데 **각 모듈의 의존성을 공통 gradle 그리고 각 모듈의 gradle을 통해 분리하여 관리할 수 있다.**
 
-그리고 SpringBoot를 공부할 때 가장 많이 마주하는 MVC 패턴에서는 명확하지 않았던 **엔티티와 도메인의 경계를 명확히 해준다는 점** 역시 멀티 모듈의 특징이라 생각한다. 
+그리고 SpringBoot를 공부할 때 가장 많이 마주하는 MVC 패턴에서는 명확하지 않았던 **엔티티와 도메인의 경계를 명확히 해준다는 점** 역시 멀티 모듈의 특징이라 생각한다.
 
 다만 Hairlog-Spring의 경우 단순 CRUD 기능의 프로젝트로 모듈 분리를 조금 단순화하였다.
 
@@ -120,7 +120,7 @@ public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> login(@RequestBo
 
 ````java
 @PostMapping("/login")
-public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> 
+public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>>
     login(@RequestBody SignMemberRequest signMemberRequest) {
     return ApiResponseGenerator.success(signMemberUseCase.execute(signMemberRequest), HttpStatus.CREATED);
 }
@@ -128,16 +128,16 @@ public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>>
 
 ````java
 @PostMapping("/login")
-public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> 
+public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>>
     login(@RequestBody SignMemberRequest signMemberRequest) {
     return ApiResponseGenerator.success(
-        signMemberUseCase.execute(signMemberRequest), 
+        signMemberUseCase.execute(signMemberRequest),
         HttpStatus.CREATED);
 }
 ````
 
 위와 같이 다양한 코드 작성 스타일이 존재할 수 있다.
- 
+
 
 ```java
 @PostMapping("/login")
@@ -221,4 +221,3 @@ if (profile == "data") {
 자동 문서화와 더불어 또 하나의 특징은 정확한 문서 작성을 돕는다는 점이다.
 
 위의 언급한 바와 같이 테스트를 통해 OAS를 생성하기 때문에 정확한 타입 그리고 형식을 보장 할 수 있다.
-
