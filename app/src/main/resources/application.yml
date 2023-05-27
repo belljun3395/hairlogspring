@@ -4,6 +4,8 @@ spring:
   profiles:
     include:
       - data
+  resources:
+    static-locations: classpath:/static/reports
 
 security:
   jwt:
