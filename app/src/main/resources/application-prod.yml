@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    include:
+      - data-prod
+
+security:
+  jwt:
+    token:
+      validtime:
+        access: 31557600000
+        refresh: 31557600000
+        clientSecret: 3600000
+      secretkey: {TOKEN_SECRETKEY}
