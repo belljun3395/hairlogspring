@@ -37,7 +37,12 @@ class MemberQueryImplTest {
 	@DisplayName("[MemberQuery] findDeletedMemberByEmailQuery")
 	void findDeletedMemberByEmailQuery() {
 		MemberEntity member =
-				MemberEntity.builder().email("delete@delete.com").sex(MemberSex.M).build();
+				MemberEntity.builder()
+						.email("delete@delete.com")
+						.password("password")
+						.name("name")
+						.sex(MemberSex.M)
+						.build();
 		repository.save(member);
 		repository.delete(member);
 		repository.findDeletedMemberByEmailQuery("delete@delete.com");

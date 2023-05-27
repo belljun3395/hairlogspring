@@ -5,6 +5,7 @@ import jongjun.hairlog.data.DataRdsConfig;
 import jongjun.hairlog.data.JpaDataSourceConfig;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
+import jongjun.hairlog.data.enums.MemberSex;
 import jongjun.hairlog.data.repository.DesignerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,13 @@ class DesignerQueryImplTest {
 	@Test
 	@DisplayName("[DesignerQuery] findAllDeletedByMemberIdQuery")
 	void findAllDeletedByMemberIdQuery() {
-		MemberEntity member = MemberEntity.builder().build();
+		MemberEntity member =
+				MemberEntity.builder()
+						.email("test2@test.com")
+						.password("password")
+						.name("name")
+						.sex(MemberSex.M)
+						.build();
 		entityManager.merge(member);
 
 		DesignerEntity designer =

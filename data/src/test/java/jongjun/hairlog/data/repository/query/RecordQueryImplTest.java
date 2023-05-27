@@ -1,12 +1,15 @@
 package jongjun.hairlog.data.repository.query;
 
+import java.util.Date;
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.DataRdsConfig;
 import jongjun.hairlog.data.JpaDataSourceConfig;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.entity.record.CutEntity;
+import jongjun.hairlog.data.enums.MemberSex;
 import jongjun.hairlog.data.enums.RecordCategory;
+import jongjun.hairlog.data.enums.SatisfactionRate;
 import jongjun.hairlog.data.repository.RecordRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,11 +47,26 @@ class RecordQueryImplTest {
 	@Test
 	@DisplayName("[RecordQuery] findAllByCategoryAndMemberIdQuery")
 	void findAllDeletedByMemberIdQuery() {
-		MemberEntity member = MemberEntity.builder().build();
+		MemberEntity member =
+				MemberEntity.builder()
+						.email("test2@test.com")
+						.password("password")
+						.name("name")
+						.sex(MemberSex.M)
+						.build();
 		entityManager.merge(member);
-		DesignerEntity designer = DesignerEntity.builder().build();
+		DesignerEntity designer = DesignerEntity.builder().designerName("name").build();
 		entityManager.merge(designer);
-		CutEntity cut = CutEntity.builder().member(member).designer(designer).build();
+		CutEntity cut =
+				CutEntity.builder()
+						.recordCost(1L)
+						.recordDate(new Date())
+						.recordGrade(SatisfactionRate.H)
+						.cutLength(1L)
+						.cutName("name")
+						.member(member)
+						.designer(designer)
+						.build();
 		repository.save(cut);
 		repository.delete(cut);
 		repository.findAllDeletedByMemberIdQuery(member.getId());
