@@ -11,6 +11,21 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-jackson:${jsonwebtokenVersion}"
 }
 
+def imageName = project.hasProperty('imageName') ? imageName : "app:local"
+def releaseVersion = project.hasProperty('releaseVersion') ? releaseVersion : null
+
+task buildDockerImage {
+    dependsOn bootJar
+
+    doLast {
+        exec {
+            workingDir '.'
+            commandLine 'docker', 'build', '-t', "${imageName}", '--build-arg', "RELEASE_VERSION=${releaseVersion}", '.'
+        }
+    }
+}
+
+
 /*convert snippet to swagger*/
 openapi3 {
     servers = [{ url = "http://localhost:8080" }]
