@@ -30,6 +30,22 @@ cd scripts/
 
 <br/>
 
+## 쿼리 확인을 위한 테스트 코드 결과 확인
+
+[테스트 코드 실행 결과 쿼리 링크](https://hairlog.jongjun.com/reports/data/index.html)
+
+[테스트 코드 링크](https://github.com/belljun3395/hairlogspring/tree/main/data/src/test/java/jongjun/hairlog/data/repository/query)
+
+<img width="1216" alt="스크린샷 2023-05-30 오전 2 30 20" src="https://github.com/belljun3395/hairlogspring/assets/102807742/6bc63a4d-bcb3-49cc-b17f-ba8d8b61bd1a">
+
+확인하고 싶은 테스트 코드를 클릭하고
+
+<img width="1025" alt="스크린샷 2023-05-30 오전 2 32 03" src="https://github.com/belljun3395/hairlogspring/assets/102807742/7b73497e-3c5e-46ee-8080-0b817f8ff866">
+
+Standard Output 탭을 클릭하면 쿼리를 확인할 수 있다.
+
+<br/>
+
 ## 프로젝트 구조
 
 ```
