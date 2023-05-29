@@ -53,6 +53,8 @@ import org.springframework.test.web.servlet.MockMvc;
 class RecordControllerTest {
 
 	private static final Long RECORD_ID = 1L;
+	private static final Long PERM_RECORD_ID = 2L;
+	private static final Long DYEING_RECORD_ID = 3L;
 	private static final Long RECORD_COST = 1L;
 	private static final String RECORD_ETC = "testRecordEtc";
 	private static final Long MEMBER_ID = 1L;
@@ -182,7 +184,7 @@ class RecordControllerTest {
 	void editPermRecord() throws Exception {
 		PermRecordEditRequest request =
 				PermRecordEditRequest.builder()
-						.id(RECORD_ID)
+						.id(PERM_RECORD_ID)
 						.recordDate(new Date())
 						.recordCost(RECORD_COST)
 						.recordEtc(RECORD_ETC)
@@ -254,7 +256,7 @@ class RecordControllerTest {
 	void editDyeingRecord() throws Exception {
 		DyeingRecordEditRequest request =
 				DyeingRecordEditRequest.builder()
-						.id(RECORD_ID)
+						.id(DYEING_RECORD_ID)
 						.recordDate(new Date())
 						.recordCost(RECORD_COST)
 						.recordEtc(RECORD_ETC)
