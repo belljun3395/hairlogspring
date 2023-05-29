@@ -33,11 +33,11 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 			"RecordEntity.findDeletedRecordsEntity";
 
 	private static final String RECORD_FINDALLBY_MEMBERID =
-			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 order by r.record_id desc";
+			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 order by r.record_date desc";
 
 	/** fixme DTO 활용으로 수정 */
 	private static final String RECORD_FINDBY_CATEGORY_MEMBERID =
-			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 and r.record_category = ?2 order by r.record_id desc";
+			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 and r.record_category = ?2 order by r.record_date desc";
 
 	private static final String RECORD_CUT_FINDBY_MEMBERID =
 			"select r.record_id, r.record_date, r.record_cost, r.record_etc, r.record_grade, r.member_fk, r.designer_fk, rc.cut_name, rc.cut_length "
