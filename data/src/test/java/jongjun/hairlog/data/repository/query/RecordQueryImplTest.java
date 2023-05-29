@@ -11,6 +11,7 @@ import jongjun.hairlog.data.enums.MemberSex;
 import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.enums.SatisfactionRate;
 import jongjun.hairlog.data.repository.RecordRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
+@Slf4j
 @ActiveProfiles("test")
 @DataJpaTest
 @ContextConfiguration(classes = {DataRdsConfig.class, JpaDataSourceConfig.class})
@@ -34,6 +36,7 @@ class RecordQueryImplTest {
 	@DisplayName("[RecordQuery] findAllByMemberIdQuery")
 	void findAllByMemberIdQuery() {
 		PageRequest page = PageRequest.of(0, 5);
+		log.info("[RecordQuery] findAllByMemberIdQuery");
 		repository.findAllByMemberIdQuery(page, 1L);
 	}
 
@@ -41,6 +44,7 @@ class RecordQueryImplTest {
 	@DisplayName("[RecordQuery] findAllByCategoryAndMemberIdQuery")
 	void findAllByCategoryAndMemberIdQuery() {
 		PageRequest page = PageRequest.of(0, 5);
+		log.info("[RecordQuery] findAllByCategoryAndMemberIdQuery");
 		repository.findAllByCategoryAndMemberIdQuery(page, RecordCategory.CUT, 1L);
 	}
 
@@ -69,24 +73,29 @@ class RecordQueryImplTest {
 						.build();
 		repository.save(cut);
 		repository.delete(cut);
+
+		log.info("[RecordQuery] findAllByCategoryAndMemberIdQuery");
 		repository.findAllDeletedByMemberIdQuery(member.getId());
 	}
 
 	@Test
 	@DisplayName("[RecordQuery] findByIdAndCategoryAndMemberId CUT")
 	void findByIdAndCategoryAndMemberIdCut() {
+		log.info("[RecordQuery] findByIdAndCategoryAndMemberId CUT");
 		repository.findByIdAndCategoryAndMemberId(1L, RecordCategory.CUT, 1L);
 	}
 
 	@Test
 	@DisplayName("[RecordQuery] findByIdAndCategoryAndMemberId PERM")
 	void findByIdAndCategoryAndMemberIdPerm() {
+		log.info("[RecordQuery] findByIdAndCategoryAndMemberId PERM");
 		repository.findByIdAndCategoryAndMemberId(2L, RecordCategory.PERM, 1L);
 	}
 
 	@Test
 	@DisplayName("[RecordQuery] findByIdAndCategoryAndMemberId DYEING")
 	void findByIdAndCategoryAndMemberIdDyeing() {
+		log.info("[RecordQuery] findByIdAndCategoryAndMemberId DYEING");
 		repository.findByIdAndCategoryAndMemberId(3L, RecordCategory.DYEING, 1L);
 	}
 }
