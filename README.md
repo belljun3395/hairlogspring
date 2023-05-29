@@ -24,7 +24,7 @@ cd scripts/
 
 ## API 목록
 
-[POSTMAN DOCS LINK](https://documenter.getpostman.com/view/17873656/2s93kz551P)
+[POSTMAN DOCS LINK](https://documenter.getpostman.com/view/17873656/2s93m8zLPq)
 
 <img width="389" alt="Hairlog_API목록" src="https://github.com/belljun3395/hairlog-react/assets/102807742/bc4a6349-fd76-4c89-99a7-1332cc2a980e">
 
