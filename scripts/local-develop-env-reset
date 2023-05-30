@@ -4,8 +4,3 @@ cd ../resources/hairlog-local-develop-environment
 docker-compose down
 docker-compose up -d
 sleep 10
-
-cd ../../
-./gradlew :data:flywayClean :data:flywayMigrate
-
-./gradlew :data:flywayMigrate -Dflyway.ignoreMissingMigrations=true -Pprofile=data

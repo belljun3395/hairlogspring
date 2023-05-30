@@ -46,9 +46,7 @@ jobs:
         run: |
           docker-compose -f resources/hairlog-local-develop-environment/docker-compose.yml up -d
           sleep 20
-          ./gradlew :data:flywayClean :data:flywayMigrate
-          ./gradlew :data:flywayMigrate -Dflyway.ignoreMissingMigrations=true -Pprofile=data
-          ./gradlew test -Pprofile=test
+          ./gradlew test -Pprofile=test,data
       - name: Create Swagger API Spec and Reports
         run: |
           ./gradlew :app:openapi3

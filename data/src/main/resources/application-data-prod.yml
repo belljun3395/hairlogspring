@@ -4,6 +4,14 @@ hairlog:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    url: ${DB_HOSTNAME}/hairlog?allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    user: ${DB_USERNAME}
+    password: ${DB_USERNAME}
+    locations: classpath:db/migration/data
+    sql-migration-suffixes: sql
+    baseline-on-migrate: true
+    baseline-version: 0
 
   jpa:
     hibernate:
