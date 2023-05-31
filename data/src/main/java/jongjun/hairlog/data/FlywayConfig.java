@@ -27,9 +27,9 @@ public class FlywayConfig {
 	@Bean
 	public FlywayMigrationStrategy flywayMigrationStrategy() {
 		return flyway -> {
-			flyway.baseline();
-			flyway.migrate();
 			flyway.validate();
+			flyway.migrate();
+			flyway.baseline();
 		};
 	}
 
