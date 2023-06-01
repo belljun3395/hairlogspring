@@ -1,0 +1,1 @@
+alter table member_entity drop constraint unique_member_email
