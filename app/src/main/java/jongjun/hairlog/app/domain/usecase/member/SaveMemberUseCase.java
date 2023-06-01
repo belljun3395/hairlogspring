@@ -23,6 +23,9 @@ public class SaveMemberUseCase {
 
 	public Long execute(MemberRequest request) {
 		MemberEntity data = converter.to(request);
+		if (repository.isExistEmail(request.getEmail())) {
+			throw new SecurityException("이미 존재하는 이메일입니다.");
+		}
 		repository.save(data);
 		return data.getId();
 	}
