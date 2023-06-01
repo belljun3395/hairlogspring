@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.flyway.FlywayProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
 @ConditionalOnClass(value = org.flywaydb.core.Flyway.class)
@@ -42,13 +41,6 @@ public class FlywayConfig {
 	@Bean
 	@ConfigurationProperties(prefix = "hairlog.flyway")
 	public FlywayProperties flywayProperties() {
-		return new FlywayProperties();
-	}
-
-	@Profile("data")
-	@Bean
-	@ConfigurationProperties(prefix = "data.flyway")
-	public FlywayProperties flywayDataProperties() {
 		return new FlywayProperties();
 	}
 

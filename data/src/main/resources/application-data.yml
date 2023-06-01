@@ -23,13 +23,3 @@ hairlog:
 logging:
   level:
     sql: debug
-
-data:
-  flyway:
-    url: jdbc:mysql://localhost:13306/hairlog?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    user: root
-    password: root
-    locations: ["classpath:db/migration", "classpath:db/migration/data"]
-    sql-migration-suffixes: sql
-    baseline-on-migrate: true
-    baseline-version: 0

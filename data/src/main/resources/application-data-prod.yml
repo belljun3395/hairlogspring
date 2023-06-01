@@ -8,7 +8,7 @@ hairlog:
     url: ${DB_HOSTNAME}/hairlog?allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
     user: ${DB_USERNAME}
     password: ${DB_USERNAME}
-    locations: classpath:db/migration/data
+    locations: classpath:db/migration
     sql-migration-suffixes: sql
     baseline-on-migrate: true
     baseline-version: 0
