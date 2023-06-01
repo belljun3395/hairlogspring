@@ -156,9 +156,9 @@ select d.designer_id from designer_entity d where d.designer_name like '%zong%';
 
 결과
 
-<img width="828" alt="스크린샷 2023-06-01 오후 2 30 16" src="https://github.com/belljun3395/hairlogspring/assets/102807742/c3c4bba2-a66c-4718-898f-a4982542a234">
-
 <img width="949" alt="스크린샷 2023-06-01 오후 2 30 05" src="https://github.com/belljun3395/hairlogspring/assets/102807742/072f470d-f069-4bdc-b34c-5cc6addeb390">
+
+<img width="828" alt="스크린샷 2023-06-01 오후 2 30 16" src="https://github.com/belljun3395/hairlogspring/assets/102807742/c3c4bba2-a66c-4718-898f-a4982542a234">
 
 ```
 fulltext index : 20,001개 행, 0.110 초
@@ -197,9 +197,9 @@ select d.designer_id from designer_entity d where d.designer_name like '%find%';
 
 결과
 
-<img width="837" alt="스크린샷 2023-06-01 오후 2 46 32" src="https://github.com/belljun3395/hairlogspring/assets/102807742/f475f828-3f68-4c86-8a88-a0588bfd9806">
-
 <img width="962" alt="스크린샷 2023-06-01 오후 2 46 23" src="https://github.com/belljun3395/hairlogspring/assets/102807742/d675536f-ac1d-418e-adfb-e5600f060be1">
+
+<img width="837" alt="스크린샷 2023-06-01 오후 2 46 32" src="https://github.com/belljun3395/hairlogspring/assets/102807742/f475f828-3f68-4c86-8a88-a0588bfd9806">
 
 ```
 fulltext index : 0.012 초
@@ -212,7 +212,7 @@ like : 0.156 초
 
 <br/>
 
-마지막으로 NGRAM을 활용한 쿼리를 확인해보자.
+마지막으로 NGRAM을 활용시 주의사항과 예제를 쿼리를 통해 확인해보자.
 
 쿼리
 
@@ -231,6 +231,12 @@ select d.designer_id from designer_entity d where match(d.designer_name) against
 _자세한 것은 더 잘 작성한 [블로그](https://gongzza.github.io/database/mysql-fulltext-search/) 참고_
 
 간단히 설명하면 Stopwords에 `i`가 포함되어 있어 `i`로 시작하거나 끝나는 단어는 인덱스로 저장해두지 않기에 조회되지 않는 것이다.
+
+하지만 `nd`의 경우 Stopwords에 포함되어 있지 않기에 조회가 되는 것을 확인할 수 있다.
+
+```
+full text index with parser ngram : 4개 행, 0.005초
+``` 
 
 <br/>
 
