@@ -69,4 +69,14 @@ class MemberQueryImplTest {
 		log.info("[MemberQuery] findByEmailAuthQuery");
 		repository.findByEmailAuthQuery(memberEmail);
 	}
+
+	@Test
+	@DisplayName("[MemberQuery] isExistEmailQuery")
+	void isExistEmailQuery() {
+		initializer.initialize();
+		String memberEmail = initializer.getData().getEmail();
+
+		log.info("[MemberQuery] isExistEmailQuery");
+		repository.isExistEmail(memberEmail);
+	}
 }
