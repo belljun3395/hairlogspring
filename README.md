@@ -362,6 +362,32 @@ if (profile == "data") {
 
 <br/>
 
+#### 수정 사항
+
+기존 gradle을 활용한 설정에서 bean 설정으로 변경
+
+**문제 사항**
+
+```java
+/**
+ * Locations of migrations scripts. Can contain the special "{vendor}" placeholder to
+ * use vendor-specific locations.
+ */
+private List<String> locations = new ArrayList<>(Collections.singletonList("classpath:db/migration"));
+```
+
+위의 코드를 보면 locations의 기본 값은 classpath:db/migration이고
+
+``` java
+public void setLocations(List<String> locations) {
+    this.locations = locations;
+}
+```
+
+setLocations이 있지만 시도해본 결과 변경이 되지 않는다.
+
+그래서 이전의 gradle 설정을 통해 data 폴더로 분리한 방법을 사용하지 못하게 되었다.
+
 ### OpenApi Specification 기반 문서화
 
 기존에 문서화를 위한 Swagger을 작성할 때 가장 문제가 되는 것은 Swagger을 위한 어노테이션이 코드 가독성을 해친다는 것 이었다.
