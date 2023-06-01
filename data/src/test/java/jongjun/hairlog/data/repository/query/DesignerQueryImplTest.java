@@ -4,66 +4,64 @@ import javax.persistence.EntityManager;
 import jongjun.hairlog.data.DataRdsConfig;
 import jongjun.hairlog.data.JpaDataSourceConfig;
 import jongjun.hairlog.data.entity.DesignerEntity;
-import jongjun.hairlog.data.entity.MemberEntity;
-import jongjun.hairlog.data.enums.MemberSex;
 import jongjun.hairlog.data.repository.DesignerRepository;
+import jongjun.hairlog.data.repository.TestConfig;
+import jongjun.hairlog.data.repository.initializer.DesignerInitializer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @ActiveProfiles("test")
-@DataJpaTest
-@ContextConfiguration(classes = {DataRdsConfig.class, JpaDataSourceConfig.class})
+@Rollback
+@Transactional
+@SpringBootTest
+@ContextConfiguration(classes = {TestConfig.class, DataRdsConfig.class, JpaDataSourceConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class DesignerQueryImplTest {
 
 	@Autowired EntityManager entityManager;
 	@Autowired DesignerRepository repository;
+	@Autowired DesignerInitializer initializer;
 
 	@Test
 	@DisplayName("[DesignerQuery] searchByNameAndMemberIdQuery")
 	void searchByNameAndMemberIdQuery() {
+		initializer.initialize();
+		String designerName = initializer.getData().getDesignerName();
+		Long memberId = initializer.getMember().getId();
+
 		log.info("[DesignerQuery] searchByNameAndMemberIdQuery");
-		repository.searchByNameAndMemberIdQuery("testdname", 1L);
+		repository.searchByNameAndMemberIdQuery(designerName, memberId);
 	}
 
 	@Test
 	@DisplayName("[DesignerQuery] findAllByMemberIdQuery")
 	void findAllByMemberIdQuery() {
+		initializer.initialize();
+		Long memberId = initializer.getMember().getId();
+
 		log.info("[DesignerQuery] findAllByMemberIdQuery");
-		repository.findAllByMemberIdQuery(1L);
+		repository.findAllByMemberIdQuery(memberId);
 	}
 
 	@Test
 	@DisplayName("[DesignerQuery] findAllDeletedByMemberIdQuery")
 	void findAllDeletedByMemberIdQuery() {
-		MemberEntity member =
-				MemberEntity.builder()
-						.email("test2@test.com")
-						.password("password")
-						.name("name")
-						.sex(MemberSex.M)
-						.build();
-		entityManager.merge(member);
+		initializer.initialize();
+		DesignerEntity data = initializer.getData();
+		Long memberId = initializer.getMember().getId();
 
-		DesignerEntity designer =
-				DesignerEntity.builder()
-						.designerName("dn")
-						.designerFav(true)
-						.designerSalon("ds")
-						.member(member)
-						.build();
-		repository.save(designer);
-
-		repository.delete(designer);
+		repository.delete(data);
 
 		log.info("[DesignerQuery] findAllDeletedByMemberIdQuery");
-		repository.findAllDeletedByMemberIdQuery(member.getId());
+		repository.findAllDeletedByMemberIdQuery(memberId);
 	}
 }
