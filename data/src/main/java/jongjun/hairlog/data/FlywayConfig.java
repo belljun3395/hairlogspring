@@ -2,6 +2,7 @@ package jongjun.hairlog.data;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.ClassicConfiguration;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,13 +18,20 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnBean(value = javax.sql.DataSource.class)
 @AutoConfigureAfter(value = {JpaDataSourceConfig.class})
 public class FlywayConfig {
+	private static final String SERVICE_NAME = "hairlog";
+	private static final String FLYWAY = SERVICE_NAME + "Flyway";
+	private static final String FLYWAY_PROPERTIES = SERVICE_NAME + "FlywayProperties";
+	private static final String FLYWAY_MIGRATION_STRATEGY = SERVICE_NAME + "FlywayMigrationStrategy";
+	private static final String FLYWAY_INITIALIZER = SERVICE_NAME + "FlywayInitializer";
+	private static final String FLYWAY_CONFIGURATION = SERVICE_NAME + "FlywayConfiguration";
 
-	@Bean
-	public Flyway flyway(ClassicConfiguration configuration) {
+	@Bean(name = FLYWAY)
+	public Flyway flyway(
+			@Qualifier(value = FLYWAY_CONFIGURATION) ClassicConfiguration configuration) {
 		return new Flyway(configuration);
 	}
 
-	@Bean
+	@Bean(name = FLYWAY_MIGRATION_STRATEGY)
 	public FlywayMigrationStrategy flywayMigrationStrategy() {
 		return flyway -> {
 			flyway.validate();
@@ -32,20 +40,23 @@ public class FlywayConfig {
 		};
 	}
 
-	@Bean
+	@Bean(name = FLYWAY_INITIALIZER)
 	public FlywayMigrationInitializer flywayInitializer(
-			Flyway flyway, FlywayMigrationStrategy flywayMigrationStrategy) {
+			@Qualifier(value = FLYWAY) Flyway flyway,
+			@Qualifier(value = FLYWAY_MIGRATION_STRATEGY)
+					FlywayMigrationStrategy flywayMigrationStrategy) {
 		return new FlywayMigrationInitializer(flyway, flywayMigrationStrategy);
 	}
 
-	@Bean
-	@ConfigurationProperties(prefix = "hairlog.flyway")
+	@Bean(name = FLYWAY_PROPERTIES)
+	@ConfigurationProperties(prefix = SERVICE_NAME + ".flyway")
 	public FlywayProperties flywayProperties() {
 		return new FlywayProperties();
 	}
 
-	@Bean
-	public ClassicConfiguration configuration(FlywayProperties flywayProperties) {
+	@Bean(name = FLYWAY_CONFIGURATION)
+	public ClassicConfiguration configuration(
+			@Qualifier(value = FLYWAY_PROPERTIES) FlywayProperties flywayProperties) {
 		ClassicConfiguration configuration = new ClassicConfiguration();
 		configuration.configure(flywayProperties.getJdbcProperties());
 		return configuration;
