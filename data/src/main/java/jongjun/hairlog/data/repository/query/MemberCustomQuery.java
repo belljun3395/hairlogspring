@@ -16,5 +16,5 @@ public interface MemberCustomQuery {
 
 	Optional<MemberAuthInfoDTO> findByEmailAuthQuery(String email);
 
-	Boolean isExistEmail(String email);
+	Boolean isExistEmailQuery(String email);
 }

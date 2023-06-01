@@ -77,6 +77,6 @@ class MemberQueryImplTest {
 		String memberEmail = initializer.getData().getEmail();
 
 		log.info("[MemberQuery] isExistEmailQuery");
-		repository.isExistEmail(memberEmail);
+		repository.isExistEmailQuery(memberEmail);
 	}
 }

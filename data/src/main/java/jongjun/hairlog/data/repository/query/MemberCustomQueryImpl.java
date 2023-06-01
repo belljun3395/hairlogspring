@@ -68,7 +68,7 @@ public class MemberCustomQueryImpl implements MemberCustomQuery {
 				.findFirst();
 	}
 
-	public Boolean isExistEmail(String email) {
+	public Boolean isExistEmailQuery(String email) {
 		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 		Query query =
 				em.createNativeQuery(MEMBER_ISEXIST_EMAIL_NATIVE_QUERY)
