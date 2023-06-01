@@ -15,4 +15,6 @@ public interface MemberCustomQuery {
 	Optional<MemberDeletedDTO> findDeletedMemberByEmailQuery(String email);
 
 	Optional<MemberAuthInfoDTO> findByEmailAuthQuery(String email);
+
+	Boolean isExistEmail(String email);
 }

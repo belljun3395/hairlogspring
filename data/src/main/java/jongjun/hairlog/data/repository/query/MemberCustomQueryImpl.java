@@ -3,6 +3,7 @@ package jongjun.hairlog.data.repository.query;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import jongjun.hairlog.data.dto.member.CheckEmailDTO;
 import jongjun.hairlog.data.dto.member.MemberAuthInfoDTO;
 import jongjun.hairlog.data.dto.member.MemberDeletedDTO;
 import jongjun.hairlog.data.dto.member.MemberIdDTO;
@@ -33,6 +34,8 @@ public class MemberCustomQueryImpl implements MemberCustomQuery {
 			"select new "
 					+ MEMBER_DTO_PACKAGE
 					+ ".MemberAuthInfoDTO(m.id, m.name, m.email, m.password) from MemberEntity m where m.email = :email";
+	private static final String MEMBER_ISEXIST_EMAIL_NATIVE_QUERY =
+			"select count(*) from member_entity m where m.member_email = ?1 and m.deleted = 0;";
 	private final EntityManager em;
 
 	public Optional<MemberIdDTO> findByIdQuery(Long id) {
@@ -63,5 +66,13 @@ public class MemberCustomQueryImpl implements MemberCustomQuery {
 				.setParameter(EMAIL_PARAMETER, email)
 				.getResultStream()
 				.findFirst();
+	}
+
+	public Boolean isExistEmail(String email) {
+		JpaResultMapper jpaResultMapper = new JpaResultMapper();
+		Query query =
+				em.createNativeQuery(MEMBER_ISEXIST_EMAIL_NATIVE_QUERY)
+						.setParameter(EMAIL_NATIVE_PARAMETER, email);
+		return jpaResultMapper.uniqueResult(query, CheckEmailDTO.class).isExist();
 	}
 }
