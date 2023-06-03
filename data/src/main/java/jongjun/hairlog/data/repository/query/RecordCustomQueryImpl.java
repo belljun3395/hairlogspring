@@ -112,7 +112,7 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 
 		Query query = createQuery(id, category, memberId);
 
-		return Optional.ofNullable(creatReturn(query, category));
+		return Optional.ofNullable(mapQueryAndDTO(query, category));
 	}
 
 	private Query createQuery(Long id, RecordCategory category, Long memberId) {
@@ -134,7 +134,7 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 		}
 	}
 
-	private RecordDTO creatReturn(Query query, RecordCategory category) {
+	private RecordDTO mapQueryAndDTO(Query query, RecordCategory category) {
 		JpaResultMapper jpaResultMapper = new JpaResultMapper();
 		switch (category) {
 			case CUT:
