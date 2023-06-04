@@ -100,10 +100,12 @@ alter table designer_entity add fulltext index idx_ft_name (designer_name);
 
 환경
 
-500000개의 데이터
+designer_name의 값이 "kim jong jun + desinger_id" 인 500000개의 기본 데이터 구축
 <img width="1015" alt="스크린샷 2023-06-01 오후 2 05 21" src="https://github.com/belljun3395/hairlogspring/assets/102807742/21fc5b29-9f2d-4c5a-9ea1-458182036471">
 
-zzoong이라는 designer_name 값을 가진 id가 250000 ~ 270000, 350000 ~ 370000인 연속된 데이터
+**1) fulltext index 쿼리 조회 성능 측정을 위한 테스트**
+
+id가 250000 ~ 270000, 350000 ~ 370000인 연속된 데이터의 designer_name의 값을 "kim **zzong** jun"으로 변경
 
 <img width="1004" alt="스크린샷 2023-06-01 오후 2 10 21" src="https://github.com/belljun3395/hairlogspring/assets/102807742/d28a7e7e-364d-4d19-b2ad-1b5ccf8743b3">
 
@@ -113,7 +115,8 @@ zzoong이라는 designer_name 값을 가진 id가 250000 ~ 270000, 350000 ~ 3700
 
 <img width="1006" alt="스크린샷 2023-06-01 오후 2 09 49" src="https://github.com/belljun3395/hairlogspring/assets/102807742/0681a768-1056-4b43-9963-9b89f015ea9d">
 
-zzong 쿼리
+zzong 조회 쿼리
+
 ```sql
 select d.designer_id from designer_entity d where match(d.designer_name) against('*zzong*' in natural language mode);
 
@@ -126,21 +129,26 @@ select d.designer_id from designer_entity d where d.designer_name like '%zzong%'
 
 결과
 
-<img width="821" alt="스크린샷 2023-06-01 오후 2 18 06" src="https://github.com/belljun3395/hairlogspring/assets/102807742/d0e05dde-7567-4bd2-8246-87f5d81dd5a3">
-
 <img width="958" alt="스크린샷 2023-06-01 오후 2 17 57" src="https://github.com/belljun3395/hairlogspring/assets/102807742/afc5e9bc-a846-4468-a299-5091bfa21f13">
+
+<img width="821" alt="스크린샷 2023-06-01 오후 2 18 06" src="https://github.com/belljun3395/hairlogspring/assets/102807742/d0e05dde-7567-4bd2-8246-87f5d81dd5a3">
 
 ```
 fulltext index : 0.118 초
 like : 0.107 초
 ```
 
-예상치 못한 결과가 였는데 이를 통해 **찾아야하는 데이터의 수가 동일할 때는 fulltext index가 적용된 칼럼의 성능이 떨진다는 것을 확인 할 수 있었다.**
+예상치 못한 결과가 였는데 이를 통해 **찾아야하는 데이터의 수가 동일할 때는 fulltext index가 적용된 칼럼의 성능이 떨진다는 것을 확인 할 수 있었다.(정확성 테스트)**
+
+(이는 **테스트 데이터가 연속된 것을 고려하지 않았기 때문에 발생한 문제**로 추측된다.)
 
 <br/>
-그럼 zong이라는 designer_name 값을 가진 데이터를 추가하고 난 이후에 zong을 fulltext와 like로 조회해 본다면?
 
-id가 450000 ~ 470000인 연속된 데이터 추가
+**2) fulltext index가 적용된 칼럼의 값을 "단어"단위로 분리하여 index를 만드는 fulltext index의 특징 확인하기 위한 테스트**
+
+id가 450000 ~ 470000인 연속된 데이터의 designer_name의 값을 "kim **zong** jun"으로 변경
+
+(이 데이터 변경을 통해 zzong 데이터 40000개와 zong 데이터 20000개가 존재하는 데이터 환경이 구축된 것)
 
 <img width="996" alt="스크린샷 2023-06-01 오후 2 12 51" src="https://github.com/belljun3395/hairlogspring/assets/102807742/46f58bd5-c990-451a-9458-65a902e9ce04">
 
@@ -167,17 +175,21 @@ like : 60,003개 행, 0.167 초
 
 왜 다른 조회 결과가 나왔을까?
 
-full text index는 단어별로 index를 만든다. (`WITH PARSER NGRAM`를 사용하면 글자별로 만들 수 있다.)
+full text index는 앞서 언급한 것처럼 단어별로 index를 만든다. (`WITH PARSER NGRAM`를 사용하면 글자별로 만들 수 있다.)
 
-그렇기에 해당 index를 사용하는 full text index 쿼리는 **zong이라는 단어**만 조회할 수 있는 것이고
+그렇게 만든 index를 사용하는 full text index 쿼리는 zzong과 zong을 구분하여 **zong이라는 단어**만 조회할 수 있는 것이고
 
 하지만 like 쿼리는 **zong이라는 글자가 포함되는 모든 데이터**를 조회하여 데이터 조회 결과가 달라진 것이다.
 
+이를통해 full text index가 like보다 더 정확한 결과를 조회할 수 있다는 것을 알게되었다.
+
 <br/>
 
-지금까지는 연속된 데이터를 조회하였다면 이번에는 **랜덤한 순서의 데이터**를 조회해보자.
+**3) 랜덤한 순서의 데이터 조회**
 
-데이터 생성
+이전 테스트의 경우 연속된 데이터를 조회하는 테스트였다면 이번 테스트는 랜덤한 순서의 데이터를 조회하는 테스트이다.
+
+아래 쿼리를 통해 랜덤한 데이터 생성
 
 ```sql
 update designer_entity d set d.designer_name = 'find me jong' where d.designer_id = 3;
@@ -206,9 +218,9 @@ fulltext index : 0.012 초
 like : 0.156 초
 ```
 
-연속된 데이터에서의 결과에 비해 확연한 성능 차이를 보여주었다.
+연속된 데이터에서의 결과에 비해 확연한 성능 차이를 보여주었다. (**12배** 성능 향상)
 
-이 역시 fulltext index는 단어별로 생성되어 있는 index를 사용하기 때문에 차이를 보이는 것이다.
+이를 통해 fulltext 인덱스를 사용하는 것이 성능면에서나 정확성면에서나 like보다 우수하다는 것을 확인할 수 있었다.
 
 <br/>
 
@@ -318,7 +330,7 @@ public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> login(
 
 docker 환경에서 mysql과 flyway를 활용하여 개발 환경을 구성하였다.
 
-scripts 폴더 아래 스크립트에서 flyway를 통하 DB 마이그래이션을 진행한다.
+scripts 폴더 아래 스크립트에서 flyway를 통한 DB 마이그래이션을 진행한다.
 
 ```
 ./gradlew :data:flywayClean :data:flywayMigrate
