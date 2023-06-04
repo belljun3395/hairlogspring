@@ -33,26 +33,26 @@ public class RecordCustomQueryImpl implements RecordCustomQuery {
 			"RecordEntity.findDeletedRecordsEntity";
 
 	private static final String RECORD_FINDALLBY_MEMBERID =
-			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 order by r.record_date desc";
+			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 and r.deleted = false order by r.record_date desc";
 
 	/** fixme DTO 활용으로 수정 */
 	private static final String RECORD_FINDBY_CATEGORY_MEMBERID =
-			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 and r.record_category = ?2 order by r.record_date desc";
+			"select r.record_id, r.record_date, r.record_category from record_entity r where r.member_fk = ?1 and r.record_category = ?2 and r.deleted = false order by r.record_date desc";
 
 	private static final String RECORD_CUT_FINDBY_MEMBERID =
 			"select r.record_id, r.record_date, r.record_cost, r.record_etc, r.record_grade, r.member_fk, r.designer_fk, rc.cut_name, rc.cut_length "
 					+ "from record_entity r "
 					+ "join record_cut_entity rc on (r.record_id = ?2 and r.record_id = rc.record_id) "
-					+ "where r.member_fk = ?1";
+					+ "where r.member_fk = ?1 and r.deleted = false";
 	private static final String RECORD_PERM_FINDBY_MEMBERID =
 			"select r.record_id, r.record_date, r.record_cost, r.record_etc, r.record_grade, r.member_fk, r.designer_fk, rp.perm_name, rp.perm_time, rp.perm_hurt "
 					+ "from record_entity r "
 					+ "join record_perm_entity rp on (r.record_id = ?2 and r.record_id = rp.record_id) "
-					+ "where r.member_fk = ?1";
+					+ "where r.member_fk = ?1 and r.deleted = false";
 	private static final String RECORD_DYEING_FINDBY_MEMBERID =
 			"select r.record_id, r.record_date, r.record_cost, r.record_etc, r.record_grade, r.member_fk, r.designer_fk, rd.dyeing_color, rd.dyeing_decolorization, rd.dyeing_time, rd.dyeing_hurt "
 					+ "from record_entity r join record_dyeing_entity rd on (r.record_id = ?2 and r.record_id = rd.record_id) "
-					+ "where r.member_fk = ?1";
+					+ "where r.member_fk = ?1 and r.deleted = false";
 	private static final String RECORD_COUNTS =
 			"select count(r.id) from RecordEntity r where r.member.id = :memberId";
 	private static final String RECORD_CATEGORY_COUNTS =
