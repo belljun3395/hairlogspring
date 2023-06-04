@@ -2,7 +2,6 @@ package jongjun.hairlog.data.entity.record;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -77,11 +76,11 @@ public abstract class RecordEntity {
 	@Column(name = "record_grade", nullable = false)
 	private SatisfactionRate recordGrade;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_fk")
 	private MemberEntity member;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "designer_fk")
 	private DesignerEntity designer;
 
