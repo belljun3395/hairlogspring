@@ -1,7 +1,5 @@
 package jongjun.hairlog.app.config.security;
 
-import java.util.Arrays;
-import java.util.List;
 import jongjun.hairlog.app.config.security.filter.token.AuthProvider;
 import jongjun.hairlog.app.config.security.filter.token.AuthenticationFilter;
 import jongjun.hairlog.app.config.security.handler.DelegatedAccessDeniedHandler;
@@ -69,6 +67,7 @@ public class SecurityConfig {
 	@Bean
 	@Profile(value = "prod")
 	public SecurityFilterChain prodSecurityFilterChain(HttpSecurity http) throws Exception {
+		http.cors().configurationSource(corsConfigurationSource());
 		http.csrf().disable();
 		http.formLogin().disable();
 		http.httpBasic().disable();
@@ -102,13 +101,12 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	@Profile("!prod")
-	CorsConfigurationSource corsConfigurationSource() {
+	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.setAllowedOriginPatterns(List.of("*"));
-		configuration.setAllowedMethods(Arrays.asList("HEAD", "POST", "GET", "DELETE", "PUT"));
-		configuration.setAllowedHeaders(List.of("*"));
+		configuration.addAllowedOriginPattern("*");
+		configuration.addAllowedHeader("*");
+		configuration.addAllowedMethod("*");
 		configuration.setAllowCredentials(true);
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
