@@ -236,7 +236,7 @@ _자세한 것은 더 잘 작성한 [블로그](https://gongzza.github.io/databa
 
 ```
 full text index with parser ngram : 4개 행, 0.005초
-``` 
+```
 
 <br/>
 
