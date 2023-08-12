@@ -1,25 +1,25 @@
-package jongjun.hairlog.data.repository.initializer;
+package jongjun.hairlog.data.config.initializer;
 
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.DesignerRepository;
-import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.test.context.TestComponent;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Component
+@TestComponent
 public class DesignerInitializer {
 
 	@Autowired private DesignerRepository repository;
-	@Autowired private MemberRepository memberRepository;
 	@Autowired private MemberInitializer memberInitializer;
 
 	private DesignerEntity data;
 
 	private MemberEntity member;
 
+	@Transactional
 	public void initialize() {
 		log.info("=== initialize test ===");
 		repository.deleteAll();

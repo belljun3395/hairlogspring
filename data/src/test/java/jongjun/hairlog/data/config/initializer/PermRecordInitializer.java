@@ -1,37 +1,39 @@
-package jongjun.hairlog.data.repository.initializer;
+package jongjun.hairlog.data.config.initializer;
 
 import java.util.Date;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.entity.record.CommonRecordInfo;
-import jongjun.hairlog.data.entity.record.CutEntity;
+import jongjun.hairlog.data.entity.record.PermEntity;
 import jongjun.hairlog.data.entity.record.RecordEntity;
+import jongjun.hairlog.data.enums.HurtRate;
 import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.enums.SatisfactionRate;
-import jongjun.hairlog.data.repository.CutRepository;
 import jongjun.hairlog.data.repository.DesignerRepository;
 import jongjun.hairlog.data.repository.MemberRepository;
+import jongjun.hairlog.data.repository.PermRepository;
 import jongjun.hairlog.data.repository.RecordRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.test.context.TestComponent;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Component
-public class CutRecordInitializer {
-
-	@Autowired private CutRepository repository;
+@TestComponent
+public class PermRecordInitializer {
+	@Autowired private PermRepository repository;
 	@Autowired private RecordRepository recordRepository;
 	@Autowired private MemberRepository memberRepository;
 	@Autowired private DesignerRepository designerRepository;
 	@Autowired private MemberInitializer memberInitializer;
 	@Autowired private DesignerInitializer designerInitializer;
 
-	private CutEntity data;
+	private PermEntity data;
 	private RecordEntity record;
-	private DesignerEntity designer;
 	private MemberEntity member;
+	private DesignerEntity designer;
 
+	@Transactional
 	public void initialize() {
 		log.info("=== initialize ===");
 		repository.deleteAll();
@@ -45,7 +47,7 @@ public class CutRecordInitializer {
 		for (int i = 0; i < 5; i++) this.save();
 	}
 
-	public CutEntity getData() {
+	public PermEntity getData() {
 		return this.data;
 	}
 
@@ -62,11 +64,19 @@ public class CutRecordInitializer {
 	}
 
 	private void save() {
-		designerInitializer.initialize();
-		designer = designerInitializer.getData();
 		memberInitializer.initialize();
 		member = memberInitializer.getData();
-		this.data = repository.save(CutEntity.builder().id(1L).cutName("cutN").cutLength(1L).build());
+
+		designerInitializer.initialize();
+		designer = designerInitializer.getData();
+		this.data =
+				repository.save(
+						PermEntity.builder()
+								.id(1L)
+								.permName("permName")
+								.permTime(1L)
+								.permHurt(HurtRate.H)
+								.build());
 		this.record =
 				recordRepository.save(
 						RecordEntity.builder()
@@ -78,7 +88,7 @@ public class CutRecordInitializer {
 												.recordEtc("etc")
 												.recordGrade(SatisfactionRate.H)
 												.build())
-								.recordCategory(RecordCategory.CUT)
+								.recordCategory(RecordCategory.PERM)
 								.subId(data.getId())
 								.member(member)
 								.designer(designer)

@@ -1,51 +1,53 @@
-package jongjun.hairlog.data.repository.initializer;
+package jongjun.hairlog.data.config.initializer;
 
 import java.util.Date;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.entity.record.CommonRecordInfo;
-import jongjun.hairlog.data.entity.record.DyeingEntity;
+import jongjun.hairlog.data.entity.record.CutEntity;
 import jongjun.hairlog.data.entity.record.RecordEntity;
-import jongjun.hairlog.data.enums.HurtRate;
 import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.enums.SatisfactionRate;
+import jongjun.hairlog.data.repository.CutRepository;
 import jongjun.hairlog.data.repository.DesignerRepository;
-import jongjun.hairlog.data.repository.DyeingRepository;
 import jongjun.hairlog.data.repository.MemberRepository;
 import jongjun.hairlog.data.repository.RecordRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.test.context.TestComponent;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Component
-public class DyeingRecordInitializer {
-	@Autowired private DyeingRepository repository;
+@TestComponent
+public class CutRecordInitializer {
+
+	@Autowired private CutRepository repository;
 	@Autowired private RecordRepository recordRepository;
 	@Autowired private MemberRepository memberRepository;
 	@Autowired private DesignerRepository designerRepository;
 	@Autowired private MemberInitializer memberInitializer;
 	@Autowired private DesignerInitializer designerInitializer;
 
-	private DyeingEntity data;
+	private CutEntity data;
 	private RecordEntity record;
-	private MemberEntity member;
 	private DesignerEntity designer;
+	private MemberEntity member;
 
+	@Transactional
 	public void initialize() {
 		log.info("=== initialize ===");
 		repository.deleteAll();
+		designerRepository.deleteAll();
+		memberRepository.deleteAll();
 		this.save();
 	}
 
 	public void initializePage() {
 		repository.deleteAll();
-		designerRepository.deleteAll();
-		memberRepository.deleteAll();
 		for (int i = 0; i < 5; i++) this.save();
 	}
 
-	public DyeingEntity getData() {
+	public CutEntity getData() {
 		return this.data;
 	}
 
@@ -62,20 +64,11 @@ public class DyeingRecordInitializer {
 	}
 
 	private void save() {
-		memberInitializer.initialize();
-		member = memberInitializer.getData();
-
 		designerInitializer.initialize();
 		designer = designerInitializer.getData();
-		this.data =
-				repository.save(
-						DyeingEntity.builder()
-								.id(1L)
-								.dyeingColor("dyeingColor")
-								.dyeingDecolorization("decolorization")
-								.dyeingTime(1L)
-								.dyeingHurt(HurtRate.H)
-								.build());
+		memberInitializer.initialize();
+		member = memberInitializer.getData();
+		this.data = repository.save(CutEntity.builder().id(1L).cutName("cutN").cutLength(1L).build());
 		this.record =
 				recordRepository.save(
 						RecordEntity.builder()
@@ -87,7 +80,7 @@ public class DyeingRecordInitializer {
 												.recordEtc("etc")
 												.recordGrade(SatisfactionRate.H)
 												.build())
-								.recordCategory(RecordCategory.DYEING)
+								.recordCategory(RecordCategory.CUT)
 								.subId(data.getId())
 								.member(member)
 								.designer(designer)
