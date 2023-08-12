@@ -1,7 +1,8 @@
 package jongjun.hairlog.data.repository.query;
 
+import javax.persistence.EntityManager;
 import jongjun.hairlog.data.DataRdsConfig;
-import jongjun.hairlog.data.JpaDataSourceConfig;
+import jongjun.hairlog.data.config.EntityJpaDataSourceConfig;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.MemberRepository;
 import jongjun.hairlog.data.repository.TestConfig;
@@ -22,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Rollback
 @Transactional
 @SpringBootTest
-@ContextConfiguration(classes = {TestConfig.class, DataRdsConfig.class, JpaDataSourceConfig.class})
+@ContextConfiguration(
+		classes = {TestConfig.class, DataRdsConfig.class, EntityJpaDataSourceConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class MemberQueryImplTest {
 
@@ -30,53 +32,43 @@ class MemberQueryImplTest {
 	@Autowired MemberInitializer initializer;
 
 	@Test
-	@DisplayName("[MemberQuery] findByIdQuery")
-	void findByIdQuery() {
-		initializer.initialize();
-		Long memberId = initializer.getData().getId();
-
-		log.info("[MemberQuery] findByIdQuery");
-		repository.findByIdQuery(memberId);
-	}
-
-	@Test
-	@DisplayName("[MemberQuery] findByEmailQuery")
+	@DisplayName("[MemberQuery] findInfoViewByEmail")
 	void findByEmailQuery() {
 		initializer.initialize();
 		String memberEmail = initializer.getData().getEmail();
 
-		log.info("[MemberQuery] findByEmailQuery");
-		repository.findByEmailQuery(memberEmail);
+		log.info("=== findInfoViewByEmail ===");
+		repository.findTopInfoViewByEmailAndDeletedFalse(memberEmail);
 	}
 
 	@Test
-	@DisplayName("[MemberQuery] findDeletedMemberByEmailQuery")
+	@DisplayName("[MemberQuery] findByEmailAndDeletedTrue")
 	void findDeletedMemberByEmailQuery() {
 		initializer.initialize();
 		MemberEntity member = initializer.getData();
 		repository.delete(member);
 
-		log.info("[MemberQuery] findDeletedMemberByEmailQuery");
-		repository.findDeletedMemberByEmailQuery(member.getEmail());
+		log.info("==== findByEmailAndDeletedTrue =====");
+		repository.findTopByEmailAndDeletedTrueOrderById(member.getEmail());
 	}
 
 	@Test
-	@DisplayName("[MemberQuery] findByEmailAuthQuery")
+	@DisplayName("[MemberQuery] findAuthInfoViewByEmail")
 	void findByEmailAuthQuery() {
 		initializer.initialize();
 		String memberEmail = initializer.getData().getEmail();
 
-		log.info("[MemberQuery] findByEmailAuthQuery");
-		repository.findByEmailAuthQuery(memberEmail);
+		log.info("=== findAuthInfoViewByEmail ===");
+		repository.findTopAuthInfoViewByEmailAndDeletedFalse(memberEmail);
 	}
 
 	@Test
-	@DisplayName("[MemberQuery] isExistEmailQuery")
+	@DisplayName("[MemberQuery] existsMemberEntitiesByEmailAndDeletedFalse")
 	void isExistEmailQuery() {
 		initializer.initialize();
 		String memberEmail = initializer.getData().getEmail();
 
-		log.info("[MemberQuery] isExistEmailQuery");
-		repository.isExistEmailQuery(memberEmail);
+		log.info("=== existsMemberEntitiesByEmailAndDeletedFalse ===");
+		repository.existsMemberEntitiesByEmailAndDeletedFalse(memberEmail);
 	}
 }

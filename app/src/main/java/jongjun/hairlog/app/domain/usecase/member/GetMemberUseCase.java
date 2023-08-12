@@ -30,14 +30,14 @@ public class GetMemberUseCase {
 
 	public MemberInfo execute(String email) {
 		return repository
-				.findByEmailQuery(email)
+				.findTopInfoViewByEmailAndDeletedFalse(email)
 				.map(converter::from)
 				.orElseThrow(() -> new MemberNotFoundException(email));
 	}
 
 	public MemberAuthInfo execute(MemberAuthQuery query) {
 		return repository
-				.findByEmailAuthQuery(query.getEmail())
+				.findTopAuthInfoViewByEmailAndDeletedFalse(query.getEmail())
 				.map(converter::from)
 				.orElseThrow(() -> new MemberNotFoundException(query.getEmail()));
 	}

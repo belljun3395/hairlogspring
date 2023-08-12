@@ -4,8 +4,8 @@ import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
-import jongjun.hairlog.data.dto.member.MemberAuthInfoDTO;
-import jongjun.hairlog.data.dto.member.MemberInfoDTO;
+import jongjun.hairlog.data.dto.member.MemberAuthInfoView;
+import jongjun.hairlog.data.dto.member.MemberInfoView;
 import jongjun.hairlog.data.entity.MemberEntity;
 import org.springframework.stereotype.Component;
 
@@ -24,13 +24,12 @@ public class MemberConverter {
 				.build();
 	}
 
-	public MemberInfo from(MemberInfoDTO source) {
+	public MemberInfo from(MemberInfoView source) {
 		return MemberInfo.builder().email(source.getEmail()).name(source.getName()).build();
 	}
 
-	public MemberAuthInfo from(MemberAuthInfoDTO source) {
+	public MemberAuthInfo from(MemberAuthInfoView source) {
 		return MemberAuthInfo.builder()
-				.id(source.getId())
 				.name(source.getName())
 				.email(source.getEmail())
 				.password(source.getPassword())
