@@ -3,4 +3,4 @@ spring:
     use-legacy-processing: true
   profiles:
     include:
-      - data
+      - mysql-local
