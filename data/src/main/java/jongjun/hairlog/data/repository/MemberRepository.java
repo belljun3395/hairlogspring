@@ -1,7 +1,9 @@
 package jongjun.hairlog.data.repository;
 
 import jongjun.hairlog.data.entity.MemberEntity;
+import jongjun.hairlog.data.repository.jpa.MemberJpaRepository;
 import jongjun.hairlog.data.repository.query.MemberCustomQuery;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.RepositoryDefinition;
 
-public interface MemberRepository extends CrudRepository<MemberEntity, Long>, MemberCustomQuery {}
+@RepositoryDefinition(domainClass = MemberEntity.class, idClass = Long.class)
+public interface MemberRepository extends MemberJpaRepository, MemberCustomQuery {}
