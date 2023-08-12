@@ -25,6 +25,8 @@ public class MemberDescription {
 			fieldWithPath("data").type(JsonFieldType.OBJECT).description("멤버"),
 			fieldWithPath("data.email").type(JsonFieldType.STRING).description("멤버 이메일"),
 			fieldWithPath("data.name").type(JsonFieldType.STRING).description("멤버 이름"),
+			fieldWithPath("data.sex").type(JsonFieldType.STRING).description("멤버 성별"),
+			fieldWithPath("data.cycle").type(JsonFieldType.NUMBER).description("멤버 주기"),
 		};
 	}
 

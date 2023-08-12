@@ -18,6 +18,7 @@ import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.model.member.Token;
 import jongjun.hairlog.app.domain.usecase.member.DeleteMemberUseCase;
+import jongjun.hairlog.app.domain.usecase.member.EditMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
@@ -52,6 +53,7 @@ class MemberControllerTest {
 	private static final String NAME = "testName";
 	private static final Long CYCLE = 1L;
 	private static final Long MEMBER_RETURN_ID = 1L;
+	private static final MemberSex SEX = MemberSex.M;
 
 	private static final String BASE_URL = "/api/v1/members";
 	private static final String TAG = "Member";
@@ -60,6 +62,7 @@ class MemberControllerTest {
 	@Autowired private ObjectMapper objectMapper;
 	@Autowired private TokenGenerator tokenGenerator;
 	@MockBean private SaveMemberUseCase saveMemberUseCase;
+	@MockBean private EditMemberUseCase editMemberUseCase;
 	@MockBean private GetMemberUseCase getMemberUseCase;
 	@MockBean private SignMemberUseCase signMemberUseCase;
 	@MockBean private GetTokenUseCase getTokenUseCase;
@@ -101,7 +104,14 @@ class MemberControllerTest {
 		MemberEditRequest request =
 				MemberEditRequest.builder().name(NAME + "edit").cycle(CYCLE + 1L).build();
 
-		when(saveMemberUseCase.execute(request)).thenReturn(MEMBER_RETURN_ID);
+		SaveMemberResponse response =
+				SaveMemberResponse.builder()
+						.id(MEMBER_RETURN_ID)
+						.name(NAME)
+						.tokenResponse(TokenResponse.from(tokenGenerator.generateToken(MEMBER_RETURN_ID)))
+						.build();
+
+		when(editMemberUseCase.execute(request)).thenReturn(response);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -117,7 +127,7 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberEditRequest"))
 												.responseSchema(Schema.schema("MemberEditResponse"))
-												.responseFields(Description.success(MemberDescription.memberId()))
+												.responseFields(Description.success(MemberDescription.loginMember()))
 												.build())));
 	}
 
@@ -207,7 +217,8 @@ class MemberControllerTest {
 
 	@Test
 	void readMemberInfo() throws Exception {
-		MemberInfo returnMemberInfo = MemberInfo.builder().name(NAME).email(EMAIL).build();
+		MemberInfo returnMemberInfo =
+				MemberInfo.builder().name(NAME).email(EMAIL).sex(SEX).cycle(CYCLE).build();
 
 		when(getMemberUseCase.execute(EMAIL)).thenReturn(returnMemberInfo);
 
