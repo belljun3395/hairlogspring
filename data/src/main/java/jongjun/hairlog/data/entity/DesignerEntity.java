@@ -2,7 +2,6 @@ package jongjun.hairlog.data.entity;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -46,7 +45,7 @@ public class DesignerEntity extends BaseEntity {
 	private Boolean designerFav = true;
 
 	@Exclude
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_fk", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
 	private MemberEntity member;
 
