@@ -5,9 +5,9 @@ import jongjun.hairlog.data.entity.MemberEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MemberUpdateConverter {
+public class MemberUpdateDelegator {
 
-	public void to(MemberEntity source, MemberEditRequest request) {
+	public void update(MemberEntity source, MemberEditRequest request) {
 		if (request.getName() != null) {
 			source.changeName(request.getName());
 		}
