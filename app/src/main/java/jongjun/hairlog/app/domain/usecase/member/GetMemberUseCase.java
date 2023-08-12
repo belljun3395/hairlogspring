@@ -28,14 +28,14 @@ public class GetMemberUseCase {
 				.orElseThrow(() -> new MemberNotFoundException(memberId));
 	}
 
-	public MemberInfo execute(String email) {
+	public MemberInfo execute(final String email) {
 		return repository
 				.findTopInfoViewByEmailAndDeletedFalse(email)
 				.map(converter::from)
 				.orElseThrow(() -> new MemberNotFoundException(email));
 	}
 
-	public MemberAuthInfo execute(MemberAuthQuery query) {
+	public MemberAuthInfo execute(final MemberAuthQuery query) {
 		return repository
 				.findTopAuthInfoViewByEmailAndDeletedFalse(query.getEmail())
 				.map(converter::from)

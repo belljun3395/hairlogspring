@@ -18,9 +18,9 @@ public class GetTokenUseCase {
 	private final TokenGenerator tokenGenerator;
 	private final MemberRepository memberRepository;
 
-	public Token execute(String refreshToken) {
+	public Token execute(final String request) {
 		Long memberId =
-				tokenResolver.resolveToken(refreshToken).orElseThrow(RefreshTokenInvalidException::new);
+				tokenResolver.resolveToken(request).orElseThrow(RefreshTokenInvalidException::new);
 
 		if (!memberRepository.existsById(memberId)) {
 			throw new RefreshTokenInvalidException();

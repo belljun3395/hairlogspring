@@ -19,7 +19,9 @@ public class DeleteMemberUseCase {
 		Long memberId = AuditorHolder.get();
 		MemberEntity memberEntity =
 				repository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
+
 		repository.delete(memberEntity);
+
 		return memberEntity.getId();
 	}
 }

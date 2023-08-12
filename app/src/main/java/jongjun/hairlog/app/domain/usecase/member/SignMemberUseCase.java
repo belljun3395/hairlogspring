@@ -20,10 +20,6 @@ public class SignMemberUseCase {
 	private final TokenGenerator tokenGenerator;
 
 	public SaveMemberResponse execute(final SignMemberRequest request) {
-		if (request == null) {
-			return null;
-		}
-
 		MemberAuthInfo member =
 				getMemberUseCase.execute(MemberAuthQuery.builder().email(request.getEmail()).build());
 
