@@ -1,9 +1,25 @@
-bootJar {
-    enabled = false
+buildscript {
+    ext {
+        generatedSourcesDir = "src/main/generated"
+    }
+}
+plugins {
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
-jar {
-    enabled = true
+bootJar { enabled = false }
+
+
+sourceSets {
+    main.java.srcDirs += [generatedSourcesDir]
+}
+
+compileJava.with {
+    it.options.annotationProcessorGeneratedSourcesDirectory file(generatedSourcesDir)
+}
+
+clean.doLast {
+    file(generatedSourcesDir).deleteDir()
 }
 
 dependencies {
@@ -14,9 +30,33 @@ dependencies {
     implementation 'ch.simas.qlrm:qlrm:1.7.1'
     runtimeOnly 'com.h2database:h2'
 
+    implementation 'com.querydsl:querydsl-jpa'
+    implementation 'com.querydsl:querydsl-core'
+    implementation 'com.querydsl:querydsl-apt'
+
     // flyway
     implementation 'org.flywaydb:flyway-core:9.16.0'
     implementation "org.flywaydb:flyway-mysql"
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }
 
 task copyReport {
