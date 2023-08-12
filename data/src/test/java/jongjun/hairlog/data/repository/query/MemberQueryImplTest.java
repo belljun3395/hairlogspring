@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 class MemberQueryImplTest {
 
 	@Autowired MemberRepository repository;
+	@Autowired EntityManager entityManager;
 	@Autowired MemberInitializer initializer;
 
 	@Test
@@ -36,6 +37,7 @@ class MemberQueryImplTest {
 	void findByEmailQuery() {
 		initializer.initialize();
 		String memberEmail = initializer.getData().getEmail();
+		entityManager.flush();
 
 		log.info("=== findInfoViewByEmail ===");
 		repository.findTopInfoViewByEmailAndDeletedFalse(memberEmail);
@@ -47,6 +49,7 @@ class MemberQueryImplTest {
 		initializer.initialize();
 		MemberEntity member = initializer.getData();
 		repository.delete(member);
+		entityManager.flush();
 
 		log.info("==== findByEmailAndDeletedTrue =====");
 		repository.findTopByEmailAndDeletedTrueOrderById(member.getEmail());
@@ -57,6 +60,7 @@ class MemberQueryImplTest {
 	void findByEmailAuthQuery() {
 		initializer.initialize();
 		String memberEmail = initializer.getData().getEmail();
+		entityManager.flush();
 
 		log.info("=== findAuthInfoViewByEmail ===");
 		repository.findTopAuthInfoViewByEmailAndDeletedFalse(memberEmail);
@@ -67,6 +71,7 @@ class MemberQueryImplTest {
 	void isExistEmailQuery() {
 		initializer.initialize();
 		String memberEmail = initializer.getData().getEmail();
+		entityManager.flush();
 
 		log.info("=== existsMemberEntitiesByEmailAndDeletedFalse ===");
 		repository.existsMemberEntitiesByEmailAndDeletedFalse(memberEmail);
