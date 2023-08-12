@@ -3,28 +3,37 @@ package jongjun.hairlog.data.repository.initializer;
 import java.util.Date;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
+import jongjun.hairlog.data.entity.record.CommonRecordInfo;
 import jongjun.hairlog.data.entity.record.DyeingEntity;
+import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.enums.HurtRate;
+import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.enums.SatisfactionRate;
 import jongjun.hairlog.data.repository.DesignerRepository;
+import jongjun.hairlog.data.repository.DyeingRepository;
 import jongjun.hairlog.data.repository.MemberRepository;
 import jongjun.hairlog.data.repository.RecordRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class DyeingRecordInitializer {
-	@Autowired private RecordRepository repository;
+	@Autowired private DyeingRepository repository;
+	@Autowired private RecordRepository recordRepository;
 	@Autowired private MemberRepository memberRepository;
 	@Autowired private DesignerRepository designerRepository;
 	@Autowired private MemberInitializer memberInitializer;
 	@Autowired private DesignerInitializer designerInitializer;
 
 	private DyeingEntity data;
+	private RecordEntity record;
 	private MemberEntity member;
 	private DesignerEntity designer;
 
 	public void initialize() {
+		log.info("=== initialize ===");
 		repository.deleteAll();
 		this.save();
 	}
@@ -38,6 +47,10 @@ public class DyeingRecordInitializer {
 
 	public DyeingEntity getData() {
 		return this.data;
+	}
+
+	public RecordEntity getRecord() {
+		return this.record;
 	}
 
 	public MemberEntity getMember() {
@@ -58,13 +71,24 @@ public class DyeingRecordInitializer {
 				repository.save(
 						DyeingEntity.builder()
 								.id(1L)
-								.recordDate(new Date())
-								.recordCost(1L)
-								.recordGrade(SatisfactionRate.H)
 								.dyeingColor("dyeingColor")
 								.dyeingDecolorization("decolorization")
 								.dyeingTime(1L)
 								.dyeingHurt(HurtRate.H)
+								.build());
+		this.record =
+				recordRepository.save(
+						RecordEntity.builder()
+								.id(1L)
+								.recordInfo(
+										CommonRecordInfo.builder()
+												.recordDate(new Date())
+												.recordCost(100L)
+												.recordEtc("etc")
+												.recordGrade(SatisfactionRate.H)
+												.build())
+								.recordCategory(RecordCategory.DYEING)
+								.subId(data.getId())
 								.member(member)
 								.designer(designer)
 								.build());
