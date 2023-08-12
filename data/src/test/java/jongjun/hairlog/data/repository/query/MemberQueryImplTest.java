@@ -1,8 +1,13 @@
 package jongjun.hairlog.data.repository.query;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.config.BaseQueryImplTest;
 import jongjun.hairlog.data.config.initializer.MemberInitializer;
+import jongjun.hairlog.data.dto.member.DeletedMemberView;
+import jongjun.hairlog.data.dto.member.MemberAuthInfoView;
+import jongjun.hairlog.data.dto.member.MemberInfoView;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +30,10 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== findInfoViewByEmail ===");
-		repository.findTopInfoViewByEmailAndDeletedFalse(memberEmail);
+		MemberInfoView memberInfoView =
+				repository.findTopInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
+
+		assertThat(memberEmail).isEqualTo(memberInfoView.getEmail());
 	}
 
 	@Test
@@ -37,7 +45,10 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("==== findByEmailAndDeletedTrue =====");
-		repository.findTopByEmailAndDeletedTrueOrderById(member.getEmail());
+		DeletedMemberView deletedMemberView =
+				repository.findTopByEmailAndDeletedTrueOrderById(member.getEmail()).orElse(null);
+
+		assertThat(member.getEmail()).isEqualTo(deletedMemberView.getEmail());
 	}
 
 	@Test
@@ -48,7 +59,10 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== findAuthInfoViewByEmail ===");
-		repository.findTopAuthInfoViewByEmailAndDeletedFalse(memberEmail);
+		MemberAuthInfoView memberAuthInfoView =
+				repository.findTopAuthInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
+
+		assertThat(memberEmail).isEqualTo(memberAuthInfoView.getEmail());
 	}
 
 	@Test
@@ -59,6 +73,8 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== existsMemberEntitiesByEmailAndDeletedFalse ===");
-		repository.existsMemberEntitiesByEmailAndDeletedFalse(memberEmail);
+		Boolean isExist = repository.existsMemberEntitiesByEmailAndDeletedFalse(memberEmail);
+
+		assertThat(isExist).isTrue();
 	}
 }

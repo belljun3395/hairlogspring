@@ -1,10 +1,15 @@
 package jongjun.hairlog.data.repository.query;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.config.BaseQueryImplTest;
 import jongjun.hairlog.data.config.initializer.CutRecordInitializer;
 import jongjun.hairlog.data.config.initializer.DyeingRecordInitializer;
 import jongjun.hairlog.data.config.initializer.PermRecordInitializer;
+import jongjun.hairlog.data.dto.record.CutWitRecordView;
+import jongjun.hairlog.data.dto.record.DyeingWithRecordView;
+import jongjun.hairlog.data.dto.record.PermWithRecordView;
 import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.repository.CutRepository;
 import jongjun.hairlog.data.repository.DyeingRepository;
@@ -44,7 +49,10 @@ class RecordQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== cut findCutWithRecordByRecordIdAndDeletedFalse ===");
-		cutRepository.findCutWithRecordByRecordIdAndDeletedFalse(cutRecord.getId()).orElse(null);
+		CutWitRecordView cutWitRecordView =
+				cutRepository.findCutWithRecordByRecordIdAndDeletedFalse(cutRecord.getId()).orElse(null);
+
+		assertThat(cutWitRecordView.getId()).isEqualTo(cutRecord.getId());
 
 		log.info("=== perm ===");
 		permRecordInitializer.initialize();
@@ -52,7 +60,10 @@ class RecordQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== perm findCutWithRecordByRecordIdAndDeletedFalse ===");
-		permRepository.findCutWithRecordByRecordIdAndDeletedFalse(permRecord.getId()).orElse(null);
+		PermWithRecordView permWithRecordView =
+				permRepository.findCutWithRecordByRecordIdAndDeletedFalse(permRecord.getId()).orElse(null);
+
+		assertThat(permWithRecordView.getId()).isEqualTo(permRecord.getId());
 
 		log.info("=== dyeing ===");
 		dyeingRecordInitializer.initialize();
@@ -60,6 +71,11 @@ class RecordQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== dyeing findCutWithRecordByRecordIdAndDeletedFalse ===");
-		dyeingRepository.findCutWithRecordByRecordIdAndDeletedFalse(dyeingRecord.getId()).orElse(null);
+		DyeingWithRecordView dyeingWithRecordView =
+				dyeingRepository
+						.findCutWithRecordByRecordIdAndDeletedFalse(dyeingRecord.getId())
+						.orElse(null);
+
+		assertThat(dyeingWithRecordView.getId()).isEqualTo(dyeingRecord.getId());
 	}
 }

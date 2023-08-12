@@ -1,8 +1,13 @@
 package jongjun.hairlog.data.repository.query;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.config.BaseQueryImplTest;
 import jongjun.hairlog.data.config.initializer.DesignerInitializer;
+import jongjun.hairlog.data.dto.designer.DeletedDesignerView;
+import jongjun.hairlog.data.dto.designer.DesignerView;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.DesignerRepository;
@@ -27,8 +32,14 @@ class DesignerQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== findAllByDesignerNameAndMember ===");
-		repository.findAllByDesignerNameAndMemberAndDeletedFalse(
-				designerName, MemberEntity.builder().id(memberId).build());
+		List<DesignerView> designerViews =
+				repository.findAllByDesignerNameAndMemberAndDeletedFalse(
+						designerName, MemberEntity.builder().id(memberId).build());
+
+		DesignerView designerView = designerViews.get(0);
+
+		assertThat(designerViews).isNotEmpty();
+		assertThat(designerView.getDesignerName()).isEqualTo(designerName);
 	}
 
 	@Test
@@ -36,10 +47,19 @@ class DesignerQueryImplTest extends BaseQueryImplTest {
 	void findAllByMemberIdQuery() {
 		initializer.initialize();
 		Long memberId = initializer.getMember().getId();
+		DesignerEntity data = initializer.getData();
 		entityManager.flush();
 
-		log.info("=== findAllByMemberId ===");
-		repository.findAllByMemberIdAndDeletedFalse(memberId);
+		log.info("=== findAllByMemberIdAndDeletedFalse ===");
+		List<DesignerView> designerViews = repository.findAllByMemberIdAndDeletedFalse(memberId);
+
+		DesignerView designerView = designerViews.get(0);
+
+		assertThat(designerViews).isNotEmpty();
+		assertThat(designerView.getDesignerName()).isEqualTo(data.getDesignerName());
+		assertThat(designerView.getDesignerId()).isEqualTo(data.getId());
+		assertThat(designerView.getDesignerSalon()).isEqualTo(data.getDesignerSalon());
+		assertThat(designerView.getDesignerFav()).isEqualTo(data.getDesignerFav());
 	}
 
 	@Test
@@ -55,6 +75,13 @@ class DesignerQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("=== findAllByMemberAndDeletedTrue ===");
-		repository.findAllByMemberAndDeletedTrue(MemberEntity.builder().id(memberId).build());
+		List<DeletedDesignerView> deletedDesignerViews =
+				repository.findAllByMemberAndDeletedTrue(MemberEntity.builder().id(memberId).build());
+
+		DeletedDesignerView deletedDesignerView = deletedDesignerViews.get(0);
+
+		assertThat(deletedDesignerViews).isNotEmpty();
+		assertThat(deletedDesignerView.getDesignerName()).isEqualTo(data.getDesignerName());
+		assertThat(deletedDesignerView.getDesignerSalon()).isEqualTo(data.getDesignerSalon());
 	}
 }
