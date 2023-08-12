@@ -1,7 +1,6 @@
 package jongjun.hairlog.app.domain.usecase.designer;
 
 import jongjun.hairlog.app.domain.converter.designer.DesignerConverter;
-import jongjun.hairlog.app.domain.converter.designer.DesignerUpdateConverter;
 import jongjun.hairlog.app.exception.ResourceNotFoundException;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerRequest;
 import jongjun.hairlog.data.entity.DesignerEntity;
@@ -17,7 +16,6 @@ public class SaveDesignerUseCase {
 
 	private final DesignerRepository repository;
 	private final DesignerConverter converter;
-	private final DesignerUpdateConverter updateConverter;
 
 	public Long execute(DesignerRequest request) {
 		DesignerEntity data = converter.to(request);
@@ -30,7 +28,7 @@ public class SaveDesignerUseCase {
 				repository
 						.findById(designerId)
 						.orElseThrow(() -> new ResourceNotFoundException(designerId + "을 찾을 수 없습니다."));
-		updateConverter.to(source, fav);
+		source.changeDesignerFav(fav);
 		return source.getId();
 	}
 }

@@ -2,8 +2,9 @@ package jongjun.hairlog.data.repository.query;
 
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.DataRdsConfig;
-import jongjun.hairlog.data.JpaDataSourceConfig;
+import jongjun.hairlog.data.config.EntityJpaDataSourceConfig;
 import jongjun.hairlog.data.entity.DesignerEntity;
+import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.DesignerRepository;
 import jongjun.hairlog.data.repository.TestConfig;
 import jongjun.hairlog.data.repository.initializer.DesignerInitializer;
@@ -23,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Rollback
 @Transactional
 @SpringBootTest
-@ContextConfiguration(classes = {TestConfig.class, DataRdsConfig.class, JpaDataSourceConfig.class})
+@ContextConfiguration(
+		classes = {TestConfig.class, DataRdsConfig.class, EntityJpaDataSourceConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class DesignerQueryImplTest {
 
@@ -32,36 +34,42 @@ class DesignerQueryImplTest {
 	@Autowired DesignerInitializer initializer;
 
 	@Test
-	@DisplayName("[DesignerQuery] searchByNameAndMemberIdQuery")
+	@DisplayName("[DesignerQuery] findAllByDesignerNameAndMemberAndDeletedFalse")
 	void searchByNameAndMemberIdQuery() {
 		initializer.initialize();
 		String designerName = initializer.getData().getDesignerName();
 		Long memberId = initializer.getMember().getId();
+		entityManager.flush();
 
-		log.info("[DesignerQuery] searchByNameAndMemberIdQuery");
-		repository.searchByNameAndMemberIdQuery(designerName, memberId);
+		log.info("=== findAllByDesignerNameAndMember ===");
+		repository.findAllByDesignerNameAndMemberAndDeletedFalse(
+				designerName, MemberEntity.builder().id(memberId).build());
 	}
 
 	@Test
-	@DisplayName("[DesignerQuery] findAllByMemberIdQuery")
+	@DisplayName("[DesignerQuery] findAllByMemberIdAndDeletedFalse")
 	void findAllByMemberIdQuery() {
 		initializer.initialize();
 		Long memberId = initializer.getMember().getId();
+		entityManager.flush();
 
-		log.info("[DesignerQuery] findAllByMemberIdQuery");
-		repository.findAllByMemberIdQuery(memberId);
+		log.info("=== findAllByMemberId ===");
+		repository.findAllByMemberIdAndDeletedFalse(memberId);
 	}
 
 	@Test
-	@DisplayName("[DesignerQuery] findAllDeletedByMemberIdQuery")
+	@DisplayName("[DesignerQuery] findAllByMemberAndDeletedTrue")
 	void findAllDeletedByMemberIdQuery() {
 		initializer.initialize();
 		DesignerEntity data = initializer.getData();
 		Long memberId = initializer.getMember().getId();
+		entityManager.flush();
 
+		log.info("=== delete for test ===");
 		repository.delete(data);
+		entityManager.flush();
 
-		log.info("[DesignerQuery] findAllDeletedByMemberIdQuery");
-		repository.findAllDeletedByMemberIdQuery(memberId);
+		log.info("=== findAllByMemberAndDeletedTrue ===");
+		repository.findAllByMemberAndDeletedTrue(MemberEntity.builder().id(memberId).build());
 	}
 }
