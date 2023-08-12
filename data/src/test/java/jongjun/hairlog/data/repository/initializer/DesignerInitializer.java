@@ -4,9 +4,11 @@ import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.DesignerRepository;
 import jongjun.hairlog.data.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class DesignerInitializer {
 
@@ -19,6 +21,7 @@ public class DesignerInitializer {
 	private MemberEntity member;
 
 	public void initialize() {
+		log.info("=== initialize test ===");
 		repository.deleteAll();
 		this.save();
 	}
