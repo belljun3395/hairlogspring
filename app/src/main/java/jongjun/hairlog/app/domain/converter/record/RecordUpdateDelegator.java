@@ -4,7 +4,6 @@ import jongjun.hairlog.app.web.controller.request.record.CutRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.DyeingRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.PermRecordEditRequest;
 import jongjun.hairlog.app.web.controller.request.record.RecordEditRequest;
-import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.record.CutEntity;
 import jongjun.hairlog.data.entity.record.DyeingEntity;
 import jongjun.hairlog.data.entity.record.PermEntity;
@@ -12,10 +11,9 @@ import jongjun.hairlog.data.entity.record.RecordEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecordUpdateConverter {
+public class RecordUpdateDelegator {
 
-	public void to(CutEntity source, CutRecordEditRequest request) {
-		changeSource(source, request);
+	public void update(CutEntity source, CutRecordEditRequest request) {
 		if (request.getCutName() != null) {
 			source.changeCutName(request.getCutName());
 		}
@@ -24,8 +22,7 @@ public class RecordUpdateConverter {
 		}
 	}
 
-	public void to(PermEntity source, PermRecordEditRequest request) {
-		changeSource(source, request);
+	public void update(PermEntity source, PermRecordEditRequest request) {
 		if (request.getPermName() != null) {
 			source.changePermName(request.getPermName());
 		}
@@ -37,8 +34,7 @@ public class RecordUpdateConverter {
 		}
 	}
 
-	public void to(DyeingEntity source, DyeingRecordEditRequest request) {
-		changeSource(source, request);
+	public void update(DyeingEntity source, DyeingRecordEditRequest request) {
 		if (request.getDyeingColor() != null) {
 			source.changeDyeingColor(request.getDyeingColor());
 		}
@@ -53,21 +49,21 @@ public class RecordUpdateConverter {
 		}
 	}
 
-	private void changeSource(RecordEntity source, RecordEditRequest request) {
+	public void update(RecordEntity source, RecordEditRequest request) {
 		if (request.getRecordDate() != null) {
-			source.changeRecordDate(request.getRecordDate());
+			source.getRecordInfo().changeRecordDate(request.getRecordDate());
 		}
 		if (request.getRecordCost() != null) {
-			source.changeRecordCost(request.getRecordCost());
+			source.getRecordInfo().changeRecordCost(request.getRecordCost());
 		}
 		if (request.getRecordEtc() != null) {
-			source.changeRecordEtc(request.getRecordEtc());
+			source.getRecordInfo().changeRecordEtc(request.getRecordEtc());
 		}
 		if (request.getRecordGrade() != null) {
-			source.changeRecordGrade(request.getRecordGrade());
+			source.getRecordInfo().changeRecordGrade(request.getRecordGrade());
 		}
 		if (request.getDesignerId() != null) {
-			source.changeDesigner(DesignerEntity.builder().id(request.getDesignerId()).build());
+			source.changeDesigner(request.getDesignerId());
 		}
 	}
 }
