@@ -2,11 +2,11 @@ package jongjun.hairlog.data.repository.query;
 
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.DataRdsConfig;
-import jongjun.hairlog.data.JpaDataSourceConfig;
-import jongjun.hairlog.data.entity.record.CutEntity;
-import jongjun.hairlog.data.entity.record.DyeingEntity;
-import jongjun.hairlog.data.entity.record.PermEntity;
-import jongjun.hairlog.data.enums.RecordCategory;
+import jongjun.hairlog.data.config.EntityJpaDataSourceConfig;
+import jongjun.hairlog.data.entity.record.RecordEntity;
+import jongjun.hairlog.data.repository.CutRepository;
+import jongjun.hairlog.data.repository.DyeingRepository;
+import jongjun.hairlog.data.repository.PermRepository;
 import jongjun.hairlog.data.repository.RecordRepository;
 import jongjun.hairlog.data.repository.TestConfig;
 import jongjun.hairlog.data.repository.initializer.CutRecordInitializer;
@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,7 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Rollback
 @Transactional
 @SpringBootTest
-@ContextConfiguration(classes = {TestConfig.class, DataRdsConfig.class, JpaDataSourceConfig.class})
+@ContextConfiguration(
+		classes = {TestConfig.class, DataRdsConfig.class, EntityJpaDataSourceConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RecordQueryImplTest {
 
@@ -38,70 +38,43 @@ class RecordQueryImplTest {
 	@Autowired CutRecordInitializer cutRecordInitializer;
 	@Autowired PermRecordInitializer permRecordInitializer;
 	@Autowired DyeingRecordInitializer dyeingRecordInitializer;
+	@Autowired CutRepository cutRepository;
+	@Autowired PermRepository permRepository;
+	@Autowired DyeingRepository dyeingRepository;
 
 	@Test
-	@DisplayName("[RecordQuery] findAllByMemberIdQuery")
-	void findAllByMemberIdQuery() {
-		cutRecordInitializer.initializePage();
-
-		PageRequest page = PageRequest.of(0, 5);
-		log.info("[RecordQuery] findAllByMemberIdQuery");
-		repository.findAllByMemberIdQuery(page, 1L);
-	}
-
-	@Test
-	@DisplayName("[RecordQuery] findAllByCategoryAndMemberIdQuery")
-	void findAllByCategoryAndMemberIdQuery() {
-		cutRecordInitializer.initializePage();
-		Long memberId = cutRecordInitializer.getMember().getId();
-
-		PageRequest page = PageRequest.of(0, 5);
-		log.info("[RecordQuery] findAllByCategoryAndMemberIdQuery");
-		repository.findAllByCategoryAndMemberIdQuery(page, RecordCategory.CUT, memberId);
-	}
-
-	@Test
-	@DisplayName("[RecordQuery] findAllDeletedByMemberIdQuery")
-	void findAllDeletedByMemberIdQuery() {
+	@DisplayName("[Record] save - cut, perm, dyeing")
+	void save() {
 		cutRecordInitializer.initialize();
-		CutEntity data = cutRecordInitializer.getData();
-		Long memberId = Long.valueOf(cutRecordInitializer.getMember().getId().toString());
-		repository.deleteById(data.getId());
-
-		log.info("[RecordQuery] findAllDeletedByMemberIdQuery");
-		repository.findAllDeletedByMemberIdQuery(memberId);
-	}
-
-	@Test
-	@DisplayName("[RecordQuery] findByIdAndCategoryAndMemberId CUT")
-	void findByIdAndCategoryAndMemberIdCut() {
-		cutRecordInitializer.initialize();
-		CutEntity data = cutRecordInitializer.getData();
-		Long memberId = cutRecordInitializer.getMember().getId();
-
-		log.info("[RecordQuery] findByIdAndCategoryAndMemberId CUT");
-		repository.findByIdAndCategoryAndMemberId(data.getId(), RecordCategory.CUT, memberId);
-	}
-
-	@Test
-	@DisplayName("[RecordQuery] findByIdAndCategoryAndMemberId PERM")
-	void findByIdAndCategoryAndMemberIdPerm() {
 		permRecordInitializer.initialize();
-		PermEntity data = permRecordInitializer.getData();
-		Long memberId = permRecordInitializer.getMember().getId();
-
-		log.info("[RecordQuery] findByIdAndCategoryAndMemberId PERM");
-		repository.findByIdAndCategoryAndMemberId(data.getId(), RecordCategory.PERM, memberId);
+		dyeingRecordInitializer.initialize();
 	}
 
 	@Test
-	@DisplayName("[RecordQuery] findByIdAndCategoryAndMemberId DYEING")
-	void findByIdAndCategoryAndMemberIdDyeing() {
-		dyeingRecordInitializer.initialize();
-		DyeingEntity data = dyeingRecordInitializer.getData();
-		Long memberId = dyeingRecordInitializer.getMember().getId();
+	@DisplayName("[Record] findCutWithRecordByRecordIdAndDeletedFalse")
+	void findCutWithRecordByRecordIdAndDeletedFalse() {
+		log.info("=== cut ===");
+		cutRecordInitializer.initialize();
+		RecordEntity cutRecord = cutRecordInitializer.getRecord();
+		entityManager.flush();
 
-		log.info("[RecordQuery] findByIdAndCategoryAndMemberId DYEING");
-		repository.findByIdAndCategoryAndMemberId(data.getId(), RecordCategory.DYEING, memberId);
+		log.info("=== cut findCutWithRecordByRecordIdAndDeletedFalse ===");
+		cutRepository.findCutWithRecordByRecordIdAndDeletedFalse(cutRecord.getId()).orElse(null);
+
+		log.info("=== perm ===");
+		permRecordInitializer.initialize();
+		RecordEntity permRecord = permRecordInitializer.getRecord();
+		entityManager.flush();
+
+		log.info("=== perm findCutWithRecordByRecordIdAndDeletedFalse ===");
+		permRepository.findCutWithRecordByRecordIdAndDeletedFalse(permRecord.getId()).orElse(null);
+
+		log.info("=== dyeing ===");
+		dyeingRecordInitializer.initialize();
+		RecordEntity dyeingRecord = dyeingRecordInitializer.getRecord();
+		entityManager.flush();
+
+		log.info("=== dyeing findCutWithRecordByRecordIdAndDeletedFalse ===");
+		dyeingRepository.findCutWithRecordByRecordIdAndDeletedFalse(dyeingRecord.getId()).orElse(null);
 	}
 }
