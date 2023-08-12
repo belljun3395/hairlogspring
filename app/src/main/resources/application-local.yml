@@ -4,7 +4,7 @@ spring:
   profiles:
     include:
       - flyway
-      - mysql
+      - mysql-local
   resources:
     static-locations: classpath:/static/reports
 
@@ -12,7 +12,7 @@ security:
   jwt:
     token:
       validtime:
-        access: 21600000
-        refresh: 2073600000
+        access: 31557600000
+        refresh: 31557600000
         clientSecret: 3600000
-      secretkey: {TOKEN_SECRETKEY}
+      secretkey: jwtsecretKeyhastolonghowlongidontknow

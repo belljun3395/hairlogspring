@@ -3,7 +3,8 @@ spring:
     use-legacy-processing: true
   profiles:
     include:
-      - data-prod
+      - flyway
+      - mysql-prod
   resources:
     static-locations: classpath:/static/reports
 
