@@ -1,28 +1,34 @@
 package jongjun.hairlog.data.entity.record;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import jongjun.hairlog.data.enums.HurtRate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@Builder(toBuilder = true)
 @Entity
-@DynamicUpdate
-@DiscriminatorValue("perm")
-@SuperBuilder
-@Table(name = "record_perm_entity")
-public class PermEntity extends RecordEntity {
+@Table(name = "record_perm_tb")
+public class PermEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "perm_id", nullable = false)
+	private Long id;
 
 	@Column(name = "perm_name", nullable = false)
 	private String permName;
