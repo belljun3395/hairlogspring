@@ -1,28 +1,31 @@
 package jongjun.hairlog.data.entity.record;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import jongjun.hairlog.data.enums.HurtRate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@Builder(toBuilder = true)
 @Entity
-@DynamicUpdate
-@DiscriminatorValue("dyeing")
-@SuperBuilder
-@Table(name = "record_dyeing_entity")
-public class DyeingEntity extends RecordEntity {
+@Table(name = "record_dyeing_tb")
+public class DyeingEntity {
+
+	@Id
+	@Column(name = "dyeing_id", nullable = false)
+	private Long id;
 
 	@Column(name = "dyeing_color", nullable = false)
 	private String dyeingColor;
