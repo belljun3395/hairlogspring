@@ -24,7 +24,9 @@ public class MemberCustomQueryImpl extends QuerydslRepositorySupport implements 
 
 		return Optional.ofNullable(
 				query
-						.select(new QMemberInfoView(memberEntity.email, memberEntity.name))
+						.select(
+								new QMemberInfoView(
+										memberEntity.email, memberEntity.name, memberEntity.sex, memberEntity.cycle))
 						.where(memberEntity.id.eq(id), memberEntity.deleted.isFalse())
 						.fetchOne());
 	}
@@ -34,7 +36,9 @@ public class MemberCustomQueryImpl extends QuerydslRepositorySupport implements 
 		JPQLQuery<MemberEntity> query = from(memberEntity);
 
 		return query
-				.select(new QMemberInfoView(memberEntity.email, memberEntity.name))
+				.select(
+						new QMemberInfoView(
+								memberEntity.email, memberEntity.name, memberEntity.sex, memberEntity.cycle))
 				.where(memberEntity.email.eq(email), memberEntity.deleted.isFalse())
 				.orderBy(memberEntity.id.desc())
 				.stream()
