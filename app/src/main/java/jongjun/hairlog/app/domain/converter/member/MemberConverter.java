@@ -25,7 +25,12 @@ public class MemberConverter {
 	}
 
 	public MemberInfo from(MemberInfoView source) {
-		return MemberInfo.builder().email(source.getEmail()).name(source.getName()).build();
+		return MemberInfo.builder()
+				.email(source.getEmail())
+				.name(source.getName())
+				.sex(source.getSex())
+				.cycle(source.getCycle())
+				.build();
 	}
 
 	public MemberAuthInfo from(MemberAuthInfoView source) {
