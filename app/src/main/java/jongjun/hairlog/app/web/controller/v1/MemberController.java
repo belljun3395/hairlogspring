@@ -5,7 +5,7 @@ import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.model.member.Token;
 import jongjun.hairlog.app.domain.usecase.member.DeleteMemberUseCase;
-import jongjun.hairlog.app.domain.usecase.member.EditMemberUseCase;
+import jongjun.hairlog.app.domain.usecase.member.EditMemberFacadeUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
 	private final SaveMemberUseCase saveMemberUseCase;
-	private final EditMemberUseCase editMemberUseCase;
+	private final EditMemberFacadeUseCase editMemberUseCase;
 	private final GetMemberUseCase getMemberUseCase;
 	private final GetTokenUseCase getTokenUseCase;
 	private final SignMemberUseCase signMemberUseCase;
