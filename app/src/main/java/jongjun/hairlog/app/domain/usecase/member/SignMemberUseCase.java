@@ -1,11 +1,12 @@
 package jongjun.hairlog.app.domain.usecase.member;
 
-import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
-import jongjun.hairlog.app.domain.query.MemberAuthQuery;
 import jongjun.hairlog.app.domain.request.SignMemberRequest;
+import jongjun.hairlog.app.exception.MemberNotFoundException;
 import jongjun.hairlog.app.support.token.TokenGenerator;
 import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
 import jongjun.hairlog.app.web.controller.response.TokenResponse;
+import jongjun.hairlog.data.entity.MemberEntity;
+import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class SignMemberUseCase {
 
-	private final GetMemberUseCase getMemberUseCase;
+	private final MemberRepository memberRepository;
 
 	private final TokenGenerator tokenGenerator;
 
 	public SaveMemberResponse execute(final SignMemberRequest request) {
-		MemberAuthInfo member =
-				getMemberUseCase.execute(MemberAuthQuery.builder().email(request.getEmail()).build());
+
+		MemberEntity member =
+				memberRepository
+						.findTopByEmailAndDeletedFalseOrderById(request.getEmail())
+						.orElseThrow(() -> new MemberNotFoundException(request.getEmail()));
 
 		if (!member.getPassword().equals(request.getPassword())) {
 			throw new AssertionError("not match password");

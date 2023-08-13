@@ -9,6 +9,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface MemberJpaRepository extends JpaRepository<MemberEntity, Long> {
 
+	Optional<MemberEntity> findTopByEmailAndDeletedFalseOrderById(String email);
+
 	Optional<DeletedMemberView> findTopByEmailAndDeletedTrueOrderById(String email);
 
 	Boolean existsMemberEntitiesByEmailAndDeletedFalse(String email);
