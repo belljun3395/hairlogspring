@@ -14,11 +14,12 @@ import jongjun.hairlog.data.converter.EditedFieldsConverter;
 import jongjun.hairlog.data.enums.MemberSex;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.apache.logging.log4j.util.Strings;
 import org.hibernate.annotations.SQLDelete;
 
 @Getter
@@ -35,27 +36,35 @@ import org.hibernate.annotations.SQLDelete;
 @SQLDelete(sql = "UPDATE member_log_tb SET deleted = true WHERE member_id=?")
 public class MemberInfoLog extends LogBaseEntity {
 
-	@Column(name = "edited_id", nullable = false)
+	@Column(name = "edited_id")
 	private Long editedId;
 
-	@Column(name = "member_email", nullable = false)
-	private String email;
+	@Builder.Default
+	@Column(name = "member_email")
+	private String email = Strings.EMPTY;
 
-	@Column(name = "member_password", nullable = false)
-	private String password;
+	@Builder.Default
+	@Column(name = "member_password")
+	private String password = Strings.EMPTY;
 
-	@Column(name = "member_name", nullable = false)
-	private String name;
+	@Builder.Default
+	@Column(name = "member_name")
+	private String name = Strings.EMPTY;
 
+	@Builder.Default
 	@Enumerated(EnumType.STRING)
-	@Column(name = "member_sex", nullable = false)
-	private MemberSex sex;
+	@Column(name = "member_sex")
+	private MemberSex sex = MemberSex.N;
 
-	@Column(name = "member_cycle", nullable = false)
-	private Long cycle;
+	@Builder.Default
+	@Column(name = "member_cycle")
+	private Long cycle = 0L;
 
-	@Default
-	@Column(name = "edited_fields", nullable = false)
+	@Column(name = "edit_success")
+	private Boolean success;
+
+	@Builder.Default
+	@Column(name = "edited_fields")
 	@Convert(converter = EditedFieldsConverter.class)
 	private List<String> editedFields = new ArrayList<>();
 
