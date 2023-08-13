@@ -10,4 +10,6 @@ public interface MemberCustomQuery {
 	Optional<MemberInfoView> findTopInfoViewByEmailAndDeletedFalse(String email);
 
 	Optional<MemberAuthInfoView> findTopAuthInfoViewByEmailAndDeletedFalse(String email);
+
+	Optional<Long> findTopIdById(Long id);
 }
