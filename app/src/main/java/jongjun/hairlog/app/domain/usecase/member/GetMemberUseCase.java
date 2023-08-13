@@ -22,22 +22,10 @@ public class GetMemberUseCase {
 	private final MemberConverter converter;
 
 	public Member execute(Long memberId) {
-		Long topId = getTopId(memberId);
-
 		return repository
-				.findById(topId)
+				.findById(memberId)
 				.map(converter::from)
 				.orElseThrow(() -> new MemberNotFoundException(memberId));
-	}
-
-	private Long getTopId(Long memberId) {
-		Long topId =
-				repository.findTopIdById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
-
-		if (!Objects.equals(memberId, topId)) {
-			throw new AlreadyEditException("다시 로그인 해주세요");
-		}
-		return topId;
 	}
 
 	public MemberInfo execute(final String email) {

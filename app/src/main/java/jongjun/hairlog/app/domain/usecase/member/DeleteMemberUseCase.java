@@ -15,11 +15,14 @@ public class DeleteMemberUseCase {
 
 	public Long execute(Long memberId) {
 
-		Long topId =
-				repository.findTopIdById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
+		Long id =
+				repository
+						.findById(memberId)
+						.orElseThrow(() -> new MemberNotFoundException(memberId))
+						.getId();
 
-		repository.deleteById(topId);
+		repository.deleteById(id);
 
-		return topId;
+		return id;
 	}
 }
