@@ -1,5 +1,6 @@
 package jongjun.hairlog.data.repository.query;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import java.util.Optional;
 import jongjun.hairlog.data.dto.member.MemberAuthInfoView;
@@ -53,6 +54,24 @@ public class MemberCustomQueryImpl extends QuerydslRepositorySupport implements 
 				.select(
 						new QMemberAuthInfoView(memberEntity.name, memberEntity.email, memberEntity.password))
 				.where(memberEntity.email.eq(email), memberEntity.deleted.isFalse())
+				.orderBy(memberEntity.id.desc())
+				.stream()
+				.findFirst();
+	}
+
+	@Override
+	public Optional<Long> findTopIdById(Long id) {
+		QMemberEntity memberEntity = QMemberEntity.memberEntity;
+		JPQLQuery<MemberEntity> from = from(memberEntity);
+
+		return from
+				.select(memberEntity.id)
+				.where(
+						memberEntity.email.eq(
+								JPAExpressions.select(memberEntity.email)
+										.from(memberEntity)
+										.where(memberEntity.id.eq(id))),
+						memberEntity.deleted.isFalse())
 				.orderBy(memberEntity.id.desc())
 				.stream()
 				.findFirst();
