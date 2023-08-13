@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import jongjun.hairlog.data.enums.MemberSex;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,10 @@ public class MemberEntity extends BaseEntity {
 
 	@Column(name = "member_cycle")
 	private Long cycle;
+
+	@Version
+	@Column(name = "member_version")
+	private Long version;
 
 	public void changeName(String name) {
 		this.name = name;
