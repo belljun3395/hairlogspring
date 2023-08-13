@@ -3,7 +3,7 @@ package jongjun.hairlog.app.domain.converter.member;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
-import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
+import jongjun.hairlog.app.domain.request.SaveMemberRequest;
 import jongjun.hairlog.data.dto.member.MemberAuthInfoView;
 import jongjun.hairlog.data.dto.member.MemberInfoView;
 import jongjun.hairlog.data.entity.MemberEntity;
@@ -41,8 +41,7 @@ public class MemberConverter {
 				.build();
 	}
 
-	/** fixme CommandConverter을 거처서 요청을 받을 수 있도록 수정 */
-	public MemberEntity to(MemberRequest request) {
+	public MemberEntity to(SaveMemberRequest request) {
 		return MemberEntity.builder()
 				.email(request.getEmail())
 				.password(request.getPassword())
