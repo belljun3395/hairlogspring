@@ -107,14 +107,8 @@ class MemberControllerTest {
 		MemberEditRequest request =
 				MemberEditRequest.builder().name(NAME + "edit").cycle(CYCLE + 1L).build();
 
-		SaveMemberResponse response =
-				SaveMemberResponse.builder()
-						.id(MEMBER_RETURN_ID)
-						.name(NAME)
-						.tokenResponse(TokenResponse.from(tokenGenerator.generateToken(MEMBER_RETURN_ID)))
-						.build();
-
-		when(editMemberUseCase.execute(memberControllerConverter.to(request))).thenReturn(response);
+		when(editMemberUseCase.execute(memberControllerConverter.to(request)))
+				.thenReturn(MEMBER_RETURN_ID);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -130,7 +124,7 @@ class MemberControllerTest {
 												.tag(TAG)
 												.requestSchema(Schema.schema("MemberEditRequest"))
 												.responseSchema(Schema.schema("MemberEditResponse"))
-												.responseFields(Description.success(MemberDescription.loginMember()))
+												.responseFields(Description.success(MemberDescription.memberId()))
 												.build())));
 	}
 

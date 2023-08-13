@@ -3,9 +3,6 @@ package jongjun.hairlog.app.domain.usecase.member;
 import jongjun.hairlog.app.domain.converter.member.MemberUpdateDelegator;
 import jongjun.hairlog.app.domain.request.EditMemberRequest;
 import jongjun.hairlog.app.exception.MemberNotFoundException;
-import jongjun.hairlog.app.support.token.TokenGenerator;
-import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
-import jongjun.hairlog.app.web.controller.response.TokenResponse;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.log.entity.MemberInfoLog;
 import jongjun.hairlog.data.log.repository.MemberLogRepository;
@@ -24,10 +21,9 @@ public class EditMemberUseCase {
 	private final MemberRepository repository;
 	private final MemberLogRepository logRepository;
 	private final MemberUpdateDelegator updateDelegator;
-	private final TokenGenerator tokenGenerator;
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public SaveMemberResponse execute(final EditMemberRequest request) {
+	public Long execute(final EditMemberRequest request) {
 		MemberEntity memberEntity =
 				repository
 						.findById(request.getId())
@@ -37,11 +33,7 @@ public class EditMemberUseCase {
 
 		MemberEntity updateMemberEntity = getUpdateMemberEntity(memberEntity, request);
 
-		return SaveMemberResponse.builder()
-				.id(updateMemberEntity.getId())
-				.name(updateMemberEntity.getName())
-				.tokenResponse(TokenResponse.from(tokenGenerator.generateToken(updateMemberEntity.getId())))
-				.build();
+		return updateMemberEntity.getId();
 	}
 
 	private void saveLog(MemberEntity memberEntity, EditMemberRequest request) {

@@ -49,7 +49,7 @@ public class MemberController {
 	}
 
 	@PatchMapping()
-	public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> editMember(
+	public ApiResponse<ApiResponse.SuccessBody<Long>> editMember(
 			@RequestBody MemberEditRequest request) {
 		return ApiResponseGenerator.success(
 				editMemberUseCase.execute(memberControllerConverter.to(request)), HttpStatus.OK);

@@ -17,7 +17,7 @@ public class EditMemberFacadeUseCase {
 	private final EditMemberUseCase editMemberUseCase;
 
 	@Transactional
-	public SaveMemberResponse execute(final EditMemberRequest request) {
+	public Long execute(final EditMemberRequest request) {
 		try {
 			repository.getLock(request.getId().toString());
 
