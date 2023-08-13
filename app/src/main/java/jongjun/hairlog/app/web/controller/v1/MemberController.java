@@ -1,5 +1,6 @@
 package jongjun.hairlog.app.web.controller.v1;
 
+import jongjun.hairlog.app.config.security.AuditorHolder;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.model.member.Token;
@@ -11,9 +12,10 @@ import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
 import jongjun.hairlog.app.support.ApiResponse;
 import jongjun.hairlog.app.support.ApiResponseGenerator;
+import jongjun.hairlog.app.web.controller.converter.MemberControllerConverter;
 import jongjun.hairlog.app.web.controller.request.member.MemberEditRequest;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
-import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
+import jongjun.hairlog.app.web.controller.request.member.MemberSignRequest;
 import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,28 +40,32 @@ public class MemberController {
 	private final GetTokenUseCase getTokenUseCase;
 	private final SignMemberUseCase signMemberUseCase;
 	private final DeleteMemberUseCase deleteMemberUseCase;
+	private final MemberControllerConverter memberControllerConverter;
 
 	@PostMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Long>> addMember(@RequestBody MemberRequest request) {
-		return ApiResponseGenerator.success(saveMemberUseCase.execute(request), HttpStatus.OK);
+		return ApiResponseGenerator.success(
+				saveMemberUseCase.execute(memberControllerConverter.to(request)), HttpStatus.OK);
 	}
 
 	@PatchMapping()
 	public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> editMember(
 			@RequestBody MemberEditRequest request) {
-		return ApiResponseGenerator.success(editMemberUseCase.execute(request), HttpStatus.OK);
+		return ApiResponseGenerator.success(
+				editMemberUseCase.execute(memberControllerConverter.to(request)), HttpStatus.OK);
 	}
 
 	@DeleteMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Long>> deleteMember() {
-		return ApiResponseGenerator.success(deleteMemberUseCase.execute(), HttpStatus.OK);
+		return ApiResponseGenerator.success(
+				deleteMemberUseCase.execute(AuditorHolder.get()), HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
 	public ApiResponse<ApiResponse.SuccessBody<SaveMemberResponse>> login(
-			@RequestBody SignMemberRequest signMemberRequest) {
+			@RequestBody MemberSignRequest request) {
 		return ApiResponseGenerator.success(
-				signMemberUseCase.execute(signMemberRequest), HttpStatus.CREATED);
+				signMemberUseCase.execute(memberControllerConverter.to(request)), HttpStatus.CREATED);
 	}
 
 	@PostMapping("/tokens")
@@ -70,7 +76,8 @@ public class MemberController {
 
 	@GetMapping()
 	public ApiResponse<ApiResponse.SuccessBody<Member>> readMember() {
-		return ApiResponseGenerator.success(getMemberUseCase.execute(), HttpStatus.OK);
+		return ApiResponseGenerator.success(
+				getMemberUseCase.execute(AuditorHolder.get()), HttpStatus.OK);
 	}
 
 	@GetMapping("/info")
