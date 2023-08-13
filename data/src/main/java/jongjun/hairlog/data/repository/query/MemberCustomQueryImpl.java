@@ -32,31 +32,32 @@ public class MemberCustomQueryImpl extends QuerydslRepositorySupport implements 
 						.fetchOne());
 	}
 
-	public Optional<MemberInfoView> findTopInfoViewByEmailAndDeletedFalse(String email) {
+	public Optional<MemberInfoView> findInfoViewByEmailAndDeletedFalse(String email) {
 		QMemberEntity memberEntity = QMemberEntity.memberEntity;
 		JPQLQuery<MemberEntity> query = from(memberEntity);
 
-		return query
-				.select(
-						new QMemberInfoView(
-								memberEntity.email, memberEntity.name, memberEntity.sex, memberEntity.cycle))
-				.where(memberEntity.email.eq(email), memberEntity.deleted.isFalse())
-				.orderBy(memberEntity.id.desc())
-				.stream()
-				.findFirst();
+		return Optional.ofNullable(
+				query
+						.select(
+								new QMemberInfoView(
+										memberEntity.email, memberEntity.name, memberEntity.sex, memberEntity.cycle))
+						.where(memberEntity.email.eq(email), memberEntity.deleted.isFalse())
+						.orderBy(memberEntity.id.desc())
+						.fetchOne());
 	}
 
-	public Optional<MemberAuthInfoView> findTopAuthInfoViewByEmailAndDeletedFalse(String email) {
+	public Optional<MemberAuthInfoView> findAuthInfoViewByEmailAndDeletedFalse(String email) {
 		QMemberEntity memberEntity = QMemberEntity.memberEntity;
 		JPQLQuery<MemberEntity> query = from(memberEntity);
 
-		return query
-				.select(
-						new QMemberAuthInfoView(memberEntity.name, memberEntity.email, memberEntity.password))
-				.where(memberEntity.email.eq(email), memberEntity.deleted.isFalse())
-				.orderBy(memberEntity.id.desc())
-				.stream()
-				.findFirst();
+		return Optional.ofNullable(
+				query
+						.select(
+								new QMemberAuthInfoView(
+										memberEntity.name, memberEntity.email, memberEntity.password))
+						.where(memberEntity.email.eq(email), memberEntity.deleted.isFalse())
+						.orderBy(memberEntity.id.desc())
+						.fetchOne());
 	}
 
 	@Override

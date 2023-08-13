@@ -1,12 +1,10 @@
 package jongjun.hairlog.app.domain.usecase.member;
 
-import java.util.Objects;
 import jongjun.hairlog.app.domain.converter.member.MemberConverter;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.query.MemberAuthQuery;
-import jongjun.hairlog.app.exception.AlreadyEditException;
 import jongjun.hairlog.app.exception.MemberNotFoundException;
 import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,14 +28,14 @@ public class GetMemberUseCase {
 
 	public MemberInfo execute(final String email) {
 		return repository
-				.findTopInfoViewByEmailAndDeletedFalse(email)
+				.findInfoViewByEmailAndDeletedFalse(email)
 				.map(converter::from)
 				.orElseThrow(() -> new MemberNotFoundException(email));
 	}
 
 	public MemberAuthInfo execute(final MemberAuthQuery query) {
 		return repository
-				.findTopAuthInfoViewByEmailAndDeletedFalse(query.getEmail())
+				.findAuthInfoViewByEmailAndDeletedFalse(query.getEmail())
 				.map(converter::from)
 				.orElseThrow(() -> new MemberNotFoundException(query.getEmail()));
 	}

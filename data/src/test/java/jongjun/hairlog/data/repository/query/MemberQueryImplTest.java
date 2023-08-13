@@ -31,7 +31,7 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 
 		log.info("=== findInfoViewByEmail ===");
 		MemberInfoView memberInfoView =
-				repository.findTopInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
+				repository.findInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
 
 		assertThat(memberEmail).isEqualTo(memberInfoView.getEmail());
 	}
@@ -60,7 +60,7 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 
 		log.info("=== findAuthInfoViewByEmail ===");
 		MemberAuthInfoView memberAuthInfoView =
-				repository.findTopAuthInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
+				repository.findAuthInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
 
 		assertThat(memberEmail).isEqualTo(memberAuthInfoView.getEmail());
 	}
