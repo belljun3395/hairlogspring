@@ -17,7 +17,6 @@ import jongjun.hairlog.app.AppMain;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.model.member.Token;
-import jongjun.hairlog.app.domain.request.SignMemberRequest;
 import jongjun.hairlog.app.domain.usecase.member.DeleteMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.EditMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
@@ -28,6 +27,7 @@ import jongjun.hairlog.app.support.token.TokenGenerator;
 import jongjun.hairlog.app.web.controller.converter.MemberControllerConverter;
 import jongjun.hairlog.app.web.controller.request.member.MemberEditRequest;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
+import jongjun.hairlog.app.web.controller.request.member.MemberSignRequest;
 import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
 import jongjun.hairlog.app.web.controller.response.TokenResponse;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
@@ -157,7 +157,7 @@ class MemberControllerTest {
 
 	@Test
 	void login() throws Exception {
-		SignMemberRequest request = SignMemberRequest.builder().email(EMAIL).password(PASSWORD).build();
+		MemberSignRequest request = MemberSignRequest.builder().email(EMAIL).password(PASSWORD).build();
 
 		SaveMemberResponse response =
 				SaveMemberResponse.builder()
@@ -166,7 +166,7 @@ class MemberControllerTest {
 						.tokenResponse(TokenResponse.from(tokenGenerator.generateToken(MEMBER_RETURN_ID)))
 						.build();
 
-		when(signMemberUseCase.execute(request)).thenReturn(response);
+		when(signMemberUseCase.execute(memberControllerConverter.to(request))).thenReturn(response);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -200,7 +200,8 @@ class MemberControllerTest {
 						.createAt(LocalDateTime.now())
 						.build();
 
-		when(getMemberUseCase.execute(MEMBER_RETURN_ID)).thenReturn(returnMember);
+		Long memberId = MEMBER_RETURN_ID;
+		when(getMemberUseCase.execute(memberId)).thenReturn(returnMember);
 
 		mockMvc
 				.perform(get(BASE_URL, 0).contentType(MediaType.APPLICATION_JSON))
