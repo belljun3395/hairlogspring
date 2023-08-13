@@ -27,6 +27,7 @@ public class MemberUpdateDelegator {
 						.name(source.getName())
 						.sex(source.getSex())
 						.cycle(source.getCycle())
+						.success(true)
 						.build();
 
 		if (request.getName() != null) {
