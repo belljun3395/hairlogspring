@@ -17,6 +17,7 @@ import jongjun.hairlog.app.AppMain;
 import jongjun.hairlog.app.domain.model.member.Member;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.model.member.Token;
+import jongjun.hairlog.app.domain.request.SignMemberRequest;
 import jongjun.hairlog.app.domain.usecase.member.DeleteMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.EditMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.GetMemberUseCase;
@@ -24,9 +25,9 @@ import jongjun.hairlog.app.domain.usecase.member.GetTokenUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SaveMemberUseCase;
 import jongjun.hairlog.app.domain.usecase.member.SignMemberUseCase;
 import jongjun.hairlog.app.support.token.TokenGenerator;
+import jongjun.hairlog.app.web.controller.converter.MemberControllerConverter;
 import jongjun.hairlog.app.web.controller.request.member.MemberEditRequest;
 import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
-import jongjun.hairlog.app.web.controller.request.member.SignMemberRequest;
 import jongjun.hairlog.app.web.controller.response.SaveMemberResponse;
 import jongjun.hairlog.app.web.controller.response.TokenResponse;
 import jongjun.hairlog.app.web.controller.v1.description.Description;
@@ -61,6 +62,7 @@ class MemberControllerTest {
 	@Autowired private MockMvc mockMvc;
 	@Autowired private ObjectMapper objectMapper;
 	@Autowired private TokenGenerator tokenGenerator;
+	@Autowired private MemberControllerConverter memberControllerConverter;
 	@MockBean private SaveMemberUseCase saveMemberUseCase;
 	@MockBean private EditMemberUseCase editMemberUseCase;
 	@MockBean private GetMemberUseCase getMemberUseCase;
@@ -79,7 +81,8 @@ class MemberControllerTest {
 						.cycle(CYCLE)
 						.build();
 
-		when(saveMemberUseCase.execute(request)).thenReturn(MEMBER_RETURN_ID);
+		when(saveMemberUseCase.execute(memberControllerConverter.to(request)))
+				.thenReturn(MEMBER_RETURN_ID);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -111,7 +114,7 @@ class MemberControllerTest {
 						.tokenResponse(TokenResponse.from(tokenGenerator.generateToken(MEMBER_RETURN_ID)))
 						.build();
 
-		when(editMemberUseCase.execute(request)).thenReturn(response);
+		when(editMemberUseCase.execute(memberControllerConverter.to(request))).thenReturn(response);
 
 		String content = objectMapper.writeValueAsString(request);
 
@@ -134,7 +137,7 @@ class MemberControllerTest {
 	@Test
 	void deleteMember() throws Exception {
 
-		when(deleteMemberUseCase.execute()).thenReturn(MEMBER_RETURN_ID);
+		when(deleteMemberUseCase.execute(MEMBER_RETURN_ID)).thenReturn(MEMBER_RETURN_ID);
 
 		mockMvc
 				.perform(delete(BASE_URL, 0).contentType(MediaType.APPLICATION_JSON))
@@ -197,7 +200,7 @@ class MemberControllerTest {
 						.createAt(LocalDateTime.now())
 						.build();
 
-		when(getMemberUseCase.execute()).thenReturn(returnMember);
+		when(getMemberUseCase.execute(MEMBER_RETURN_ID)).thenReturn(returnMember);
 
 		mockMvc
 				.perform(get(BASE_URL, 0).contentType(MediaType.APPLICATION_JSON))
