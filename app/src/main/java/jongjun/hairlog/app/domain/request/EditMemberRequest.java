@@ -1,4 +1,4 @@
-package jongjun.hairlog.app.web.controller.request.member;
+package jongjun.hairlog.app.domain.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,12 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder(toBuilder = true)
-@EqualsAndHashCode
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignMemberRequest {
-
-	private String email;
-	private String password;
+public class EditMemberRequest {
+	private Long id;
+	private String name;
+	private Long cycle;
 }
