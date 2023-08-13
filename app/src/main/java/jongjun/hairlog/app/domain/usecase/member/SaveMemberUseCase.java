@@ -1,7 +1,7 @@
 package jongjun.hairlog.app.domain.usecase.member;
 
 import jongjun.hairlog.app.domain.converter.member.MemberConverter;
-import jongjun.hairlog.app.web.controller.request.member.MemberRequest;
+import jongjun.hairlog.app.domain.request.SaveMemberRequest;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class SaveMemberUseCase {
 	private final MemberRepository repository;
 	private final MemberConverter converter;
 
-	public Long execute(final MemberRequest request) {
+	public Long execute(final SaveMemberRequest request) {
 		MemberEntity data = converter.to(request);
 
 		validateExist(request);
@@ -24,7 +24,7 @@ public class SaveMemberUseCase {
 		return repository.save(data).getId();
 	}
 
-	private void validateExist(MemberRequest request) {
+	private void validateExist(SaveMemberRequest request) {
 		Boolean isExist = repository.existsMemberEntitiesByEmailAndDeletedFalse(request.getEmail());
 		if (isExist.equals(Boolean.TRUE)) {
 			throw new SecurityException("이미 존재하는 이메일입니다.");
