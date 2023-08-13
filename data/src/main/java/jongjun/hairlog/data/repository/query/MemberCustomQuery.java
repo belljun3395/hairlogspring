@@ -7,9 +7,9 @@ import jongjun.hairlog.data.dto.member.MemberInfoView;
 public interface MemberCustomQuery {
 	Optional<MemberInfoView> findViewById(Long id);
 
-	Optional<MemberInfoView> findTopInfoViewByEmailAndDeletedFalse(String email);
+	Optional<MemberInfoView> findInfoViewByEmailAndDeletedFalse(String email);
 
-	Optional<MemberAuthInfoView> findTopAuthInfoViewByEmailAndDeletedFalse(String email);
+	Optional<MemberAuthInfoView> findAuthInfoViewByEmailAndDeletedFalse(String email);
 
 	Optional<Long> findTopIdById(Long id);
 }
