@@ -4,6 +4,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.headerWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -195,7 +196,7 @@ class MemberControllerTest {
 						.build();
 
 		Long memberId = MEMBER_RETURN_ID;
-		when(getMemberUseCase.execute(memberId)).thenReturn(returnMember);
+		when(getMemberUseCase.execute(anyLong())).thenReturn(returnMember);
 
 		mockMvc
 				.perform(get(BASE_URL, 0).contentType(MediaType.APPLICATION_JSON))
