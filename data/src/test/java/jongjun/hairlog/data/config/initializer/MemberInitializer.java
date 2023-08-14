@@ -3,32 +3,38 @@ package jongjun.hairlog.data.config.initializer;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.enums.MemberSex;
 import jongjun.hairlog.data.repository.MemberRepository;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestComponent;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@TestComponent
-public class MemberInitializer {
+@Getter
+@RequiredArgsConstructor
+public class MemberInitializer implements ApplicationRunner {
 
-	@Autowired private MemberRepository repository;
+	private final MemberRepository repository;
 
-	private MemberEntity data;
+	private MemberEntity member;
+
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		log.info("=== initialize member ===");
+		this.initialize();
+		log.info("*** member id : {} ***", member.getId());
+		log.info("=== end initialize member ===");
+	}
 
 	@Transactional
 	public void initialize() {
-		log.info("=== initialize test ===");
 		repository.deleteAll();
 		this.save();
 	}
 
-	public MemberEntity getData() {
-		return this.data;
-	}
-
 	private void save() {
-		this.data =
+		this.member =
 				repository.save(
 						MemberEntity.builder()
 								.email("testM@test.com")

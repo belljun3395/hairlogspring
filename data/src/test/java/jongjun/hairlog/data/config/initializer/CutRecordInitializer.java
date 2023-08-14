@@ -9,70 +9,50 @@ import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.enums.SatisfactionRate;
 import jongjun.hairlog.data.repository.CutRepository;
-import jongjun.hairlog.data.repository.DesignerRepository;
-import jongjun.hairlog.data.repository.MemberRepository;
 import jongjun.hairlog.data.repository.RecordRepository;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestComponent;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@TestComponent
-public class CutRecordInitializer {
+@Getter
+@RequiredArgsConstructor
+public class CutRecordInitializer implements ApplicationRunner {
 
-	@Autowired private CutRepository repository;
-	@Autowired private RecordRepository recordRepository;
-	@Autowired private MemberRepository memberRepository;
-	@Autowired private DesignerRepository designerRepository;
-	@Autowired private MemberInitializer memberInitializer;
-	@Autowired private DesignerInitializer designerInitializer;
+	private final CutRepository repository;
+	private final RecordRepository recordRepository;
+	private final MemberInitializer memberInitializer;
+	private final DesignerInitializer designerInitializer;
 
-	private CutEntity data;
+	private CutEntity cut;
 	private RecordEntity record;
 	private DesignerEntity designer;
 	private MemberEntity member;
 
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		log.info("=== initialize cut ===");
+		this.initialize();
+		log.info("*** cut id : {}, record id : {}", cut.getId(), record.getId());
+		log.info("=== end initialize cut ===");
+	}
+
 	@Transactional
 	public void initialize() {
-		log.info("=== initialize ===");
 		repository.deleteAll();
-		designerRepository.deleteAll();
-		memberRepository.deleteAll();
 		this.save();
 	}
 
-	public void initializePage() {
-		repository.deleteAll();
-		for (int i = 0; i < 5; i++) this.save();
-	}
-
-	public CutEntity getData() {
-		return this.data;
-	}
-
-	public RecordEntity getRecord() {
-		return this.record;
-	}
-
-	public MemberEntity getMember() {
-		return this.member;
-	}
-
-	public DesignerEntity getDesigner() {
-		return this.designer;
-	}
-
 	private void save() {
-		designerInitializer.initialize();
-		designer = designerInitializer.getData();
-		memberInitializer.initialize();
-		member = memberInitializer.getData();
-		this.data = repository.save(CutEntity.builder().id(1L).cutName("cutN").cutLength(1L).build());
+		designer = designerInitializer.getDesigner();
+		member = memberInitializer.getMember();
+		this.cut = repository.save(CutEntity.builder().cutName("cutN").cutLength(1L).build());
 		this.record =
 				recordRepository.save(
 						RecordEntity.builder()
-								.id(1L)
 								.recordInfo(
 										CommonRecordInfo.builder()
 												.recordDate(new Date())
@@ -81,7 +61,7 @@ public class CutRecordInitializer {
 												.recordGrade(SatisfactionRate.H)
 												.build())
 								.recordCategory(RecordCategory.CUT)
-								.subId(data.getId())
+								.subId(cut.getId())
 								.member(member)
 								.designer(designer)
 								.build());

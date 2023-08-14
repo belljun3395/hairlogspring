@@ -9,36 +9,40 @@ import jongjun.hairlog.data.entity.record.RecordEntity;
 import jongjun.hairlog.data.enums.HurtRate;
 import jongjun.hairlog.data.enums.RecordCategory;
 import jongjun.hairlog.data.enums.SatisfactionRate;
-import jongjun.hairlog.data.repository.DesignerRepository;
-import jongjun.hairlog.data.repository.MemberRepository;
 import jongjun.hairlog.data.repository.PermRepository;
 import jongjun.hairlog.data.repository.RecordRepository;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestComponent;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@TestComponent
-public class PermRecordInitializer {
-	@Autowired private PermRepository repository;
-	@Autowired private RecordRepository recordRepository;
-	@Autowired private MemberRepository memberRepository;
-	@Autowired private DesignerRepository designerRepository;
-	@Autowired private MemberInitializer memberInitializer;
-	@Autowired private DesignerInitializer designerInitializer;
+@Getter
+@RequiredArgsConstructor
+public class PermRecordInitializer implements ApplicationRunner {
+	private final PermRepository repository;
+	private final RecordRepository recordRepository;
+	private final MemberInitializer memberInitializer;
+	private final DesignerInitializer designerInitializer;
 
-	private PermEntity data;
+	private PermEntity perm;
 	private RecordEntity record;
 	private MemberEntity member;
 	private DesignerEntity designer;
 
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		log.info("=== initialize perm ===");
+		this.initialize();
+		log.info("*** perm id : {}, record id : {}", perm.getId(), record.getId());
+		log.info("=== end initialize perm ===");
+	}
+
 	@Transactional
 	public void initialize() {
-		log.info("=== initialize ===");
 		repository.deleteAll();
-		designerRepository.deleteAll();
-		memberRepository.deleteAll();
 		this.save();
 	}
 
@@ -47,29 +51,10 @@ public class PermRecordInitializer {
 		for (int i = 0; i < 5; i++) this.save();
 	}
 
-	public PermEntity getData() {
-		return this.data;
-	}
-
-	public RecordEntity getRecord() {
-		return this.record;
-	}
-
-	public MemberEntity getMember() {
-		return this.member;
-	}
-
-	public DesignerEntity getDesigner() {
-		return this.designer;
-	}
-
 	private void save() {
-		memberInitializer.initialize();
-		member = memberInitializer.getData();
-
-		designerInitializer.initialize();
-		designer = designerInitializer.getData();
-		this.data =
+		designer = designerInitializer.getDesigner();
+		member = memberInitializer.getMember();
+		this.perm =
 				repository.save(
 						PermEntity.builder()
 								.id(1L)
@@ -89,7 +74,7 @@ public class PermRecordInitializer {
 												.recordGrade(SatisfactionRate.H)
 												.build())
 								.recordCategory(RecordCategory.PERM)
-								.subId(data.getId())
+								.subId(perm.getId())
 								.member(member)
 								.designer(designer)
 								.build());

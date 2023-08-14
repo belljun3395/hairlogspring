@@ -3,44 +3,43 @@ package jongjun.hairlog.data.config.initializer;
 import jongjun.hairlog.data.entity.DesignerEntity;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.DesignerRepository;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestComponent;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@TestComponent
-public class DesignerInitializer {
+@Getter
+@RequiredArgsConstructor
+public class DesignerInitializer implements ApplicationRunner {
 
-	@Autowired private DesignerRepository repository;
-	@Autowired private MemberInitializer memberInitializer;
+	private final DesignerRepository repository;
+	private final MemberInitializer memberInitializer;
 
-	private DesignerEntity data;
-
+	private DesignerEntity designer;
 	private MemberEntity member;
+
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		log.info("=== initialize designer ===");
+		this.initialize();
+		log.info("*** designer id : {}", designer.getId());
+		log.info("=== end initialize designer ===");
+	}
 
 	@Transactional
 	public void initialize() {
-		log.info("=== initialize test ===");
 		repository.deleteAll();
 		this.save();
 	}
 
-	public DesignerEntity getData() {
-		return this.data;
-	}
-
-	public MemberEntity getMember() {
-		return this.member;
-	}
-
 	private void save() {
-		memberInitializer.initialize();
-		member = memberInitializer.getData();
-		this.data =
+		member = memberInitializer.getMember();
+		this.designer =
 				repository.save(
 						DesignerEntity.builder()
-								.id(1L)
 								.designerName("testD")
 								.designerSalon("testS")
 								.designerFav(true)
