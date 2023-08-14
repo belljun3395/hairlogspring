@@ -28,7 +28,9 @@ import org.hibernate.annotations.SQLDelete;
 		value = {
 			@AttributeOverride(name = "id", column = @Column(name = "member_id")),
 		})
-@SQLDelete(sql = "UPDATE member_tb SET deleted = true WHERE member_id=?")
+@SQLDelete(
+		sql =
+				"UPDATE member_tb SET deleted = true, member_version = member_version + 1 WHERE member_id = ? AND member_version = ?")
 public class MemberEntity extends BaseEntity {
 
 	@Column(name = "member_email")
