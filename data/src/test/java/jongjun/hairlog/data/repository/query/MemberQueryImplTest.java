@@ -9,6 +9,7 @@ import jongjun.hairlog.data.dto.member.DeletedMemberView;
 import jongjun.hairlog.data.dto.member.MemberAuthInfoView;
 import jongjun.hairlog.data.dto.member.MemberInfoView;
 import jongjun.hairlog.data.entity.MemberEntity;
+import jongjun.hairlog.data.enums.MemberSex;
 import jongjun.hairlog.data.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -25,9 +26,7 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 	@Test
 	@DisplayName("[MemberQuery] findInfoViewByEmail")
 	void findByEmailQuery() {
-		initializer.initialize();
-		String memberEmail = initializer.getData().getEmail();
-		entityManager.flush();
+		String memberEmail = initializer.getMember().getEmail();
 
 		log.info("=== findInfoViewByEmail ===");
 		MemberInfoView memberInfoView =
@@ -39,8 +38,16 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 	@Test
 	@DisplayName("[MemberQuery] findByEmailAndDeletedTrue")
 	void findDeletedMemberByEmailQuery() {
-		initializer.initialize();
-		MemberEntity member = initializer.getData();
+		MemberEntity member =
+				repository.save(
+						MemberEntity.builder()
+								.email("testM@test.com")
+								.password("testP")
+								.name("testMember")
+								.sex(MemberSex.M)
+								.cycle(1L)
+								.build());
+
 		repository.delete(member);
 		entityManager.flush();
 
@@ -54,9 +61,7 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 	@Test
 	@DisplayName("[MemberQuery] findAuthInfoViewByEmail")
 	void findByEmailAuthQuery() {
-		initializer.initialize();
-		String memberEmail = initializer.getData().getEmail();
-		entityManager.flush();
+		String memberEmail = initializer.getMember().getEmail();
 
 		log.info("=== findAuthInfoViewByEmail ===");
 		MemberAuthInfoView memberAuthInfoView =
@@ -68,9 +73,7 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 	@Test
 	@DisplayName("[MemberQuery] existsMemberEntitiesByEmailAndDeletedFalse")
 	void isExistEmailQuery() {
-		initializer.initialize();
-		String memberEmail = initializer.getData().getEmail();
-		entityManager.flush();
+		String memberEmail = initializer.getMember().getEmail();
 
 		log.info("=== existsMemberEntitiesByEmailAndDeletedFalse ===");
 		Boolean isExist = repository.existsMemberEntitiesByEmailAndDeletedFalse(memberEmail);

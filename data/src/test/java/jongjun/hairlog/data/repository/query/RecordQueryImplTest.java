@@ -33,44 +33,24 @@ class RecordQueryImplTest extends BaseQueryImplTest {
 	@Autowired DyeingRepository dyeingRepository;
 
 	@Test
-	@DisplayName("[Record] save - cut, perm, dyeing")
-	void save() {
-		cutRecordInitializer.initialize();
-		permRecordInitializer.initialize();
-		dyeingRecordInitializer.initialize();
-	}
-
-	@Test
 	@DisplayName("[Record] findCutWithRecordByRecordIdAndDeletedFalse")
 	void findCutWithRecordByRecordIdAndDeletedFalse() {
-		log.info("=== cut ===");
-		cutRecordInitializer.initialize();
-		RecordEntity cutRecord = cutRecordInitializer.getRecord();
-		entityManager.flush();
-
 		log.info("=== cut findCutWithRecordByRecordIdAndDeletedFalse ===");
+		RecordEntity cutRecord = cutRecordInitializer.getRecord();
 		CutWitRecordView cutWitRecordView =
 				cutRepository.findCutWithRecordByRecordIdAndDeletedFalse(cutRecord.getId()).orElse(null);
 
 		assertThat(cutWitRecordView.getId()).isEqualTo(cutRecord.getId());
 
-		log.info("=== perm ===");
-		permRecordInitializer.initialize();
-		RecordEntity permRecord = permRecordInitializer.getRecord();
-		entityManager.flush();
-
 		log.info("=== perm findCutWithRecordByRecordIdAndDeletedFalse ===");
+		RecordEntity permRecord = permRecordInitializer.getRecord();
 		PermWithRecordView permWithRecordView =
 				permRepository.findCutWithRecordByRecordIdAndDeletedFalse(permRecord.getId()).orElse(null);
 
 		assertThat(permWithRecordView.getId()).isEqualTo(permRecord.getId());
 
-		log.info("=== dyeing ===");
-		dyeingRecordInitializer.initialize();
-		RecordEntity dyeingRecord = dyeingRecordInitializer.getRecord();
-		entityManager.flush();
-
 		log.info("=== dyeing findCutWithRecordByRecordIdAndDeletedFalse ===");
+		RecordEntity dyeingRecord = dyeingRecordInitializer.getRecord();
 		DyeingWithRecordView dyeingWithRecordView =
 				dyeingRepository
 						.findCutWithRecordByRecordIdAndDeletedFalse(dyeingRecord.getId())
