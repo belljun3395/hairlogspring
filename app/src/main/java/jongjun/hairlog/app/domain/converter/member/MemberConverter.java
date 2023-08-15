@@ -1,7 +1,6 @@
 package jongjun.hairlog.app.domain.converter.member;
 
 import jongjun.hairlog.app.domain.model.member.Member;
-import jongjun.hairlog.app.domain.model.member.MemberAuthInfo;
 import jongjun.hairlog.app.domain.model.member.MemberInfo;
 import jongjun.hairlog.app.domain.request.SaveMemberRequest;
 import jongjun.hairlog.data.dto.member.MemberAuthInfoView;
