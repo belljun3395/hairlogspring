@@ -7,7 +7,6 @@ import jongjun.hairlog.app.domain.converter.designer.DesignerConverter;
 import jongjun.hairlog.app.domain.model.designer.Designer;
 import jongjun.hairlog.app.exception.ResourceNotFoundException;
 import jongjun.hairlog.app.web.controller.request.designer.DesignerIdParam;
-import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.repository.DesignerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,10 +36,7 @@ public class GetDesignerUseCase {
 
 	public List<Designer> execute(String designerName) {
 		Long memberId = AuditorHolder.get();
-		return repository
-				.findAllByDesignerNameAndMemberAndDeletedFalse(
-						designerName, MemberEntity.builder().id(memberId).build())
-				.stream()
+		return repository.findAllByDesignerNameAndMemberAndDeletedFalse(designerName, memberId).stream()
 				.map(converter::from)
 				.collect(Collectors.toList());
 	}
