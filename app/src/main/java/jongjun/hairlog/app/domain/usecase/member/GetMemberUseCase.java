@@ -27,7 +27,7 @@ public class GetMemberUseCase {
 	public MemberInfo execute(final String email) {
 		return repository
 				.findInfoViewByEmailAndDeletedFalse(email)
-				.map(converter::from)
+				.map(converter::infoFrom)
 				.orElseThrow(() -> new MemberNotFoundException(email));
 	}
 }

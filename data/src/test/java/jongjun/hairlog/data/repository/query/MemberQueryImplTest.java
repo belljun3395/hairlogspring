@@ -5,9 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import javax.persistence.EntityManager;
 import jongjun.hairlog.data.config.BaseQueryImplTest;
 import jongjun.hairlog.data.config.initializer.MemberInitializer;
-import jongjun.hairlog.data.dto.member.DeletedMemberView;
-import jongjun.hairlog.data.dto.member.MemberAuthInfoView;
-import jongjun.hairlog.data.dto.member.MemberInfoView;
 import jongjun.hairlog.data.entity.MemberEntity;
 import jongjun.hairlog.data.enums.MemberSex;
 import jongjun.hairlog.data.repository.MemberRepository;
@@ -29,10 +26,10 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 		String memberEmail = initializer.getMember().getEmail();
 
 		log.info("=== findInfoViewByEmail ===");
-		MemberInfoView memberInfoView =
+		MemberEntity memberEntity =
 				repository.findInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
 
-		assertThat(memberEmail).isEqualTo(memberInfoView.getEmail());
+		assertThat(memberEmail).isEqualTo(memberEntity.getEmail());
 	}
 
 	@Test
@@ -52,10 +49,10 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 		entityManager.flush();
 
 		log.info("==== findByEmailAndDeletedTrue =====");
-		DeletedMemberView deletedMemberView =
+		MemberEntity memberEntity =
 				repository.findTopByEmailAndDeletedTrueOrderById(member.getEmail()).orElse(null);
 
-		assertThat(member.getEmail()).isEqualTo(deletedMemberView.getEmail());
+		assertThat(member.getEmail()).isEqualTo(memberEntity.getEmail());
 	}
 
 	@Test
@@ -64,10 +61,10 @@ class MemberQueryImplTest extends BaseQueryImplTest {
 		String memberEmail = initializer.getMember().getEmail();
 
 		log.info("=== findAuthInfoViewByEmail ===");
-		MemberAuthInfoView memberAuthInfoView =
+		MemberEntity memberEntity =
 				repository.findAuthInfoViewByEmailAndDeletedFalse(memberEmail).orElse(null);
 
-		assertThat(memberEmail).isEqualTo(memberAuthInfoView.getEmail());
+		assertThat(memberEmail).isEqualTo(memberEntity.getEmail());
 	}
 
 	@Test
